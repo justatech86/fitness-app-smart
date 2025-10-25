@@ -16,7 +16,11 @@ export default function ProfileSetup({ onSubmit }) {
   });
   
   const [showSensitivitiesDropdown, setShowSensitivitiesDropdown] = useState(false);
+  const [showEquipmentDropdown, setShowEquipmentDropdown] = useState(false);
+  const [showRestDaysDropdown, setShowRestDaysDropdown] = useState(false);
   const sensitivityDropdownRef = useRef(null);
+  const equipmentDropdownRef = useRef(null);
+  const restDaysDropdownRef = useRef(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -35,6 +39,12 @@ export default function ProfileSetup({ onSubmit }) {
     function handleClickOutside(event) {
       if (sensitivityDropdownRef.current && !sensitivityDropdownRef.current.contains(event.target)) {
         setShowSensitivitiesDropdown(false);
+      }
+      if (equipmentDropdownRef.current && !equipmentDropdownRef.current.contains(event.target)) {
+        setShowEquipmentDropdown(false);
+      }
+      if (restDaysDropdownRef.current && !restDaysDropdownRef.current.contains(event.target)) {
+        setShowRestDaysDropdown(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -205,30 +215,60 @@ export default function ProfileSetup({ onSubmit }) {
             </select>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Available Equipment (Select All That Apply)</label>
-            <div className="grid grid-cols-2 gap-2">
-              {[
-                { value: 'dumbbells', label: 'Dumbbells' },
-                { value: 'barbell', label: 'Barbell & Weights' },
-                { value: 'pull_up_bar', label: 'Pull-up Bar' },
-                { value: 'resistance_bands', label: 'Resistance Bands' },
-                { value: 'cable', label: 'Cable Machine' },
-                { value: 'machine', label: 'Gym Machines' }
-              ].map((eq) => (
-                <label key={eq.value} className="flex items-center space-x-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={formData.equipment.includes(eq.value)}
-                    onChange={() => handleEquipmentToggle(eq.value)}
-                    className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
-                  />
-                  <span className="text-sm">{eq.label}</span>
-                </label>
-              ))}
+          <div className="relative" ref={equipmentDropdownRef}>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Available Equipment (Optional)</label>
+            <div
+              onClick={() => setShowEquipmentDropdown(!showEquipmentDropdown)}
+              className="w-full p-2 border border-gray-300 rounded-md bg-white cursor-pointer flex justify-between items-center focus:ring-2 focus:ring-primary focus:border-transparent"
+            >
+              <span className="text-gray-700">
+                {formData.equipment.length === 0 
+                  ? 'Select equipment...' 
+                  : formData.equipment.map(e => {
+                      const equipmentLabels = {
+                        'dumbbells': 'Dumbbells',
+                        'barbell': 'Barbell',
+                        'pull_up_bar': 'Pull-up Bar',
+                        'resistance_bands': 'Bands',
+                        'cable': 'Cable',
+                        'machine': 'Machines'
+                      };
+                      return equipmentLabels[e];
+                    }).join(', ')
+                }
+              </span>
+              <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
             </div>
+            {showEquipmentDropdown && (
+              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                {[
+                  { value: 'dumbbells', label: 'Dumbbells' },
+                  { value: 'barbell', label: 'Barbell & Weights' },
+                  { value: 'pull_up_bar', label: 'Pull-up Bar' },
+                  { value: 'resistance_bands', label: 'Resistance Bands' },
+                  { value: 'cable', label: 'Cable Machine' },
+                  { value: 'machine', label: 'Gym Machines' }
+                ].map((eq) => (
+                  <label 
+                    key={eq.value} 
+                    className="flex items-center px-3 py-2 hover:bg-gray-50 cursor-pointer"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={formData.equipment.includes(eq.value)}
+                      onChange={() => handleEquipmentToggle(eq.value)}
+                      className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary mr-2"
+                    />
+                    <span className="text-sm">{eq.label}</span>
+                  </label>
+                ))}
+              </div>
+            )}
             <p className="text-xs text-gray-500 mt-1">
-              Bodyweight exercises are always included. Select additional equipment you have access to.
+              Bodyweight exercises are always included.
             </p>
           </div>
 
@@ -272,31 +312,55 @@ export default function ProfileSetup({ onSubmit }) {
             </p>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Rest & Cheat Days (Select 1-3)</label>
-            <div className="grid grid-cols-2 gap-2">
-              {[
-                { value: 0, label: 'Sunday' },
-                { value: 1, label: 'Monday' },
-                { value: 2, label: 'Tuesday' },
-                { value: 3, label: 'Wednesday' },
-                { value: 4, label: 'Thursday' },
-                { value: 5, label: 'Friday' },
-                { value: 6, label: 'Saturday' }
-              ].map((day) => (
-                <label key={day.value} className="flex items-center space-x-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={formData.restDays.includes(day.value)}
-                    onChange={() => handleRestDayToggle(day.value)}
-                    className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
-                  />
-                  <span className="text-sm">{day.label}</span>
-                </label>
-              ))}
+          <div className="relative" ref={restDaysDropdownRef}>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Rest & Cheat Days (Select 1-3)</label>
+            <div
+              onClick={() => setShowRestDaysDropdown(!showRestDaysDropdown)}
+              className="w-full p-2 border border-gray-300 rounded-md bg-white cursor-pointer flex justify-between items-center focus:ring-2 focus:ring-primary focus:border-transparent"
+            >
+              <span className="text-gray-700">
+                {formData.restDays.length === 0 
+                  ? 'Select rest days...' 
+                  : formData.restDays.map(d => {
+                      const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                      return dayNames[d];
+                    }).join(', ')
+                }
+              </span>
+              <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
             </div>
+            {showRestDaysDropdown && (
+              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg">
+                {[
+                  { value: 0, label: 'Sunday' },
+                  { value: 1, label: 'Monday' },
+                  { value: 2, label: 'Tuesday' },
+                  { value: 3, label: 'Wednesday' },
+                  { value: 4, label: 'Thursday' },
+                  { value: 5, label: 'Friday' },
+                  { value: 6, label: 'Saturday' }
+                ].map((day) => (
+                  <label 
+                    key={day.value} 
+                    className="flex items-center px-3 py-2 hover:bg-gray-50 cursor-pointer"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={formData.restDays.includes(day.value)}
+                      onChange={() => handleRestDayToggle(day.value)}
+                      className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary mr-2"
+                      disabled={formData.restDays.includes(day.value) && formData.restDays.length === 1}
+                    />
+                    <span className="text-sm">{day.label}</span>
+                  </label>
+                ))}
+              </div>
+            )}
             <p className="text-xs text-gray-500 mt-1">
-              Selected: {formData.restDays.length} rest day{formData.restDays.length !== 1 ? 's' : ''}, {7 - formData.restDays.length} training days
+              {formData.restDays.length} rest day{formData.restDays.length !== 1 ? 's' : ''}, {7 - formData.restDays.length} training days
             </p>
           </div>
 
