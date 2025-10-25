@@ -7,6 +7,16 @@ A personalized 12-week fitness training application built with React, Vite, and 
 
 ## Recent Changes (October 25, 2025)
 
+### Profile Tab with Photo Uploads (October 25, 2025)
+- **Profile photo upload** for user personalization
+- **Progress photos gallery** to track fitness journey over time
+- Photos stored as base64 in localStorage (max 5MB per image)
+- Add notes to progress photos for context
+- Sort progress photos by date (newest first)
+- Delete progress photos with confirmation
+- Profile page accessible from dashboard with "Profile" button
+- Created `components/Profile.jsx` with photo upload and gallery UI
+
 ### User Authentication with Biometric Login (October 25, 2025)
 - **Multi-user support** with username/password authentication
 - **Biometric login** using WebAuthn API (fingerprint, face recognition) after first password login

@@ -4,6 +4,7 @@ export default function Profile({ currentUser, onBack }) {
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [progressPhotos, setProgressPhotos] = useState([]);
   const [showUploadModal, setShowUploadModal] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
 
   useEffect(() => {
     loadPhotos();
@@ -13,9 +14,15 @@ export default function Profile({ currentUser, onBack }) {
     const photoKey = `user_${currentUser}_photos`;
     const stored = localStorage.getItem(photoKey);
     if (stored) {
-      const data = JSON.parse(stored);
-      setProfilePhoto(data.profilePhoto || null);
-      setProgressPhotos(data.progressPhotos || []);
+      try {
+        const data = JSON.parse(stored);
+        setProfilePhoto(data.profilePhoto || null);
+        setProgressPhotos(data.progressPhotos || []);
+      } catch (error) {
+        console.error('Error loading photos:', error);
+        setProfilePhoto(null);
+        setProgressPhotos([]);
+      }
     }
   };
 
@@ -40,6 +47,8 @@ export default function Profile({ currentUser, onBack }) {
         const newPhoto = reader.result;
         setProfilePhoto(newPhoto);
         savePhotos(newPhoto, progressPhotos);
+        setUploadSuccess(true);
+        setTimeout(() => setUploadSuccess(false), 3000);
       };
       reader.readAsDataURL(file);
     }
@@ -117,7 +126,17 @@ export default function Profile({ currentUser, onBack }) {
       <div className="max-w-6xl mx-auto p-4 space-y-6">
         {/* Profile Photo Section */}
         <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-bold text-primary mb-4">Profile Photo</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold text-primary">Profile Photo</h2>
+            {uploadSuccess && (
+              <div className="bg-green-100 text-green-700 px-3 py-1 rounded-md text-sm flex items-center gap-2">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                Photo updated!
+              </div>
+            )}
+          </div>
           <div className="flex items-center gap-6">
             <div className="relative">
               <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
