@@ -5,6 +5,8 @@ export default function Profile({ currentUser, onBack }) {
   const [progressPhotos, setProgressPhotos] = useState([]);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [tempPhotoFile, setTempPhotoFile] = useState(null);
+  const [tempWeight, setTempWeight] = useState('');
 
   useEffect(() => {
     loadPhotos();
@@ -54,29 +56,50 @@ export default function Profile({ currentUser, onBack }) {
     }
   };
 
-  const handleProgressPhotoUpload = (e) => {
+  const handlePhotoFileSelect = (e) => {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
         alert('Image size should be less than 5MB');
         return;
       }
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const newPhoto = {
-          id: Date.now(),
-          image: reader.result,
-          date: new Date().toISOString(),
-          note: ''
-        };
-        const updatedPhotos = [...progressPhotos, newPhoto];
-        setProgressPhotos(updatedPhotos);
-        savePhotos(profilePhoto, updatedPhotos);
-        setShowUploadModal(false);
-      };
-      reader.readAsDataURL(file);
+      setTempPhotoFile(file);
     }
+  };
+
+  const handleProgressPhotoSubmit = () => {
+    if (!tempPhotoFile) {
+      alert('Please select a photo');
+      return;
+    }
+    if (!tempWeight || tempWeight <= 0) {
+      alert('Please enter your current weight');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const newPhoto = {
+        id: Date.now(),
+        image: reader.result,
+        date: new Date().toISOString(),
+        weight: parseFloat(tempWeight),
+        note: ''
+      };
+      const updatedPhotos = [...progressPhotos, newPhoto];
+      setProgressPhotos(updatedPhotos);
+      savePhotos(profilePhoto, updatedPhotos);
+      setShowUploadModal(false);
+      setTempPhotoFile(null);
+      setTempWeight('');
+    };
+    reader.readAsDataURL(tempPhotoFile);
+  };
+
+  const handleCancelUpload = () => {
+    setShowUploadModal(false);
+    setTempPhotoFile(null);
+    setTempWeight('');
   };
 
   const deleteProgressPhoto = (photoId) => {
@@ -207,9 +230,20 @@ export default function Profile({ currentUser, onBack }) {
                     />
                   </div>
                   <div className="p-3">
-                    <p className="text-sm font-medium text-gray-700 mb-2">
-                      {formatDate(photo.date)}
-                    </p>
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <p className="text-xs text-gray-500 uppercase tracking-wide">Progress Date</p>
+                        <p className="text-sm font-medium text-gray-700">
+                          {formatDate(photo.date)}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs text-gray-500 uppercase tracking-wide">Weight</p>
+                        <p className="text-sm font-bold text-primary">
+                          {photo.weight} lbs
+                        </p>
+                      </div>
+                    </div>
                     <input
                       type="text"
                       value={photo.note}
@@ -240,27 +274,59 @@ export default function Profile({ currentUser, onBack }) {
           <div className="bg-white rounded-lg p-6 max-w-md w-full">
             <h3 className="text-xl font-bold text-primary mb-4">Add Progress Photo</h3>
             <p className="text-gray-600 text-sm mb-4">
-              Capture your fitness journey! Upload a photo to track your progress over time.
+              Capture your fitness journey! Upload a photo and record your current weight.
             </p>
-            <label className="block w-full border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-primary transition-colors">
+            
+            {/* Photo Upload */}
+            <label className="block w-full border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-primary transition-colors mb-4">
               <svg className="w-12 h-12 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
               </svg>
-              <p className="text-sm text-gray-600">Click to upload photo</p>
+              {tempPhotoFile ? (
+                <p className="text-sm text-green-600 font-medium">✓ Photo selected</p>
+              ) : (
+                <p className="text-sm text-gray-600">Click to upload photo</p>
+              )}
               <p className="text-xs text-gray-400 mt-1">Max 5MB</p>
               <input
                 type="file"
                 accept="image/*"
-                onChange={handleProgressPhotoUpload}
+                onChange={handlePhotoFileSelect}
                 className="hidden"
               />
             </label>
-            <button
-              onClick={() => setShowUploadModal(false)}
-              className="mt-4 w-full bg-gray-200 text-gray-700 py-2 rounded-md hover:bg-gray-300 transition-colors"
-            >
-              Cancel
-            </button>
+
+            {/* Weight Input */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Current Weight (lbs)
+              </label>
+              <input
+                type="number"
+                value={tempWeight}
+                onChange={(e) => setTempWeight(e.target.value)}
+                placeholder="Enter your weight"
+                min="0"
+                step="0.1"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-primary focus:border-transparent"
+              />
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-3">
+              <button
+                onClick={handleCancelUpload}
+                className="flex-1 bg-gray-200 text-gray-700 py-2 rounded-md hover:bg-gray-300 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleProgressPhotoSubmit}
+                className="flex-1 bg-primary text-white py-2 rounded-md hover:bg-opacity-90 transition-colors"
+              >
+                Add Photo
+              </button>
+            </div>
           </div>
         </div>
       )}
