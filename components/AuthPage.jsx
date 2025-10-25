@@ -200,13 +200,14 @@ export default function AuthPage({ onLogin }) {
           {isSignup && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Email (optional)
+                Email
               </label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
+                required
                 className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
                 placeholder="Enter your email"
               />
