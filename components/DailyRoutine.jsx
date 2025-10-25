@@ -53,7 +53,7 @@ export default function DailyRoutine({ weekData, initialDayIndex, weekIndex, onT
         setTimeout(() => setShowDayCelebration(false), 2500);
       }
     }
-  }, [completedExercises]);
+  }, [weekData, selectedDay]);
 
   const openMealDetail = (meal) => {
     setSelectedMeal(meal);
