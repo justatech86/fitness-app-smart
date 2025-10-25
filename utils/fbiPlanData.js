@@ -84,9 +84,9 @@ export const fbiPlanData = {
     weeks: [5, 6, 7, 8],
     days: {
       1: {
-        name: "FBI PFT Simulation",
+        name: "PFT Simulation",
         cardio: [
-          "Full FBI PFT Test Simulation:",
+          "Full PFT Test Simulation:",
           "  1. Sit-ups (1 min)",
           "  2. 300m sprint",
           "  3. Push-ups (to failure)",
@@ -166,9 +166,9 @@ export const fbiPlanData = {
     weeks: [9, 10, 11, 12],
     days: {
       1: {
-        name: "Full FBI PFT Simulation",
+        name: "Full PFT Simulation",
         cardio: [
-          "Full FBI PFT Test Simulation:",
+          "Full PFT Test Simulation:",
           "  1. Sit-ups (1 min)",
           "  2. 300m sprint",
           "  3. Push-ups (to failure)",

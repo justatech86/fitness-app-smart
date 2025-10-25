@@ -12,7 +12,7 @@ function calculateBMR(gender, age, heightCm, weightKg) {
 function getActivityMultiplier(planType) {
   // Activity level based on training plan
   if (planType === 'fbi_pft') {
-    return 1.725; // Very active - FBI training is intense
+    return 1.725; // Very active - PFT training is intense
   } else {
     return 1.55; // Moderately active - 6 days/week training
   }
@@ -140,7 +140,7 @@ export function generateMacroSummary(profile) {
   }
   
   const planDescription = planType === 'fbi_pft' 
-    ? 'FBI PFT Training (Very Active)'
+    ? 'PFT Training (Very Active)'
     : 'Algorithmic Training (Moderately Active)';
   
   return {

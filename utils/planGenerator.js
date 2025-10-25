@@ -63,7 +63,7 @@ export function generate12WeekPlan(profile) {
         let workout;
         
         if (planType === 'fbi_pft') {
-          // FBI PFT Plan
+          // PFT Plan
           const fbiWorkout = getWorkoutForDay(week, trainingDayCounter);
           workout = {
             name: fbiWorkout.name,

@@ -191,12 +191,12 @@ export default function ProfileSetup({ onSubmit }) {
               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
             >
               <option value="algorithmic">Algorithmic (Personalized)</option>
-              <option value="fbi_pft">FBI PFT Program</option>
+              <option value="fbi_pft">PFT Program</option>
             </select>
             <p className="text-xs text-gray-500 mt-1">
               {formData.planType === 'algorithmic' 
                 ? 'Workouts adapt to your profile, goal, and difficulty level'
-                : 'Fixed FBI fitness test preparation program'
+                : 'Structured fitness test preparation program'
               }
             </p>
           </div>

@@ -1,11 +1,23 @@
 # 12-Week Fitness App
 
 ## Overview
-A personalized 12-week fitness training application built with React, Vite, and Tailwind CSS. This app offers two training plan options: an algorithmic system that dynamically generates workouts based on your unique profile, or the structured FBI PFT (Physical Fitness Test) program. Both plans include personalized nutrition tailored to your goals.
+A personalized 12-week fitness training application built with React, Vite, and Tailwind CSS. This app offers two training plan options: an algorithmic system that dynamically generates workouts based on your unique profile, or the structured PFT (Physical Fitness Test) program. Both plans include personalized nutrition tailored to your goals.
 
 **Current State:** Fully functional and ready to use. The app generates personalized training and nutrition plans based on user profile (gender, age, height, weight, goal, difficulty level, and rest day preference).
 
 ## Recent Changes (October 25, 2025)
+
+### Custom Multi-Select Dropdowns (October 25, 2025)
+- **Unified dropdown UI** for all multi-select fields (Equipment, Food Sensitivities, Rest Days)
+- Custom dropdown components that look like standard selects but allow multiple selections
+- Click to expand, checkbox selection, automatic close on outside click
+- Clean display of selected items with comma-separated labels
+- Consistent styling matching all other form fields (Gender, Goal, Training Plan Type, Difficulty)
+
+### Branding Update (October 25, 2025)
+- Removed "FBI" references from all user-facing text
+- Program now simply called "PFT Program" throughout the app
+- Updated dropdown option, help text, workout names, and nutrition descriptions
 
 ### Multiple Rest Days & Adaptive Training
 - **Multi-select rest day system** allows users to choose 1-3 rest days per week
@@ -44,14 +56,14 @@ A personalized 12-week fitness training application built with React, Vite, and 
   - **Maintenance:** Balanced approach with variety
 - Created `workoutAlgorithm.js` with equipment-filtered exercise system
 
-### FBI PFT Training Plan Integration
-- **Added FBI PFT option** as alternative to algorithmic workouts
-- Integrated 12-week structured FBI PFT program with 3 distinct phases:
+### PFT Training Plan Integration
+- **Added PFT option** as alternative to algorithmic workouts
+- Integrated 12-week structured PFT program with 3 distinct phases:
   - Phase 1 (Weeks 1-4): Foundation & Endurance
   - Phase 2 (Weeks 5-8): Power & Performance
   - Phase 3 (Weeks 9-12): Simulation & Peak Readiness
 - Created `fbiPlanData.js` with complete workout data organized by phase, week, and day
-- Users can choose between Algorithmic or FBI PFT plan in profile setup
+- Users can choose between Algorithmic or PFT plan in profile setup
 - Both plans display cardio and strength exercises separately with visual indicators
 
 ### Food Sensitivity Filtering System
@@ -68,7 +80,7 @@ A personalized 12-week fitness training application built with React, Vite, and 
 - **Algorithmic nutrition system** that calculates personalized macros based on:
   - User profile (gender, age, height, weight)
   - Fitness goal (weight loss creates 500 cal deficit, muscle gain creates 400 cal surplus)
-  - Training plan type (FBI PFT = very active, Algorithmic = moderately active)
+  - Training plan type (PFT = very active, Algorithmic = moderately active)
 - Calculates BMR (Basal Metabolic Rate) using Mifflin-St Jeor equation
 - Calculates TDEE (Total Daily Energy Expenditure) with activity multiplier
 - Goal-specific macro splits:
@@ -125,7 +137,7 @@ A personalized 12-week fitness training application built with React, Vite, and 
 │   └── MacroSummary.jsx       - Displays personalized macro breakdown and daily targets
 ├── utils/
 │   ├── workoutAlgorithm.js    - Algorithmic workout generator (BMR, heart rate zones, progressive overload)
-│   ├── fbiPlanData.js         - FBI PFT 12-week structured training data (3 phases)
+│   ├── fbiPlanData.js         - PFT 12-week structured training data (3 phases)
 │   ├── nutritionAlgorithm.js  - BMR/TDEE calculator and macro distribution system
 │   ├── mealDatabase.js        - 60+ meals tagged with allergen information
 │   ├── planGenerator.js       - Generates workouts + filtered personalized nutrition
@@ -143,7 +155,7 @@ A personalized 12-week fitness training application built with React, Vite, and 
 1. **Profile Setup** - Collects user information (gender, age, height in feet/inches, weight in lbs, goal, difficulty, rest days [1-3], food sensitivities, equipment, plan type)
 2. **Dual Training Systems:**
    - **Algorithmic Plan:** Workouts dynamically adapt to your profile, equipment, goal, and difficulty using BMR, heart rate zones, and progressive overload
-   - **FBI PFT Plan:** Structured 12-week program with 3 phases targeting FBI fitness standards
+   - **PFT Plan:** Structured 12-week program with 3 phases targeting fitness test standards
 3. **Equipment-Based Workouts** - Select any combination of equipment (dumbbells, barbell, pull-up bar, resistance bands, cable, machines) and get exercises tailored to what you have available (80+ exercises in database)
 4. **Food Sensitivity Management** - Select allergens (gluten, fish, dairy, soy, nuts, eggs) and get filtered meal plans with safe alternatives
 5. **Daily Routine** - Shows 7-day week with detailed equipment-filtered cardio and strength workouts + filtered meal plans
