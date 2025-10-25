@@ -1,11 +1,16 @@
 import React from 'react';
 
-export default function Dashboard({ plan, setWeek, currentWeek, onEditProfile }) {
+export default function Dashboard({ plan, setWeek, currentWeek, currentUser, onEditProfile, onLogout }) {
   return (
     <div className="bg-primary text-white py-8 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold">Your 12-Week Journey</h1>
+          <div>
+            <h1 className="text-3xl font-bold">Your 12-Week Journey</h1>
+            {currentUser && (
+              <p className="text-sm opacity-80 mt-1">Welcome back, {currentUser}!</p>
+            )}
+          </div>
           <div className="flex gap-3">
             <button
               onClick={onEditProfile}
@@ -15,6 +20,15 @@ export default function Dashboard({ plan, setWeek, currentWeek, onEditProfile })
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
               Edit Profile
+            </button>
+            <button
+              onClick={onLogout}
+              className="bg-white text-primary px-4 py-2 rounded-md hover:bg-gray-100 transition-colors text-sm font-medium flex items-center gap-2"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              Logout
             </button>
           </div>
         </div>
