@@ -15,8 +15,9 @@ export async function registerBiometric(username) {
     const publicKeyCredentialCreationOptions = {
       challenge: challenge,
       rp: {
-        name: 'Personal Performance Dashboard',
-        id: window.location.hostname
+        name: 'Personal Performance Dashboard'
+        // Note: 'id' is omitted to use the current origin by default
+        // This improves compatibility across different hosting environments
       },
       user: {
         id: new TextEncoder().encode(username),

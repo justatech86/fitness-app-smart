@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { registerBiometric } from '../utils/biometricAuth';
 
 export default function AuthPage({ onLogin }) {
   const [isSignup, setIsSignup] = useState(false);
@@ -16,6 +17,8 @@ export default function AuthPage({ onLogin }) {
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [resetError, setResetError] = useState('');
   const [resetSuccess, setResetSuccess] = useState(false);
+  const [showBiometricSetup, setShowBiometricSetup] = useState(false);
+  const [biometricUsername, setBiometricUsername] = useState('');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -55,9 +58,16 @@ export default function AuthPage({ onLogin }) {
         createdAt: new Date().toISOString()
       };
       localStorage.setItem('fitnessUsers', JSON.stringify(users));
+      localStorage.setItem('lastLoggedInUser', formData.username);
       
-      // Log in the user
-      onLogin(formData.username);
+      // Offer biometric setup after successful signup
+      if (window.PublicKeyCredential) {
+        setBiometricUsername(formData.username);
+        setShowBiometricSetup(true);
+      } else {
+        // If biometric not supported, just log in
+        onLogin(formData.username);
+      }
     } else {
       // Login
       const users = JSON.parse(localStorage.getItem('fitnessUsers') || '{}');
@@ -68,7 +78,16 @@ export default function AuthPage({ onLogin }) {
         return;
       }
       
-      onLogin(formData.username);
+      localStorage.setItem('lastLoggedInUser', formData.username);
+      
+      // Check if biometric is already set up, if not offer to set it up
+      const hasBiometric = localStorage.getItem(`biometric_${formData.username}`);
+      if (!hasBiometric && window.PublicKeyCredential) {
+        setBiometricUsername(formData.username);
+        setShowBiometricSetup(true);
+      } else {
+        onLogin(formData.username);
+      }
     }
   };
 
@@ -391,6 +410,82 @@ export default function AuthPage({ onLogin }) {
                 </form>
               </>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Biometric Setup Modal */}
+      {showBiometricSetup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg p-8 max-w-md w-full">
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-accent bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-primary mb-2">Set Up Biometric Login</h2>
+              <p className="text-gray-600 text-sm">
+                Would you like to enable fingerprint or face recognition for faster, more secure login?
+              </p>
+            </div>
+
+            <div className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-6">
+              <h3 className="font-semibold text-blue-900 text-sm mb-2">Benefits:</h3>
+              <ul className="text-blue-800 text-sm space-y-1">
+                <li className="flex items-start gap-2">
+                  <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Quick login with your fingerprint or face
+                </li>
+                <li className="flex items-start gap-2">
+                  <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  More secure than passwords alone
+                </li>
+                <li className="flex items-start gap-2">
+                  <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  You can always use your password instead
+                </li>
+              </ul>
+            </div>
+
+            <div className="space-y-3">
+              <button
+                onClick={async () => {
+                  try {
+                    await registerBiometric(biometricUsername);
+                    setShowBiometricSetup(false);
+                    onLogin(biometricUsername);
+                  } catch (err) {
+                    console.error('Failed to set up biometric:', err);
+                    // If setup fails, just proceed with normal login
+                    setShowBiometricSetup(false);
+                    onLogin(biometricUsername);
+                  }
+                }}
+                className="w-full bg-primary text-white py-3 rounded-md hover:bg-opacity-90 transition-colors font-semibold"
+              >
+                Set Up Now
+              </button>
+              <button
+                onClick={() => {
+                  setShowBiometricSetup(false);
+                  onLogin(biometricUsername);
+                }}
+                className="w-full bg-gray-200 text-gray-700 py-3 rounded-md hover:bg-gray-300 transition-colors font-semibold"
+              >
+                Skip for Now
+              </button>
+            </div>
+
+            <p className="text-xs text-gray-500 text-center mt-4">
+              You can enable this later in your account settings
+            </p>
           </div>
         </div>
       )}
