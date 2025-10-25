@@ -1,14 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function DailyRoutine({ weekData, initialDayIndex, weekIndex, onToggleExercise }) {
   const [selectedDay, setSelectedDay] = useState(initialDayIndex || 0);
   const [showMealModal, setShowMealModal] = useState(false);
   const [selectedMeal, setSelectedMeal] = useState(null);
+  const [showCelebration, setShowCelebration] = useState(false);
 
   if (!weekData || !weekData.days) return null;
 
   const currentDay = weekData.days[selectedDay];
   const completedExercises = currentDay.completedExercises || { cardio: [], strength: [] };
+
+  // Check if all exercises are completed
+  const checkAllCompleted = () => {
+    if (currentDay.isRestDay) return false;
+    
+    const totalCardio = currentDay.workout?.cardio?.length || 0;
+    const totalStrength = currentDay.workout?.strength?.length || 0;
+    const completedCardio = completedExercises.cardio?.filter(Boolean).length || 0;
+    const completedStrength = completedExercises.strength?.filter(Boolean).length || 0;
+    
+    return (totalCardio + totalStrength > 0) && 
+           (completedCardio === totalCardio) && 
+           (completedStrength === totalStrength);
+  };
+
+  useEffect(() => {
+    if (checkAllCompleted()) {
+      setShowCelebration(true);
+      setTimeout(() => setShowCelebration(false), 4000);
+    }
+  }, [completedExercises]);
 
   const openMealDetail = (meal) => {
     setSelectedMeal(meal);
@@ -16,7 +38,32 @@ export default function DailyRoutine({ weekData, initialDayIndex, weekIndex, onT
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className="max-w-6xl mx-auto px-4 py-8 relative">
+      {/* Celebration Animation */}
+      {showCelebration && (
+        <div className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center">
+          <div className="celebration-container">
+            <div className="celebration-message animate-bounce">
+              <div className="bg-gradient-to-r from-accent to-primary text-white text-4xl font-bold py-8 px-12 rounded-2xl shadow-2xl">
+                🎉 Day Complete! 🎉
+              </div>
+            </div>
+            {/* Confetti */}
+            {[...Array(50)].map((_, i) => (
+              <div
+                key={i}
+                className="confetti"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 0.5}s`,
+                  backgroundColor: ['#8B6F47', '#7A8450', '#D4AF37', '#FF6B6B', '#4ECDC4'][Math.floor(Math.random() * 5)]
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
       <h2 className="text-2xl font-bold text-primary mb-6">Daily Routine - Week {weekData.weekNumber}</h2>
 
       <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
