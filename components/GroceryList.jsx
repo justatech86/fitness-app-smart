@@ -10,11 +10,13 @@ export default function GroceryList({ week }) {
     const allIngredients = new Set();
     
     week.days.forEach(day => {
-      Object.values(day.meals).forEach(meal => {
-        meal.ingredients.forEach(ingredient => {
-          allIngredients.add(ingredient);
+      if (day.meals && !day.isRestDay) {
+        Object.values(day.meals).forEach(meal => {
+          meal.ingredients.forEach(ingredient => {
+            allIngredients.add(ingredient);
+          });
         });
-      });
+      }
     });
 
     const groceryItems = Array.from(allIngredients).map((item, index) => ({
