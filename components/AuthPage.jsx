@@ -4,11 +4,18 @@ export default function AuthPage({ onLogin }) {
   const [isSignup, setIsSignup] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
+    email: '',
     password: '',
     confirmPassword: ''
   });
   const [error, setError] = useState('');
   const [useBiometric, setUseBiometric] = useState(false);
+  const [showPasswordReset, setShowPasswordReset] = useState(false);
+  const [resetUsername, setResetUsername] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [resetError, setResetError] = useState('');
+  const [resetSuccess, setResetSuccess] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -43,6 +50,7 @@ export default function AuthPage({ onLogin }) {
 
       // Create new user
       users[formData.username] = {
+        email: formData.email || '',
         password: formData.password, // In production, this should be hashed
         createdAt: new Date().toISOString()
       };
@@ -62,6 +70,51 @@ export default function AuthPage({ onLogin }) {
       
       onLogin(formData.username);
     }
+  };
+
+  const handlePasswordReset = (e) => {
+    e.preventDefault();
+    setResetError('');
+    
+    if (!resetUsername) {
+      setResetError('Please enter your username');
+      return;
+    }
+    
+    if (!newPassword || !confirmNewPassword) {
+      setResetError('Please enter and confirm your new password');
+      return;
+    }
+    
+    if (newPassword !== confirmNewPassword) {
+      setResetError('Passwords do not match');
+      return;
+    }
+    
+    if (newPassword.length < 6) {
+      setResetError('Password must be at least 6 characters');
+      return;
+    }
+    
+    // Check if user exists
+    const users = JSON.parse(localStorage.getItem('fitnessUsers') || '{}');
+    if (!users[resetUsername]) {
+      setResetError('Username not found');
+      return;
+    }
+    
+    // Update password
+    users[resetUsername].password = newPassword;
+    localStorage.setItem('fitnessUsers', JSON.stringify(users));
+    
+    setResetSuccess(true);
+    setTimeout(() => {
+      setShowPasswordReset(false);
+      setResetSuccess(false);
+      setResetUsername('');
+      setNewPassword('');
+      setConfirmNewPassword('');
+    }, 2000);
   };
 
   const handleBiometricLogin = async () => {
@@ -144,6 +197,22 @@ export default function AuthPage({ onLogin }) {
             />
           </div>
 
+          {isSignup && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Email (optional)
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
+                placeholder="Enter your email"
+              />
+            </div>
+          )}
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Password
@@ -156,6 +225,17 @@ export default function AuthPage({ onLogin }) {
               className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
               placeholder="Enter your password"
             />
+            {!isSignup && (
+              <div className="mt-1 text-right">
+                <button
+                  type="button"
+                  onClick={() => setShowPasswordReset(true)}
+                  className="text-sm text-primary hover:text-opacity-80 transition-colors"
+                >
+                  Forgot Password?
+                </button>
+              </div>
+            )}
           </div>
 
           {isSignup && (
@@ -212,7 +292,7 @@ export default function AuthPage({ onLogin }) {
             onClick={() => {
               setIsSignup(!isSignup);
               setError('');
-              setFormData({ username: '', password: '', confirmPassword: '' });
+              setFormData({ username: '', email: '', password: '', confirmPassword: '' });
             }}
             className="text-primary hover:underline text-sm"
           >
@@ -220,6 +300,99 @@ export default function AuthPage({ onLogin }) {
           </button>
         </div>
       </div>
+
+      {/* Password Reset Modal */}
+      {showPasswordReset && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg p-8 max-w-md w-full">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold text-primary">Reset Password</h2>
+              <button
+                onClick={() => {
+                  setShowPasswordReset(false);
+                  setResetError('');
+                  setResetUsername('');
+                  setNewPassword('');
+                  setConfirmNewPassword('');
+                }}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {resetSuccess ? (
+              <div className="text-center py-8">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Password Reset Successful!</h3>
+                <p className="text-gray-600">You can now login with your new password.</p>
+              </div>
+            ) : (
+              <>
+                {resetError && (
+                  <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-md text-sm">
+                    {resetError}
+                  </div>
+                )}
+
+                <form onSubmit={handlePasswordReset} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Username
+                    </label>
+                    <input
+                      type="text"
+                      value={resetUsername}
+                      onChange={(e) => setResetUsername(e.target.value)}
+                      className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
+                      placeholder="Enter your username"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      New Password
+                    </label>
+                    <input
+                      type="password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
+                      placeholder="Enter new password"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Confirm New Password
+                    </label>
+                    <input
+                      type="password"
+                      value={confirmNewPassword}
+                      onChange={(e) => setConfirmNewPassword(e.target.value)}
+                      className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
+                      placeholder="Confirm new password"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full bg-primary text-white py-3 rounded-md hover:bg-opacity-90 transition-colors font-semibold"
+                  >
+                    Reset Password
+                  </button>
+                </form>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -566,10 +566,56 @@ export default function Profile({ currentUser, profile, onBack }) {
               </div>
 
               {/* Account Info */}
-              <div className="border-t border-gray-200 pt-6">
-                <p className="text-sm text-gray-500">
-                  <strong>Account:</strong> @{currentUser}
-                </p>
+              <div className="border border-gray-200 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Account Information</h3>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    <div>
+                      <p className="text-xs text-gray-500 uppercase tracking-wide">Username</p>
+                      <p className="text-sm font-medium text-gray-900">@{currentUser}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <div>
+                      <p className="text-xs text-gray-500 uppercase tracking-wide">Email</p>
+                      <p className="text-sm font-medium text-gray-900">
+                        {(() => {
+                          const users = JSON.parse(localStorage.getItem('fitnessUsers') || '{}');
+                          const userData = users[currentUser];
+                          return userData?.email || 'Not provided';
+                        })()}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <div>
+                      <p className="text-xs text-gray-500 uppercase tracking-wide">Member Since</p>
+                      <p className="text-sm font-medium text-gray-900">
+                        {(() => {
+                          const users = JSON.parse(localStorage.getItem('fitnessUsers') || '{}');
+                          const userData = users[currentUser];
+                          if (userData?.createdAt) {
+                            return new Date(userData.createdAt).toLocaleDateString('en-US', { 
+                              month: 'short', 
+                              day: 'numeric', 
+                              year: 'numeric' 
+                            });
+                          }
+                          return 'Unknown';
+                        })()}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
