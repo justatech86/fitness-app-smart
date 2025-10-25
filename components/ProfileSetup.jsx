@@ -11,6 +11,7 @@ export default function ProfileSetup({ onSubmit, existingProfile }) {
     difficulty: 'beginner',
     restDays: [6],
     planType: 'algorithmic',
+    dietType: 'standard',
     foodSensitivities: [],
     equipment: []
   });
@@ -269,6 +270,35 @@ export default function ProfileSetup({ onSubmit, existingProfile }) {
             )}
             <p className="text-xs text-gray-500 mt-1">
               Bodyweight exercises are always included.
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Dietary Plan</label>
+            <select
+              name="dietType"
+              value={formData.dietType}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
+            >
+              <option value="standard">Standard (Balanced)</option>
+              <option value="keto">Keto (Low Carb, High Fat)</option>
+              <option value="paleo">Paleo (Whole Foods, No Grains)</option>
+              <option value="atkins">Atkins (Very Low Carb)</option>
+              <option value="carnivore">Carnivore (Meat Only)</option>
+              <option value="vegetarian">Vegetarian (No Meat)</option>
+              <option value="vegan">Vegan (Plant-Based)</option>
+              <option value="mediterranean">Mediterranean (Heart-Healthy)</option>
+            </select>
+            <p className="text-xs text-gray-500 mt-1">
+              {formData.dietType === 'standard' && 'Balanced macros with all food groups'}
+              {formData.dietType === 'keto' && 'Very low carb (5-10%), high fat (70-75%), moderate protein'}
+              {formData.dietType === 'paleo' && 'Whole foods, no grains, legumes, or dairy'}
+              {formData.dietType === 'atkins' && 'Very low carb, higher protein than keto'}
+              {formData.dietType === 'carnivore' && 'Animal products only, zero carbs'}
+              {formData.dietType === 'vegetarian' && 'No meat, fish, or poultry'}
+              {formData.dietType === 'vegan' && 'No animal products whatsoever'}
+              {formData.dietType === 'mediterranean' && 'Fish, olive oil, whole grains, vegetables'}
             </p>
           </div>
 

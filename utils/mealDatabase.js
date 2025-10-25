@@ -493,8 +493,23 @@ export function filterMealsByAllergies(meals, sensitivities) {
   });
 }
 
-export function getMealsByGoalAndType(goal, mealType, sensitivities = []) {
+// Helper function to filter meals by diet type
+export function filterMealsByDiet(meals, dietType) {
+  if (!dietType || dietType === 'standard') return meals;
+  
+  // Import diet compliance function
+  const { isMealDietCompliant } = require('./dietRules.js');
+  
+  return meals.filter(meal => isMealDietCompliant(meal, dietType));
+}
+
+export function getMealsByGoalAndType(goal, mealType, sensitivities = [], dietType = 'standard') {
   const goalMeals = mealDatabase[goal] || mealDatabase.maintenance;
-  const typedMeals = goalMeals.filter(m => m.type === mealType);
+  let typedMeals = goalMeals.filter(m => m.type === mealType);
+  
+  // Filter by diet restrictions first
+  typedMeals = filterMealsByDiet(typedMeals, dietType);
+  
+  // Then filter by allergies/sensitivities
   return filterMealsByAllergies(typedMeals, sensitivities);
 }

@@ -1,4 +1,5 @@
 // Algorithmic nutrition and macro calculator based on user profile
+import { getDietMacros } from './dietRules.js';
 
 function calculateBMR(gender, age, heightCm, weightKg) {
   // Mifflin-St Jeor Equation - most accurate for modern populations
@@ -24,7 +25,7 @@ function calculateTDEE(bmr, activityMultiplier) {
 }
 
 export function calculateMacros(profile) {
-  const { gender, age, height, weight, goal, planType } = profile;
+  const { gender, age, height, weight, goal, planType, dietType = 'standard' } = profile;
   
   // Calculate BMR and TDEE
   const bmr = calculateBMR(gender, age, height, weight);
@@ -33,36 +34,30 @@ export function calculateMacros(profile) {
   
   let calories, proteinPercent, carbsPercent, fatPercent;
   
-  // Adjust calories and macro split based on goal
+  // Adjust calories based on goal
   switch(goal) {
     case 'weight_loss':
       // 500 calorie deficit for ~1 lb/week loss
       calories = Math.round(tdee - 500);
-      // Higher protein to preserve muscle, moderate carbs, lower fat
-      proteinPercent = 0.35;
-      carbsPercent = 0.40;
-      fatPercent = 0.25;
       break;
       
     case 'muscle_gain':
       // 300-500 calorie surplus for lean muscle gain
       calories = Math.round(tdee + 400);
-      // High protein for muscle building, high carbs for energy, moderate fat
-      proteinPercent = 0.30;
-      carbsPercent = 0.45;
-      fatPercent = 0.25;
       break;
       
     case 'maintenance':
     default:
       // Maintain current weight
       calories = tdee;
-      // Balanced macro split
-      proteinPercent = 0.30;
-      carbsPercent = 0.40;
-      fatPercent = 0.30;
       break;
   }
+  
+  // Get macro split based on diet type and goal
+  const macroRatios = getDietMacros(dietType, goal);
+  proteinPercent = macroRatios.protein;
+  carbsPercent = macroRatios.carbs;
+  fatPercent = macroRatios.fat;
   
   // Calculate grams of each macro
   // Protein: 4 calories per gram
@@ -124,7 +119,7 @@ export function adjustMealToMacros(meal, targetMacros) {
 
 export function generateMacroSummary(profile) {
   const macros = calculateMacros(profile);
-  const { goal, planType } = profile;
+  const { goal, planType, dietType = 'standard' } = profile;
   
   let goalDescription = '';
   switch(goal) {
@@ -143,10 +138,22 @@ export function generateMacroSummary(profile) {
     ? 'PFT Training (Very Active)'
     : 'Algorithmic Training (Moderately Active)';
   
+  const dietNames = {
+    standard: 'Standard (Balanced)',
+    keto: 'Keto',
+    paleo: 'Paleo',
+    atkins: 'Atkins',
+    carnivore: 'Carnivore',
+    vegetarian: 'Vegetarian',
+    vegan: 'Vegan',
+    mediterranean: 'Mediterranean'
+  };
+  
   return {
     ...macros,
     goalDescription,
     planDescription,
+    dietDescription: dietNames[dietType] || 'Standard',
     macroSplit: {
       protein: Math.round((macros.dailyProtein * 4 / macros.dailyCalories) * 100),
       carbs: Math.round((macros.dailyCarbs * 4 / macros.dailyCalories) * 100),
