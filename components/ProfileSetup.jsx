@@ -1,20 +1,46 @@
 import React, { useState, useRef, useEffect } from 'react';
 
 export default function ProfileSetup({ onSubmit, existingProfile }) {
-  const [formData, setFormData] = useState(existingProfile || {
-    gender: 'male',
-    age: '',
-    heightFeet: '',
-    heightInches: '',
-    weight: '',
-    goal: 'weight_loss',
-    difficulty: 'beginner',
-    restDays: [6],
-    planType: 'algorithmic',
-    dietType: 'standard',
-    foodSensitivities: [],
-    equipment: []
-  });
+  const getInitialFormData = () => {
+    if (!existingProfile) {
+      return {
+        gender: 'male',
+        age: '',
+        heightFeet: '',
+        heightInches: '',
+        weight: '',
+        goal: 'weight_loss',
+        difficulty: 'beginner',
+        restDays: [6],
+        planType: 'algorithmic',
+        dietType: 'standard',
+        foodSensitivities: [],
+        equipment: []
+      };
+    }
+    
+    // Convert metric values back to imperial for display
+    const weightInLbs = existingProfile.weight 
+      ? Math.round(existingProfile.weight / 0.453592) 
+      : '';
+    
+    let heightFeet = '';
+    let heightInches = '';
+    if (existingProfile.height) {
+      const totalInches = existingProfile.height / 2.54;
+      heightFeet = Math.floor(totalInches / 12);
+      heightInches = Math.round(totalInches % 12);
+    }
+    
+    return {
+      ...existingProfile,
+      weight: weightInLbs,
+      heightFeet,
+      heightInches
+    };
+  };
+  
+  const [formData, setFormData] = useState(getInitialFormData());
   
   const [showSensitivitiesDropdown, setShowSensitivitiesDropdown] = useState(false);
   const [showEquipmentDropdown, setShowEquipmentDropdown] = useState(false);
