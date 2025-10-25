@@ -7,6 +7,10 @@ export default {
         accent: "#7A8450",        // Olive green
         neutralBg: "#F5F1E8",     // Warm sand/beige
       },
+      fontFamily: {
+        sans: ['Lato', 'sans-serif'],
+        heading: ['Poppins', 'sans-serif'],
+      },
     },
   },
   plugins: [],

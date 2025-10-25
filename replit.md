@@ -129,10 +129,15 @@ A personalized 12-week fitness training application built with React, Vite, and 
 10. **Rest/Cheat Day** - User-customizable rest day (any day of the week)
 11. **LocalStorage Persistence** - Saves user profile, plan progress, and exercise completion state
 
-### Color Scheme
+### Design System
+**Color Palette (Earth Tones):**
 - **Primary:** #8B6F47 (Warm Caramel Brown)
 - **Accent:** #7A8450 (Olive Green)
 - **Background:** #F5F1E8 (Warm Sand/Beige)
+
+**Typography (Modern Sans-Serif Pairing):**
+- **Headings:** Poppins - Soft geometric sans-serif for a friendly, clean tone
+- **Body Text:** Lato - Simple and readable, warm neutrality for paragraphs and UI text
 
 ## Development
 
