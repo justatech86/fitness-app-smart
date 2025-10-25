@@ -170,7 +170,7 @@ export default function AuthPage({ onLogin }) {
     <div className="min-h-screen bg-neutralBg flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-primary mb-2">12-Week Fitness Plan</h1>
+          <h1 className="text-3xl font-bold text-primary mb-2">Personal Performance Dashboard</h1>
           <p className="text-gray-600">
             {isSignup ? 'Create your account' : 'Welcome back'}
           </p>

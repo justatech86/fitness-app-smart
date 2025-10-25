@@ -1,4 +1,4 @@
-# 12-Week Fitness App
+# Personal Performance Dashboard
 
 ## Overview
 A personalized 12-week fitness training application built with React, Vite, and Tailwind CSS. This app offers two training plan options: an algorithmic system that dynamically generates workouts based on your unique profile, or the structured PFT (Physical Fitness Test) program. Both plans include personalized nutrition tailored to your goals. The application supports multi-user authentication with optional biometric login, profile management including photo uploads and progress tracking, and comprehensive customization for equipment, rest days, and food sensitivities. The project aims to provide a fully personalized and adaptable fitness journey.

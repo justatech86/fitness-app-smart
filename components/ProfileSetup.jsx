@@ -116,7 +116,7 @@ export default function ProfileSetup({ onSubmit, existingProfile }) {
   return (
     <div className="min-h-screen bg-neutralBg flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
-        <h1 className="text-3xl font-bold text-primary mb-2">12-Week Fitness Plan</h1>
+        <h1 className="text-3xl font-bold text-primary mb-2">Personal Performance Dashboard</h1>
         <p className="text-gray-600 mb-6">Let's create your personalized training program</p>
         
         <form onSubmit={handleSubmit} className="space-y-4">

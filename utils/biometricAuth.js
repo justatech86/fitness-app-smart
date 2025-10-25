@@ -15,7 +15,7 @@ export async function registerBiometric(username) {
     const publicKeyCredentialCreationOptions = {
       challenge: challenge,
       rp: {
-        name: '12-Week Fitness Plan',
+        name: 'Personal Performance Dashboard',
         id: window.location.hostname
       },
       user: {
