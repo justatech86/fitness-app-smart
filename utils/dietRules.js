@@ -65,7 +65,7 @@ export const dietRestrictions = {
     description: 'Very low carb, higher protein'
   },
   carnivore: {
-    excludeIngredients: ['rice', 'pasta', 'bread', 'oats', 'quinoa', 'beans', 'lentils', 'chickpeas', 'potato', 'sweet potato', 'vegetables', 'fruit', 'berries', 'banana', 'apple', 'spinach', 'broccoli', 'tomato', 'lettuce', 'kale', 'asparagus', 'pepper', 'onion', 'cucumber', 'carrots', 'nuts', 'seeds', 'honey', 'sugar'],
+    excludeIngredients: ['rice', 'pasta', 'bread', 'oats', 'quinoa', 'beans', 'lentils', 'chickpeas', 'potato', 'sweet potato', 'vegetables', 'fruit', 'berries', 'banana', 'apple', 'spinach', 'broccoli', 'tomato', 'lettuce', 'kale', 'asparagus', 'onion', 'cucumber', 'carrots', 'nuts', 'seeds', 'honey', 'sugar'],
     excludeAllergens: [],
     description: 'Animal products only'
   },

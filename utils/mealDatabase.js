@@ -16,6 +16,30 @@ export const mealDatabase = {
       allergens: ["dairy"]
     },
     {
+      name: "Keto Bacon & Eggs",
+      type: "breakfast",
+      calories: 280,
+      protein: 20,
+      carbs: 2,
+      fat: 22,
+      prepTime: "10 min",
+      ingredients: ["Bacon (3 strips)", "Eggs (2)", "Butter (1 tbsp)", "Salt", "Pepper"],
+      instructions: "Fry bacon until crispy. Cook eggs in bacon fat or butter.",
+      allergens: ["eggs"]
+    },
+    {
+      name: "Carnivore Steak & Eggs",
+      type: "breakfast",
+      calories: 280,
+      protein: 25,
+      carbs: 0,
+      fat: 20,
+      prepTime: "15 min",
+      ingredients: ["Ribeye steak (4 oz)", "Eggs (2)", "Butter (1 tbsp)", "Salt"],
+      instructions: "Pan-sear steak in butter. Fry eggs to your liking.",
+      allergens: ["eggs"]
+    },
+    {
       name: "Oatmeal with Fruit",
       type: "breakfast",
       calories: 280,
@@ -63,6 +87,30 @@ export const mealDatabase = {
       prepTime: "15 min",
       ingredients: ["Chicken breast (6 oz)", "Mixed greens (2 cups)", "Cherry tomatoes", "Cucumber", "Olive oil dressing (1 tbsp)"],
       instructions: "Grill chicken, slice it, and serve over mixed greens with vegetables and dressing.",
+      allergens: []
+    },
+    {
+      name: "Keto Beef Bowl",
+      type: "lunch",
+      calories: 350,
+      protein: 35,
+      carbs: 5,
+      fat: 25,
+      prepTime: "15 min",
+      ingredients: ["Ground beef (6 oz)", "Cheese (2 oz)", "Avocado (1/2)", "Butter (1 tbsp)", "Salt"],
+      instructions: "Cook beef in butter. Top with cheese and sliced avocado.",
+      allergens: ["dairy"]
+    },
+    {
+      name: "Carnivore Burger Patties",
+      type: "lunch",
+      calories: 350,
+      protein: 40,
+      carbs: 0,
+      fat: 20,
+      prepTime: "15 min",
+      ingredients: ["Ground beef (8 oz)", "Butter (1 tbsp)", "Salt"],
+      instructions: "Form beef into patties. Cook in butter until desired doneness. Season with salt.",
       allergens: []
     },
     {
@@ -114,6 +162,30 @@ export const mealDatabase = {
       ingredients: ["Salmon fillet (6 oz)", "Broccoli (1 cup)", "Sweet potato (1 small)", "Lemon", "Olive oil"],
       instructions: "Bake salmon at 400°F for 15 min. Roast vegetables with olive oil and lemon.",
       allergens: ["fish"]
+    },
+    {
+      name: "Keto Pork Chops",
+      type: "dinner",
+      calories: 420,
+      protein: 35,
+      carbs: 3,
+      fat: 30,
+      prepTime: "20 min",
+      ingredients: ["Pork chops (8 oz)", "Butter (2 tbsp)", "Herbs", "Salt", "Pepper"],
+      instructions: "Pan-sear pork chops in butter with herbs until cooked through.",
+      allergens: []
+    },
+    {
+      name: "Carnivore Ribeye Steak",
+      type: "dinner",
+      calories: 420,
+      protein: 40,
+      carbs: 0,
+      fat: 28,
+      prepTime: "15 min",
+      ingredients: ["Ribeye steak (10 oz)", "Butter (1 tbsp)", "Salt"],
+      instructions: "Cook ribeye to medium-rare in butter. Season with salt.",
+      allergens: []
     },
     {
       name: "Chicken & Cauliflower Rice",
@@ -190,6 +262,42 @@ export const mealDatabase = {
       allergens: ["eggs"]
     },
     {
+      name: "Keto Cheese Snack",
+      type: "snack",
+      calories: 180,
+      protein: 14,
+      carbs: 1,
+      fat: 14,
+      prepTime: "2 min",
+      ingredients: ["Cheese (3 oz)", "Pepperoni (1 oz)"],
+      instructions: "Slice cheese and pepperoni. Serve together.",
+      allergens: ["dairy"]
+    },
+    {
+      name: "Carnivore Beef Jerky",
+      type: "snack",
+      calories: 180,
+      protein: 20,
+      carbs: 0,
+      fat: 10,
+      prepTime: "1 min",
+      ingredients: ["Beef jerky (2 oz)"],
+      instructions: "Open package and enjoy.",
+      allergens: []
+    },
+    {
+      name: "Carnivore Pork Rinds",
+      type: "snack",
+      calories: 180,
+      protein: 18,
+      carbs: 0,
+      fat: 12,
+      prepTime: "1 min",
+      ingredients: ["Pork rinds (2 oz)"],
+      instructions: "Open package and enjoy crunchy pork rinds.",
+      allergens: []
+    },
+    {
       name: "Rice Cakes & Avocado",
       type: "snack",
       calories: 180,
@@ -216,6 +324,30 @@ export const mealDatabase = {
       ingredients: ["Eggs (2)", "Protein powder (1 scoop)", "Oats (1/2 cup)", "Banana (1)", "Blueberries"],
       instructions: "Blend all ingredients, cook as pancakes, top with berries.",
       allergens: ["eggs", "gluten"]
+    },
+    {
+      name: "Keto Bacon & Eggs (Bulking)",
+      type: "breakfast",
+      calories: 450,
+      protein: 32,
+      carbs: 3,
+      fat: 35,
+      prepTime: "10 min",
+      ingredients: ["Bacon (5 strips)", "Eggs (4)", "Butter (2 tbsp)", "Cheese (1 oz)", "Salt"],
+      instructions: "Fry bacon. Scramble eggs with cheese in bacon fat and butter.",
+      allergens: ["eggs", "dairy"]
+    },
+    {
+      name: "Carnivore Steak & Eggs (Bulking)",
+      type: "breakfast",
+      calories: 450,
+      protein: 38,
+      carbs: 0,
+      fat: 32,
+      prepTime: "15 min",
+      ingredients: ["Ribeye steak (6 oz)", "Eggs (3)", "Butter (2 tbsp)", "Salt"],
+      instructions: "Pan-sear steak in butter. Fry eggs to your liking.",
+      allergens: ["eggs"]
     },
     {
       name: "Breakfast Burrito",
@@ -268,6 +400,30 @@ export const mealDatabase = {
       allergens: []
     },
     {
+      name: "Keto Beef Bowl (Bulking)",
+      type: "lunch",
+      calories: 550,
+      protein: 48,
+      carbs: 5,
+      fat: 38,
+      prepTime: "15 min",
+      ingredients: ["Ground beef (10 oz)", "Cheese (3 oz)", "Avocado (1 whole)", "Butter (2 tbsp)", "Salt"],
+      instructions: "Cook beef in butter. Top with cheese and sliced avocado.",
+      allergens: ["dairy"]
+    },
+    {
+      name: "Carnivore Burger Patties (Bulking)",
+      type: "lunch",
+      calories: 550,
+      protein: 50,
+      carbs: 0,
+      fat: 38,
+      prepTime: "15 min",
+      ingredients: ["Ground beef (12 oz)", "Butter (2 tbsp)", "Salt"],
+      instructions: "Form beef into large patties. Cook in butter until desired doneness. Season with salt.",
+      allergens: []
+    },
+    {
       name: "Salmon Power Bowl",
       type: "lunch",
       calories: 550,
@@ -316,6 +472,30 @@ export const mealDatabase = {
       ingredients: ["Sirloin steak (8 oz)", "Sweet potato (1 large)", "Asparagus (1 cup)", "Butter (1 tbsp)"],
       instructions: "Grill steak to desired doneness. Bake sweet potato, sauté asparagus.",
       allergens: ["dairy"]
+    },
+    {
+      name: "Keto Pork Chops (Bulking)",
+      type: "dinner",
+      calories: 620,
+      protein: 48,
+      carbs: 3,
+      fat: 48,
+      prepTime: "20 min",
+      ingredients: ["Pork chops (12 oz)", "Butter (3 tbsp)", "Herbs", "Salt", "Pepper"],
+      instructions: "Pan-sear large pork chops in butter with herbs until cooked through.",
+      allergens: []
+    },
+    {
+      name: "Carnivore Ribeye Steak (Bulking)",
+      type: "dinner",
+      calories: 620,
+      protein: 52,
+      carbs: 0,
+      fat: 45,
+      prepTime: "15 min",
+      ingredients: ["Ribeye steak (14 oz)", "Butter (2 tbsp)", "Salt"],
+      instructions: "Cook large ribeye to medium-rare in butter. Season with salt.",
+      allergens: []
     },
     {
       name: "Chicken & Rice with Vegetables",
@@ -420,6 +600,30 @@ export const mealDatabase = {
       allergens: ["eggs", "nuts"]
     },
     {
+      name: "Keto Bacon & Eggs (Maintenance)",
+      type: "breakfast",
+      calories: 380,
+      protein: 28,
+      carbs: 2,
+      fat: 30,
+      prepTime: "10 min",
+      ingredients: ["Bacon (4 strips)", "Eggs (3)", "Butter (1.5 tbsp)", "Salt", "Pepper"],
+      instructions: "Fry bacon until crispy. Cook eggs in bacon fat or butter.",
+      allergens: ["eggs"]
+    },
+    {
+      name: "Carnivore Steak & Eggs (Maintenance)",
+      type: "breakfast",
+      calories: 380,
+      protein: 32,
+      carbs: 0,
+      fat: 28,
+      prepTime: "15 min",
+      ingredients: ["Sirloin steak (5 oz)", "Eggs (2)", "Butter (1.5 tbsp)", "Salt"],
+      instructions: "Pan-sear steak in butter. Fry eggs to your liking.",
+      allergens: ["eggs"]
+    },
+    {
       name: "Avocado Toast with Egg",
       type: "breakfast",
       calories: 380,
@@ -456,6 +660,30 @@ export const mealDatabase = {
       allergens: ["gluten"]
     },
     {
+      name: "Keto Beef Bowl (Maintenance)",
+      type: "lunch",
+      calories: 450,
+      protein: 38,
+      carbs: 4,
+      fat: 32,
+      prepTime: "15 min",
+      ingredients: ["Ground beef (8 oz)", "Cheese (2 oz)", "Avocado (1/2)", "Butter (1.5 tbsp)", "Salt"],
+      instructions: "Cook beef in butter. Top with cheese and sliced avocado.",
+      allergens: ["dairy"]
+    },
+    {
+      name: "Carnivore Burger Patties (Maintenance)",
+      type: "lunch",
+      calories: 450,
+      protein: 42,
+      carbs: 0,
+      fat: 32,
+      prepTime: "15 min",
+      ingredients: ["Ground beef (10 oz)", "Butter (1.5 tbsp)", "Salt"],
+      instructions: "Form beef into patties. Cook in butter until desired doneness. Season with salt.",
+      allergens: []
+    },
+    {
       name: "Shrimp Stir-fry",
       type: "dinner",
       calories: 480,
@@ -466,6 +694,30 @@ export const mealDatabase = {
       ingredients: ["Shrimp (8 oz)", "Brown rice (1 cup cooked)", "Mixed vegetables", "Soy sauce", "Ginger"],
       instructions: "Stir-fry shrimp and vegetables with ginger and soy sauce. Serve over rice.",
       allergens: ["fish", "soy"]
+    },
+    {
+      name: "Keto Pork Chops (Maintenance)",
+      type: "dinner",
+      calories: 480,
+      protein: 40,
+      carbs: 3,
+      fat: 36,
+      prepTime: "20 min",
+      ingredients: ["Pork chops (10 oz)", "Butter (2.5 tbsp)", "Herbs", "Salt", "Pepper"],
+      instructions: "Pan-sear pork chops in butter with herbs until cooked through.",
+      allergens: []
+    },
+    {
+      name: "Carnivore Ribeye Steak (Maintenance)",
+      type: "dinner",
+      calories: 480,
+      protein: 45,
+      carbs: 0,
+      fat: 32,
+      prepTime: "15 min",
+      ingredients: ["Ribeye steak (12 oz)", "Butter (2 tbsp)", "Salt"],
+      instructions: "Cook ribeye to medium-rare in butter. Season with salt.",
+      allergens: []
     },
     {
       name: "Trail Mix",
