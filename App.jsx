@@ -104,11 +104,14 @@ export default function App() {
   };
 
   const handleLogout = () => {
+    // Clear current session
     setCurrentUser(null);
     setProfile(null);
     setPlan([]);
     setShowProfileSetup(false);
     localStorage.removeItem('currentUser');
+    // Note: We keep lastLoggedInUser for biometric login convenience on personal devices
+    // Users can clear browser data if sharing devices
   };
 
   // Show auth page if no user is logged in

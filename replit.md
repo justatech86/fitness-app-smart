@@ -7,6 +7,17 @@ A personalized 12-week fitness training application built with React, Vite, and 
 
 ## Recent Changes (October 25, 2025)
 
+### User Authentication with Biometric Login (October 25, 2025)
+- **Multi-user support** with username/password authentication
+- **Biometric login** using WebAuthn API (fingerprint, face recognition) after first password login
+- Each user has isolated profile and fitness plan data
+- Login/signup page with validation (username uniqueness, password strength)
+- Optional biometric enrollment after first login for quick access
+- User display and logout functionality in dashboard
+- Profiles automatically saved per user with localStorage
+- Created `components/AuthPage.jsx` for authentication UI
+- Created `utils/biometricAuth.js` for WebAuthn biometric utilities
+
 ### Custom Multi-Select Dropdowns (October 25, 2025)
 - **Unified dropdown UI** for all multi-select fields (Equipment, Food Sensitivities, Rest Days)
 - Custom dropdown components that look like standard selects but allow multiple selections
