@@ -1,29 +1,4 @@
-const workoutsByDifficulty = {
-  beginner: [
-    { name: "Warm-up Walk", duration: "10 min", type: "cardio" },
-    { name: "Bodyweight Squats", sets: "3x10", type: "strength" },
-    { name: "Push-ups (modified)", sets: "3x8", type: "strength" },
-    { name: "Plank", duration: "3x20s", type: "core" },
-    { name: "Stretching", duration: "5 min", type: "flexibility" }
-  ],
-  intermediate: [
-    { name: "Jump Rope", duration: "10 min", type: "cardio" },
-    { name: "Goblet Squats", sets: "4x12", type: "strength" },
-    { name: "Push-ups", sets: "4x12", type: "strength" },
-    { name: "Dumbbell Rows", sets: "3x10", type: "strength" },
-    { name: "Plank", duration: "3x45s", type: "core" },
-    { name: "Russian Twists", sets: "3x20", type: "core" }
-  ],
-  advanced: [
-    { name: "HIIT Sprint Intervals", duration: "15 min", type: "cardio" },
-    { name: "Barbell Squats", sets: "5x8", type: "strength" },
-    { name: "Bench Press", sets: "5x8", type: "strength" },
-    { name: "Pull-ups", sets: "4x10", type: "strength" },
-    { name: "Deadlifts", sets: "4x6", type: "strength" },
-    { name: "Ab Wheel Rollouts", sets: "3x12", type: "core" },
-    { name: "Hanging Leg Raises", sets: "3x10", type: "core" }
-  ]
-};
+import { getWorkoutForDay } from './fbiPlanData.js';
 
 const mealsByGoal = {
   weight_loss: [
@@ -176,8 +151,7 @@ function shuffleArray(array) {
 }
 
 export function generate12WeekPlan(profile) {
-  const { goal, difficulty, cheatDay } = profile;
-  const workouts = workoutsByDifficulty[difficulty] || workoutsByDifficulty.beginner;
+  const { goal, cheatDay } = profile;
   const meals = mealsByGoal[goal] || mealsByGoal.maintenance;
   const restDayIndex = parseInt(cheatDay) || 6;
 
@@ -189,13 +163,15 @@ export function generate12WeekPlan(profile) {
       days: []
     };
 
-    const weekWorkouts = shuffleArray(workouts);
     const weekMeals = shuffleArray(meals);
+    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    
+    // Map 6 training days to the week, skipping the rest day
+    let trainingDayCounter = 1;
 
     for (let day = 0; day < 7; day++) {
-      const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-      
       if (day === restDayIndex) {
+        // Rest/Cheat Day
         weekData.days.push({
           dayName: dayNames[day],
           isRestDay: true,
@@ -204,10 +180,17 @@ export function generate12WeekPlan(profile) {
           completed: false
         });
       } else {
+        // Training Day - get FBI PFT workout for this training day
+        const fbiWorkout = getWorkoutForDay(week, trainingDayCounter);
+        
         weekData.days.push({
           dayName: dayNames[day],
           isRestDay: false,
-          workout: weekWorkouts[day % weekWorkouts.length],
+          workout: {
+            name: fbiWorkout.name,
+            cardio: fbiWorkout.cardio || [],
+            strength: fbiWorkout.strength || []
+          },
           meals: {
             breakfast: weekMeals.find(m => m.type === 'breakfast'),
             lunch: weekMeals.find(m => m.type === 'lunch'),
@@ -216,6 +199,8 @@ export function generate12WeekPlan(profile) {
           },
           completed: false
         });
+        
+        trainingDayCounter++;
       }
     }
 
