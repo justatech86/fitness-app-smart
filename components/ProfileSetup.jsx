@@ -10,11 +10,21 @@ export default function ProfileSetup({ onSubmit }) {
     goal: 'weight_loss',
     difficulty: 'beginner',
     cheatDay: 6,
-    planType: 'algorithmic'
+    planType: 'algorithmic',
+    foodSensitivities: []
   });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSensitivityToggle = (sensitivity) => {
+    const current = formData.foodSensitivities;
+    if (current.includes(sensitivity)) {
+      setFormData({ ...formData, foodSensitivities: current.filter(s => s !== sensitivity) });
+    } else {
+      setFormData({ ...formData, foodSensitivities: [...current, sensitivity] });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -157,6 +167,26 @@ export default function ProfileSetup({ onSubmit }) {
               <option value="intermediate">Intermediate</option>
               <option value="advanced">Advanced</option>
             </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Food Sensitivities (Optional)</label>
+            <div className="grid grid-cols-2 gap-2">
+              {['gluten', 'fish', 'dairy', 'soy', 'nuts', 'eggs'].map((sensitivity) => (
+                <label key={sensitivity} className="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.foodSensitivities.includes(sensitivity)}
+                    onChange={() => handleSensitivityToggle(sensitivity)}
+                    className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                  />
+                  <span className="text-sm capitalize">{sensitivity}</span>
+                </label>
+              ))}
+            </div>
+            <p className="text-xs text-gray-500 mt-1">
+              Meals will be adjusted to exclude selected ingredients
+            </p>
           </div>
 
           <div>

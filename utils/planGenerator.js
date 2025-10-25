@@ -1,147 +1,7 @@
 import { getWorkoutForDay } from './fbiPlanData.js';
 import { generateAlgorithmicWorkout } from './workoutAlgorithm.js';
 import { calculateMacros, adjustMealToMacros } from './nutritionAlgorithm.js';
-
-const mealsByGoal = {
-  weight_loss: [
-    {
-      name: "Greek Yogurt & Berries",
-      type: "breakfast",
-      calories: 280,
-      protein: 20,
-      carbs: 35,
-      fat: 5,
-      prepTime: "5 min",
-      ingredients: ["Greek yogurt (1 cup)", "Mixed berries (1 cup)", "Honey (1 tsp)"],
-      instructions: "Mix Greek yogurt with fresh berries and drizzle honey on top."
-    },
-    {
-      name: "Grilled Chicken Salad",
-      type: "lunch",
-      calories: 350,
-      protein: 40,
-      carbs: 20,
-      fat: 12,
-      prepTime: "15 min",
-      ingredients: ["Chicken breast (6 oz)", "Mixed greens (2 cups)", "Cherry tomatoes", "Cucumber", "Olive oil dressing (1 tbsp)"],
-      instructions: "Grill chicken, slice it, and serve over mixed greens with vegetables and dressing."
-    },
-    {
-      name: "Baked Salmon & Veggies",
-      type: "dinner",
-      calories: 420,
-      protein: 38,
-      carbs: 25,
-      fat: 18,
-      prepTime: "25 min",
-      ingredients: ["Salmon fillet (6 oz)", "Broccoli (1 cup)", "Sweet potato (1 small)", "Lemon", "Olive oil"],
-      instructions: "Bake salmon at 400°F for 15 min. Roast vegetables with olive oil and lemon."
-    },
-    {
-      name: "Apple & Almond Butter",
-      type: "snack",
-      calories: 180,
-      protein: 5,
-      carbs: 20,
-      fat: 8,
-      prepTime: "2 min",
-      ingredients: ["Apple (1 medium)", "Almond butter (1 tbsp)"],
-      instructions: "Slice apple and serve with almond butter."
-    }
-  ],
-  muscle_gain: [
-    {
-      name: "Protein Pancakes",
-      type: "breakfast",
-      calories: 450,
-      protein: 35,
-      carbs: 50,
-      fat: 12,
-      prepTime: "10 min",
-      ingredients: ["Eggs (2)", "Protein powder (1 scoop)", "Oats (1/2 cup)", "Banana (1)", "Blueberries"],
-      instructions: "Blend all ingredients, cook as pancakes, top with berries."
-    },
-    {
-      name: "Turkey & Quinoa Bowl",
-      type: "lunch",
-      calories: 550,
-      protein: 45,
-      carbs: 55,
-      fat: 15,
-      prepTime: "20 min",
-      ingredients: ["Ground turkey (8 oz)", "Quinoa (1 cup cooked)", "Black beans", "Avocado (1/4)", "Salsa"],
-      instructions: "Cook turkey and quinoa. Combine with beans, top with avocado and salsa."
-    },
-    {
-      name: "Steak & Sweet Potato",
-      type: "dinner",
-      calories: 620,
-      protein: 50,
-      carbs: 45,
-      fat: 22,
-      prepTime: "30 min",
-      ingredients: ["Sirloin steak (8 oz)", "Sweet potato (1 large)", "Asparagus (1 cup)", "Butter (1 tbsp)"],
-      instructions: "Grill steak to desired doneness. Bake sweet potato, sauté asparagus."
-    },
-    {
-      name: "Protein Shake",
-      type: "snack",
-      calories: 320,
-      protein: 30,
-      carbs: 35,
-      fat: 8,
-      prepTime: "3 min",
-      ingredients: ["Protein powder (1.5 scoops)", "Banana (1)", "Peanut butter (1 tbsp)", "Milk (1 cup)"],
-      instructions: "Blend all ingredients until smooth."
-    }
-  ],
-  maintenance: [
-    {
-      name: "Oatmeal & Eggs",
-      type: "breakfast",
-      calories: 380,
-      protein: 22,
-      carbs: 45,
-      fat: 12,
-      prepTime: "10 min",
-      ingredients: ["Oats (1/2 cup)", "Eggs (2)", "Berries", "Almonds (10)"],
-      instructions: "Cook oatmeal, scramble eggs, top oats with berries and almonds."
-    },
-    {
-      name: "Chicken Wrap",
-      type: "lunch",
-      calories: 450,
-      protein: 35,
-      carbs: 40,
-      fat: 15,
-      prepTime: "12 min",
-      ingredients: ["Whole wheat tortilla", "Grilled chicken (5 oz)", "Lettuce", "Tomato", "Hummus (2 tbsp)"],
-      instructions: "Fill tortilla with chicken and vegetables, spread hummus, and wrap."
-    },
-    {
-      name: "Shrimp Stir-fry",
-      type: "dinner",
-      calories: 480,
-      protein: 40,
-      carbs: 48,
-      fat: 14,
-      prepTime: "20 min",
-      ingredients: ["Shrimp (8 oz)", "Brown rice (1 cup cooked)", "Mixed vegetables", "Soy sauce", "Ginger"],
-      instructions: "Stir-fry shrimp and vegetables with ginger and soy sauce. Serve over rice."
-    },
-    {
-      name: "Trail Mix",
-      type: "snack",
-      calories: 200,
-      protein: 8,
-      carbs: 22,
-      fat: 10,
-      prepTime: "1 min",
-      ingredients: ["Mixed nuts (1/4 cup)", "Dried fruit (2 tbsp)", "Dark chocolate chips (1 tbsp)"],
-      instructions: "Mix all ingredients together."
-    }
-  ]
-};
+import { getMealsByGoalAndType } from './mealDatabase.js';
 
 function shuffleArray(array) {
   const shuffled = [...array];
@@ -153,13 +13,18 @@ function shuffleArray(array) {
 }
 
 export function generate12WeekPlan(profile) {
-  const { goal, cheatDay, planType } = profile;
-  const meals = mealsByGoal[goal] || mealsByGoal.maintenance;
+  const { goal, cheatDay, planType, foodSensitivities = [] } = profile;
   const validDays = ['0', '1', '2', '3', '4', '5', '6'];
   const restDayIndex = validDays.includes(String(cheatDay)) ? Number(cheatDay) : 6;
 
   // Calculate personalized macros based on user profile
   const userMacros = calculateMacros(profile);
+
+  // Get filtered meals based on food sensitivities
+  const breakfastOptions = getMealsByGoalAndType(goal, 'breakfast', foodSensitivities);
+  const lunchOptions = getMealsByGoalAndType(goal, 'lunch', foodSensitivities);
+  const dinnerOptions = getMealsByGoalAndType(goal, 'dinner', foodSensitivities);
+  const snackOptions = getMealsByGoalAndType(goal, 'snack', foodSensitivities);
 
   const plan = [];
 
@@ -169,7 +34,12 @@ export function generate12WeekPlan(profile) {
       days: []
     };
 
-    const weekMeals = shuffleArray(meals);
+    // Shuffle each meal type separately for variety
+    const shuffledBreakfasts = shuffleArray(breakfastOptions);
+    const shuffledLunches = shuffleArray(lunchOptions);
+    const shuffledDinners = shuffleArray(dinnerOptions);
+    const shuffledSnacks = shuffleArray(snackOptions);
+    
     const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     
     // Map 6 training days to the week, skipping the rest day
@@ -183,7 +53,8 @@ export function generate12WeekPlan(profile) {
           isRestDay: true,
           workout: null,
           meals: null,
-          completed: false
+          completed: false,
+          completedExercises: { cardio: [], strength: [] }
         });
       } else {
         // Training Day - get workout based on plan type
@@ -202,12 +73,19 @@ export function generate12WeekPlan(profile) {
           workout = generateAlgorithmicWorkout(profile, week, trainingDayCounter);
         }
         
-        // Get base meals and adjust to personalized macros
+        // Get base meals (cycle through available filtered meals)
+        const mealIndex = (trainingDayCounter - 1) % Math.min(
+          shuffledBreakfasts.length,
+          shuffledLunches.length,
+          shuffledDinners.length,
+          shuffledSnacks.length
+        );
+        
         const baseMeals = {
-          breakfast: weekMeals.find(m => m.type === 'breakfast'),
-          lunch: weekMeals.find(m => m.type === 'lunch'),
-          dinner: weekMeals.find(m => m.type === 'dinner'),
-          snack: weekMeals.find(m => m.type === 'snack')
+          breakfast: shuffledBreakfasts[mealIndex % shuffledBreakfasts.length],
+          lunch: shuffledLunches[mealIndex % shuffledLunches.length],
+          dinner: shuffledDinners[mealIndex % shuffledDinners.length],
+          snack: shuffledSnacks[mealIndex % shuffledSnacks.length]
         };
         
         // Adjust each meal to match user's calculated macros
@@ -223,7 +101,8 @@ export function generate12WeekPlan(profile) {
           isRestDay: false,
           workout: workout,
           meals: personalizedMeals,
-          completed: false
+          completed: false,
+          completedExercises: { cardio: [], strength: [] }
         });
         
         trainingDayCounter++;

@@ -32,6 +32,16 @@ A personalized 12-week fitness training application built with React, Vite, and 
 - Users can choose between Algorithmic or FBI PFT plan in profile setup
 - Both plans display cardio and strength exercises separately with visual indicators
 
+### Food Sensitivity Filtering System
+- **Comprehensive allergen management** with checkbox selections for:
+  - Gluten, Fish, Dairy, Soy, Nuts, Eggs
+- Created extensive meal database (`mealDatabase.js`) with 60+ meals tagged by allergen content
+- Intelligent meal filtering excludes all meals containing selected sensitivities
+- Multiple alternative meals for each goal and meal type ensure variety
+- Filtered meals maintain proper macro balance for your fitness goal
+- **Grocery list automatically updated** to exclude ingredients from allergen-containing meals
+- System ensures safe, personalized nutrition without manual ingredient checking
+
 ### Personalized Macro Calculator
 - **Algorithmic nutrition system** that calculates personalized macros based on:
   - User profile (gender, age, height, weight)
@@ -45,6 +55,7 @@ A personalized 12-week fitness training application built with React, Vite, and 
   - **Maintenance:** 30% protein, 40% carbs, 30% fat
 - Displays personalized daily targets and per-meal breakdowns
 - All meals automatically adjusted to match calculated macros
+- Works seamlessly with food sensitivity filtering to provide safe, personalized nutrition
 - Created `nutritionAlgorithm.js` with comprehensive nutrition calculations
 
 ### Exercise Completion Tracking
@@ -82,14 +93,17 @@ A personalized 12-week fitness training application built with React, Vite, and 
 ```
 /
 ├── components/
-│   ├── ProfileSetup.jsx      - User profile creation form (imperial units, rest day selection)
+│   ├── ProfileSetup.jsx       - User profile creation form (imperial units, rest day, food sensitivities)
 │   ├── Dashboard.jsx          - Week selection and overview
 │   ├── DailyRoutine.jsx       - Daily workout and meal display (cardio/strength split view)
-│   └── GroceryList.jsx        - Weekly grocery list generator
+│   ├── GroceryList.jsx        - Weekly grocery list generator (auto-filtered by sensitivities)
+│   └── MacroSummary.jsx       - Displays personalized macro breakdown and daily targets
 ├── utils/
 │   ├── workoutAlgorithm.js    - Algorithmic workout generator (BMR, heart rate zones, progressive overload)
 │   ├── fbiPlanData.js         - FBI PFT 12-week structured training data (3 phases)
-│   ├── planGenerator.js       - Generates workouts (algorithmic or FBI) + personalized nutrition
+│   ├── nutritionAlgorithm.js  - BMR/TDEE calculator and macro distribution system
+│   ├── mealDatabase.js        - 60+ meals tagged with allergen information
+│   ├── planGenerator.js       - Generates workouts + filtered personalized nutrition
 │   └── dayHelper.js           - Helper for current day calculation
 ├── App.jsx                    - Main app component
 ├── main.jsx                   - React entry point
@@ -101,17 +115,19 @@ A personalized 12-week fitness training application built with React, Vite, and 
 ```
 
 ### Key Features
-1. **Profile Setup** - Collects user information (gender, age, height in feet/inches, weight in lbs, goal, difficulty, rest day, plan type)
+1. **Profile Setup** - Collects user information (gender, age, height in feet/inches, weight in lbs, goal, difficulty, rest day, food sensitivities, plan type)
 2. **Dual Training Systems:**
    - **Algorithmic Plan:** Workouts dynamically adapt to your profile using BMR, heart rate zones, and progressive overload
    - **FBI PFT Plan:** Structured 12-week program with 3 phases targeting FBI fitness standards
-3. **Daily Routine** - Shows 7-day week with detailed cardio and strength workouts + meal plans
-4. **Exercise Completion Tracking** - Checkbox for each exercise to track progress; completed exercises show with strikethrough
-5. **Personalized Nutrition** - Meals tailored to your goal (weight loss, muscle gain, or maintenance)
-6. **Meal Detail Modal** - Displays recipes, macros, prep time, and instructions
-7. **Grocery List** - Auto-generated from weekly meals with ability to add custom items
-8. **Rest/Cheat Day** - User-customizable rest day (any day of the week)
-9. **LocalStorage Persistence** - Saves user profile, plan progress, and exercise completion state
+3. **Food Sensitivity Management** - Select allergens (gluten, fish, dairy, soy, nuts, eggs) and get filtered meal plans with safe alternatives
+4. **Daily Routine** - Shows 7-day week with detailed cardio and strength workouts + filtered meal plans
+5. **Exercise Completion Tracking** - Checkbox for each exercise to track progress; completed exercises show with strikethrough
+6. **Personalized Nutrition** - Meals tailored to your goal with calculated macros matching your BMR/TDEE
+7. **Macro Summary Dashboard** - Displays daily calorie target, protein/carbs/fat breakdown, and per-meal distribution
+8. **Meal Detail Modal** - Displays recipes, macros, prep time, and instructions
+9. **Grocery List** - Auto-generated from filtered weekly meals (excludes allergen ingredients) with ability to add custom items
+10. **Rest/Cheat Day** - User-customizable rest day (any day of the week)
+11. **LocalStorage Persistence** - Saves user profile, plan progress, and exercise completion state
 
 ### Color Scheme
 - **Primary:** #0B3D91 (Navy Blue)
