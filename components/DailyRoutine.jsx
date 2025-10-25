@@ -4,15 +4,16 @@ export default function DailyRoutine({ weekData, initialDayIndex, weekIndex, onT
   const [selectedDay, setSelectedDay] = useState(initialDayIndex || 0);
   const [showMealModal, setShowMealModal] = useState(false);
   const [selectedMeal, setSelectedMeal] = useState(null);
-  const [showCelebration, setShowCelebration] = useState(false);
+  const [showDayCelebration, setShowDayCelebration] = useState(false);
+  const [showWeekCelebration, setShowWeekCelebration] = useState(false);
 
   if (!weekData || !weekData.days) return null;
 
   const currentDay = weekData.days[selectedDay];
   const completedExercises = currentDay.completedExercises || { cardio: [], strength: [] };
 
-  // Check if all exercises are completed
-  const checkAllCompleted = () => {
+  // Check if current day's exercises are all completed
+  const checkDayCompleted = () => {
     if (currentDay.isRestDay) return false;
     
     const totalCardio = currentDay.workout?.cardio?.length || 0;
@@ -25,10 +26,32 @@ export default function DailyRoutine({ weekData, initialDayIndex, weekIndex, onT
            (completedStrength === totalStrength);
   };
 
+  // Check if all training days in the week are completed
+  const checkWeekCompleted = () => {
+    const trainingDays = weekData.days.filter(day => !day.isRestDay);
+    
+    return trainingDays.every(day => {
+      const totalCardio = day.workout?.cardio?.length || 0;
+      const totalStrength = day.workout?.strength?.length || 0;
+      const completedCardio = day.completedExercises?.cardio?.filter(Boolean).length || 0;
+      const completedStrength = day.completedExercises?.strength?.filter(Boolean).length || 0;
+      
+      return (totalCardio + totalStrength > 0) && 
+             (completedCardio === totalCardio) && 
+             (completedStrength === totalStrength);
+    });
+  };
+
   useEffect(() => {
-    if (checkAllCompleted()) {
-      setShowCelebration(true);
-      setTimeout(() => setShowCelebration(false), 4000);
+    if (checkDayCompleted()) {
+      // Check if week is also completed
+      if (checkWeekCompleted()) {
+        setShowWeekCelebration(true);
+        setTimeout(() => setShowWeekCelebration(false), 6000);
+      } else {
+        setShowDayCelebration(true);
+        setTimeout(() => setShowDayCelebration(false), 2500);
+      }
     }
   }, [completedExercises]);
 
@@ -39,26 +62,66 @@ export default function DailyRoutine({ weekData, initialDayIndex, weekIndex, onT
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 relative">
-      {/* Celebration Animation */}
-      {showCelebration && (
+      {/* Day Completion - Small Celebration */}
+      {showDayCelebration && (
         <div className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center">
           <div className="celebration-container">
             <div className="celebration-message animate-bounce">
-              <div className="bg-gradient-to-r from-accent to-primary text-white text-4xl font-bold py-8 px-12 rounded-2xl shadow-2xl">
-                🎉 Day Complete! 🎉
+              <div className="bg-gradient-to-r from-accent to-primary text-white text-2xl font-bold py-4 px-8 rounded-xl shadow-xl">
+                ✨ Day Complete! ✨
               </div>
             </div>
-            {/* Confetti */}
-            {[...Array(50)].map((_, i) => (
+            {/* Small Confetti */}
+            {[...Array(20)].map((_, i) => (
               <div
                 key={i}
-                className="confetti"
+                className="confetti-small"
                 style={{
                   left: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 0.5}s`,
-                  backgroundColor: ['#8B6F47', '#7A8450', '#D4AF37', '#FF6B6B', '#4ECDC4'][Math.floor(Math.random() * 5)]
+                  animationDelay: `${Math.random() * 0.3}s`,
+                  backgroundColor: ['#8B6F47', '#7A8450', '#D4AF37'][Math.floor(Math.random() * 3)]
                 }}
               />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Week Completion - BIG Celebration */}
+      {showWeekCelebration && (
+        <div className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center">
+          <div className="celebration-container">
+            <div className="celebration-message-big">
+              <div className="bg-gradient-to-r from-accent via-primary to-accent text-white text-5xl font-bold py-12 px-16 rounded-3xl shadow-2xl border-4 border-yellow-400 animate-pulse">
+                <div className="mb-4">🏆 WEEK COMPLETE! 🏆</div>
+                <div className="text-2xl font-normal">Amazing work! Keep going!</div>
+              </div>
+            </div>
+            {/* Big Confetti Explosion */}
+            {[...Array(100)].map((_, i) => (
+              <div
+                key={i}
+                className="confetti-big"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 0.8}s`,
+                  backgroundColor: ['#8B6F47', '#7A8450', '#D4AF37', '#FF6B6B', '#4ECDC4', '#FFD700', '#FFA500'][Math.floor(Math.random() * 7)]
+                }}
+              />
+            ))}
+            {/* Sparkles */}
+            {[...Array(30)].map((_, i) => (
+              <div
+                key={`sparkle-${i}`}
+                className="sparkle"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 1}s`
+                }}
+              >
+                ✨
+              </div>
             ))}
           </div>
         </div>

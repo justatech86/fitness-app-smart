@@ -43,23 +43,91 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* Confetti Animation */
-.confetti {
+/* Small Confetti - Day Completion */
+.confetti-small {
   position: absolute;
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   top: -10px;
-  animation: confettiFall 3s linear forwards;
+  animation: confettiFallSmall 2s linear forwards;
   opacity: 0;
 }
 
-@keyframes confettiFall {
+@keyframes confettiFallSmall {
   0% {
     opacity: 1;
     transform: translateY(0) rotate(0deg);
   }
   100% {
     opacity: 0;
-    transform: translateY(100vh) rotate(720deg);
+    transform: translateY(100vh) rotate(360deg);
+  }
+}
+
+/* Big Confetti - Week Completion */
+.confetti-big {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  top: -10px;
+  animation: confettiFallBig 4s linear forwards;
+  opacity: 0;
+  border-radius: 50%;
+}
+
+@keyframes confettiFallBig {
+  0% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translateY(50vh) rotate(720deg) scale(1.5);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100vh) rotate(1440deg) scale(0.5);
+  }
+}
+
+/* Sparkle Animation - Week Completion */
+.sparkle {
+  position: absolute;
+  font-size: 24px;
+  animation: sparkleFloat 2s ease-in-out infinite;
+  opacity: 0;
+}
+
+@keyframes sparkleFloat {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+}
+
+/* Big Celebration Message */
+.celebration-message-big {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  animation: celebrationPopBig 0.8s ease-out;
+}
+
+@keyframes celebrationPopBig {
+  0% {
+    transform: translate(-50%, -50%) scale(0) rotate(-180deg);
+    opacity: 0;
+  }
+  60% {
+    transform: translate(-50%, -50%) scale(1.15) rotate(10deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    opacity: 1;
   }
 }

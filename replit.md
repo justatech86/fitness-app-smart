@@ -72,7 +72,8 @@ A personalized 12-week fitness training application built with React, Vite, and 
 ### Exercise Completion Tracking
 - Added clickable checkboxes for each exercise
 - Visual feedback with strikethrough for completed exercises
-- **Celebratory confetti animation** triggers when all day's exercises are completed
+- **Small celebration animation** when completing a single day (20 confetti pieces, 2.5 seconds)
+- **BIG celebration animation** when completing all 6 training days in a week (100 confetti + sparkles, 6 seconds)
 - Progress saved to localStorage for persistence
 
 ### Week Structure & Customization
@@ -134,7 +135,7 @@ A personalized 12-week fitness training application built with React, Vite, and 
 3. **Equipment-Based Workouts** - Select any combination of equipment (dumbbells, barbell, pull-up bar, resistance bands, cable, machines) and get exercises tailored to what you have available (80+ exercises in database)
 4. **Food Sensitivity Management** - Select allergens (gluten, fish, dairy, soy, nuts, eggs) and get filtered meal plans with safe alternatives
 5. **Daily Routine** - Shows 7-day week with detailed equipment-filtered cardio and strength workouts + filtered meal plans
-6. **Exercise Completion Tracking** - Checkbox for each exercise to track progress; completed exercises show with strikethrough; celebratory animation when day is complete
+6. **Exercise Completion Tracking** - Checkbox for each exercise to track progress; completed exercises show with strikethrough; small celebration for each day, grand celebration for completing the week
 7. **Personalized Nutrition** - Meals tailored to your goal with calculated macros matching your BMR/TDEE
 8. **Macro Summary Dashboard** - Displays daily calorie target, protein/carbs/fat breakdown, and per-meal distribution
 9. **Meal Detail Modal** - Displays recipes, macros, prep time, and instructions
