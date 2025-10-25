@@ -237,12 +237,14 @@ export default function Profile({ currentUser, onBack }) {
                           {formatDate(photo.date)}
                         </p>
                       </div>
-                      <div className="text-right">
-                        <p className="text-xs text-gray-500 uppercase tracking-wide">Weight</p>
-                        <p className="text-sm font-bold text-primary">
-                          {photo.weight} lbs
-                        </p>
-                      </div>
+                      {photo.weight && (
+                        <div className="text-right">
+                          <p className="text-xs text-gray-500 uppercase tracking-wide">Weight</p>
+                          <p className="text-sm font-bold text-primary">
+                            {photo.weight} lbs
+                          </p>
+                        </div>
+                      )}
                     </div>
                     <input
                       type="text"
