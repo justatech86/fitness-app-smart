@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-export default function ProfileSetup({ onSubmit }) {
-  const [formData, setFormData] = useState({
+export default function ProfileSetup({ onSubmit, existingProfile }) {
+  const [formData, setFormData] = useState(existingProfile || {
     gender: 'male',
     age: '',
     heightFeet: '',

@@ -12,10 +12,11 @@ export default function App() {
   const [plan, setPlan] = useState([]);
   const [currentWeek, setCurrentWeek] = useState(1);
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
+  const [showProfileSetup, setShowProfileSetup] = useState(false);
 
   useEffect(() => {
     const storedProfile = localStorage.getItem('userProfile');
-    const storedPlan = localStorage.getItem('fitnessplan');
+    const storedPlan = localStorage.getItem('fitnessPlan');
     
     if (storedProfile) {
       const parsedProfile = JSON.parse(storedProfile);
@@ -28,15 +29,19 @@ export default function App() {
         setPlan(newPlan);
         localStorage.setItem('fitnessPlan', JSON.stringify(newPlan));
       }
+    } else {
+      setShowProfileSetup(true);
     }
     setCurrentDayIndex(getCurrentDayIndex());
   }, []);
 
   const handleProfileSubmit = (newProfile) => {
     setProfile(newProfile);
+    localStorage.setItem('userProfile', JSON.stringify(newProfile));
     const newPlan = generate12WeekPlan(newProfile);
     setPlan(newPlan);
     localStorage.setItem('fitnessPlan', JSON.stringify(newPlan));
+    setShowProfileSetup(false);
   };
 
   const toggleExerciseCompletion = (weekIndex, dayIndex, exerciseType, exerciseIndex) => {
@@ -57,7 +62,9 @@ export default function App() {
     localStorage.setItem('fitnessPlan', JSON.stringify(updatedPlan));
   };
 
-  if (!profile) return <ProfileSetup onSubmit={handleProfileSubmit} />;
+  if (!profile || showProfileSetup) {
+    return <ProfileSetup onSubmit={handleProfileSubmit} existingProfile={profile} />;
+  }
 
   return (
     <div className="min-h-screen bg-neutralBg">
@@ -66,12 +73,7 @@ export default function App() {
         setWeek={setCurrentWeek}
         setCurrentDayIndex={setCurrentDayIndex}
         currentWeek={currentWeek}
-        onResetProfile={() => {
-          localStorage.removeItem('userProfile');
-          localStorage.removeItem('fitnessPlan');
-          setProfile(null);
-          setPlan([]);
-        }}
+        onEditProfile={() => setShowProfileSetup(true)}
       />
       <MacroSummary profile={profile} />
       {plan.length > 0 && (
