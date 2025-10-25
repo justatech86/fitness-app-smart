@@ -50,28 +50,47 @@ export default function DailyRoutine({ weekData, initialDayIndex }) {
           </div>
         </div>
       ) : (
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="space-y-6">
           <div className="bg-white rounded-lg shadow-md p-6">
-            <h3 className="text-xl font-semibold text-primary mb-4">Workout</h3>
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="font-medium text-lg">{currentDay.workout.name}</span>
-                <span className="text-accent text-sm uppercase bg-accent bg-opacity-10 px-2 py-1 rounded">
-                  {currentDay.workout.type}
-                </span>
-              </div>
-              {currentDay.workout.duration && (
-                <p className="text-gray-600">Duration: {currentDay.workout.duration}</p>
+            <h3 className="text-2xl font-bold text-primary mb-2">{currentDay.workout.name}</h3>
+            <p className="text-sm text-gray-500 mb-6">Week {weekData.weekNumber} - {currentDay.dayName}</p>
+            
+            <div className="grid md:grid-cols-2 gap-6">
+              {currentDay.workout.cardio && currentDay.workout.cardio.length > 0 && (
+                <div>
+                  <h4 className="text-lg font-semibold text-primary mb-3 flex items-center">
+                    <span className="mr-2">🏃‍♂️</span> Cardio
+                  </h4>
+                  <ul className="space-y-2">
+                    {currentDay.workout.cardio.map((exercise, index) => (
+                      <li key={index} className="text-gray-700 pl-4 border-l-2 border-accent">
+                        {exercise}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
-              {currentDay.workout.sets && (
-                <p className="text-gray-600">Sets: {currentDay.workout.sets}</p>
+              
+              {currentDay.workout.strength && currentDay.workout.strength.length > 0 && (
+                <div>
+                  <h4 className="text-lg font-semibold text-primary mb-3 flex items-center">
+                    <span className="mr-2">💪</span> Strength
+                  </h4>
+                  <ul className="space-y-2">
+                    {currentDay.workout.strength.map((exercise, index) => (
+                      <li key={index} className="text-gray-700 pl-4 border-l-2 border-primary">
+                        {exercise}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
             </div>
           </div>
 
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-xl font-semibold text-primary mb-4">Today's Meals</h3>
-            <div className="space-y-3">
+            <div className="grid sm:grid-cols-2 gap-3">
               {Object.entries(currentDay.meals).map(([mealType, meal]) => (
                 <div
                   key={mealType}
