@@ -221,8 +221,8 @@ export default function ProfileSetup({ onSubmit }) {
               multiple
               value={formData.foodSensitivities}
               onChange={handleSensitivityChange}
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent h-10"
-              style={{ height: '42px', overflow: 'hidden' }}
+              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
+              size="3"
             >
               <option value="gluten">Gluten</option>
               <option value="fish">Fish</option>
@@ -232,7 +232,7 @@ export default function ProfileSetup({ onSubmit }) {
               <option value="eggs">Eggs</option>
             </select>
             <p className="text-xs text-gray-500 mt-1">
-              Hold Ctrl (Windows) or Cmd (Mac) to select multiple. Meals will be adjusted to exclude selected ingredients.
+              Click to select multiple. Meals will be adjusted to exclude selected ingredients.
             </p>
           </div>
 
