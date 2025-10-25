@@ -11,6 +11,7 @@ A personalized 12-week fitness training application built with React, Vite, and 
 - **Profile photo upload** for user personalization
 - **Progress photos gallery** to track fitness journey over time
 - **Weight tracking** with each progress photo to monitor body composition changes
+- **Motivational encouragement** - Random motivational message displayed after each photo upload (15 unique messages with emojis)
 - Photos stored as base64 in localStorage (max 5MB per image)
 - Each progress photo displays:
   - Progress Date (upload date)
@@ -19,6 +20,7 @@ A personalized 12-week fitness training application built with React, Vite, and 
 - Sort progress photos by date (newest first)
 - Delete progress photos with confirmation
 - Profile page accessible from dashboard with "Profile" button
+- Encouragement message auto-dismisses after 5 seconds with fade-in animation
 - Created `components/Profile.jsx` with photo upload, weight input, and gallery UI
 
 ### User Authentication with Biometric Login (October 25, 2025)

@@ -1,5 +1,23 @@
 import React, { useState, useEffect } from 'react';
 
+const encouragementMessages = [
+  "Amazing progress! Keep crushing those goals! 💪",
+  "You're doing incredible! Every step forward counts! 🌟",
+  "Look at you go! Your dedication is inspiring! 🔥",
+  "Consistency is key, and you're nailing it! 🎯",
+  "Your hard work is paying off! Keep it up! 🚀",
+  "You're stronger than you think! Keep pushing! 💯",
+  "Progress, not perfection! You're doing great! ⭐",
+  "This is what commitment looks like! Proud of you! 🏆",
+  "Small steps lead to big changes! You got this! 👏",
+  "Your future self will thank you for this! 💚",
+  "Transformation in progress! Stay focused! 🎉",
+  "You're building something amazing! Keep going! 🌈",
+  "Every photo tells a story of strength! 📸",
+  "You showed up today - that's what matters! 🙌",
+  "Progress photo = proof of your dedication! 🌟"
+];
+
 export default function Profile({ currentUser, onBack }) {
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [progressPhotos, setProgressPhotos] = useState([]);
@@ -7,9 +25,18 @@ export default function Profile({ currentUser, onBack }) {
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [tempPhotoFile, setTempPhotoFile] = useState(null);
   const [tempWeight, setTempWeight] = useState('');
+  const [encouragementMessage, setEncouragementMessage] = useState('');
+  const encouragementTimeoutRef = React.useRef(null);
 
   useEffect(() => {
     loadPhotos();
+    
+    // Cleanup timeout on unmount
+    return () => {
+      if (encouragementTimeoutRef.current) {
+        clearTimeout(encouragementTimeoutRef.current);
+      }
+    };
   }, [currentUser]);
 
   const loadPhotos = () => {
@@ -89,9 +116,25 @@ export default function Profile({ currentUser, onBack }) {
       const updatedPhotos = [...progressPhotos, newPhoto];
       setProgressPhotos(updatedPhotos);
       savePhotos(profilePhoto, updatedPhotos);
+      
+      // Show random encouragement message
+      const randomMessage = encouragementMessages[Math.floor(Math.random() * encouragementMessages.length)];
+      setEncouragementMessage(randomMessage);
+      
       setShowUploadModal(false);
       setTempPhotoFile(null);
       setTempWeight('');
+      
+      // Clear any existing timeout before setting a new one
+      if (encouragementTimeoutRef.current) {
+        clearTimeout(encouragementTimeoutRef.current);
+      }
+      
+      // Clear encouragement after 5 seconds
+      encouragementTimeoutRef.current = setTimeout(() => {
+        setEncouragementMessage('');
+        encouragementTimeoutRef.current = null;
+      }, 5000);
     };
     reader.readAsDataURL(tempPhotoFile);
   };
@@ -209,6 +252,20 @@ export default function Profile({ currentUser, onBack }) {
               Add Photo
             </button>
           </div>
+
+          {/* Encouragement Message */}
+          {encouragementMessage && (
+            <div className="mb-4 bg-gradient-to-r from-green-50 to-blue-50 border-l-4 border-green-500 p-4 rounded-r-lg animate-fade-in">
+              <div className="flex items-center gap-3">
+                <div className="flex-shrink-0">
+                  <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <p className="text-gray-800 font-medium">{encouragementMessage}</p>
+              </div>
+            </div>
+          )}
 
           {progressPhotos.length === 0 ? (
             <div className="text-center py-12 text-gray-400">
