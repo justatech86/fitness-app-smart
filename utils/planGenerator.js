@@ -153,7 +153,8 @@ function shuffleArray(array) {
 export function generate12WeekPlan(profile) {
   const { goal, cheatDay } = profile;
   const meals = mealsByGoal[goal] || mealsByGoal.maintenance;
-  const restDayIndex = parseInt(cheatDay) || 6;
+  const validDays = ['0', '1', '2', '3', '4', '5', '6'];
+  const restDayIndex = validDays.includes(String(cheatDay)) ? Number(cheatDay) : 6;
 
   const plan = [];
 
