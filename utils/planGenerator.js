@@ -13,10 +13,13 @@ function shuffleArray(array) {
 }
 
 export function generate12WeekPlan(profile) {
-  const { goal, restDays = [6], planType, foodSensitivities = [], dietType = 'standard' } = profile;
+  const { goal, restDays = [6], planType, foodSensitivities = [], dietType = 'standard', weeks = 12 } = profile;
   // Ensure restDays is an array and contains valid day indices
   const validRestDays = Array.isArray(restDays) ? restDays : [6];
   const restDayIndices = validRestDays.filter(d => d >= 0 && d <= 6);
+  
+  // Ensure weeks is within valid range
+  const totalWeeks = Math.min(Math.max(parseInt(weeks) || 12, 4), 52);
 
   // Calculate personalized macros based on user profile
   const userMacros = calculateMacros(profile);
@@ -29,7 +32,7 @@ export function generate12WeekPlan(profile) {
 
   const plan = [];
 
-  for (let week = 1; week <= 12; week++) {
+  for (let week = 1; week <= totalWeeks; week++) {
     const weekData = {
       weekNumber: week,
       days: []

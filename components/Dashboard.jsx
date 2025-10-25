@@ -1,12 +1,14 @@
 import React from 'react';
 
-export default function Dashboard({ plan, setWeek, currentWeek, currentUser, onEditProfile, onShowProfile, onLogout }) {
+export default function Dashboard({ plan, setWeek, currentWeek, currentUser, onEditProfile, onShowProfile, onLogout, profile }) {
+  const totalWeeks = profile?.weeks || plan.length || 12;
+  
   return (
     <div className="bg-primary text-white py-8 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold">Your 12-Week Journey</h1>
+            <h1 className="text-3xl font-bold">Your {totalWeeks}-Week Journey</h1>
             {currentUser && (
               <p className="text-sm opacity-80 mt-1">Welcome back, {currentUser}!</p>
             )}

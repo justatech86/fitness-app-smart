@@ -174,6 +174,7 @@ export default function App() {
         setCurrentDayIndex={setCurrentDayIndex}
         currentWeek={currentWeek}
         currentUser={currentUser}
+        profile={profile}
         onEditProfile={() => setShowProfileSetup(true)}
         onShowProfile={() => setShowProfile(true)}
         onLogout={handleLogout}

@@ -11,6 +11,7 @@ export default function ProfileSetup({ onSubmit, existingProfile }) {
         weight: '',
         goal: 'weight_loss',
         difficulty: 'beginner',
+        weeks: 12,
         restDays: [6],
         planType: 'algorithmic',
         dietType: 'standard',
@@ -240,6 +241,24 @@ export default function ProfileSetup({ onSubmit, existingProfile }) {
               <option value="intermediate">Intermediate</option>
               <option value="advanced">Advanced</option>
             </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Program Duration (weeks)</label>
+            <input
+              type="number"
+              name="weeks"
+              value={formData.weeks}
+              onChange={handleChange}
+              required
+              min="4"
+              max="52"
+              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
+              placeholder="Enter duration (4-52 weeks)"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Choose between 4 and 52 weeks for your training plan
+            </p>
           </div>
 
           <div className="relative" ref={equipmentDropdownRef}>
