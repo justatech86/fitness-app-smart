@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 export default function ProfileSetup({ onSubmit }) {
   const [formData, setFormData] = useState({
@@ -14,15 +14,32 @@ export default function ProfileSetup({ onSubmit }) {
     foodSensitivities: [],
     equipment: []
   });
+  
+  const [showSensitivitiesDropdown, setShowSensitivitiesDropdown] = useState(false);
+  const sensitivityDropdownRef = useRef(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSensitivityChange = (e) => {
-    const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
-    setFormData({ ...formData, foodSensitivities: selectedOptions });
+  const handleSensitivityToggle = (sensitivity) => {
+    const current = formData.foodSensitivities;
+    if (current.includes(sensitivity)) {
+      setFormData({ ...formData, foodSensitivities: current.filter(s => s !== sensitivity) });
+    } else {
+      setFormData({ ...formData, foodSensitivities: [...current, sensitivity] });
+    }
   };
+  
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (sensitivityDropdownRef.current && !sensitivityDropdownRef.current.contains(event.target)) {
+        setShowSensitivitiesDropdown(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleEquipmentToggle = (equipmentType) => {
     const current = formData.equipment;
@@ -215,24 +232,43 @@ export default function ProfileSetup({ onSubmit }) {
             </p>
           </div>
 
-          <div>
+          <div className="relative" ref={sensitivityDropdownRef}>
             <label className="block text-sm font-medium text-gray-700 mb-1">Food Sensitivities (Optional)</label>
-            <select
-              multiple
-              value={formData.foodSensitivities}
-              onChange={handleSensitivityChange}
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
-              size="3"
+            <div
+              onClick={() => setShowSensitivitiesDropdown(!showSensitivitiesDropdown)}
+              className="w-full p-2 border border-gray-300 rounded-md bg-white cursor-pointer flex justify-between items-center focus:ring-2 focus:ring-primary focus:border-transparent"
             >
-              <option value="gluten">Gluten</option>
-              <option value="fish">Fish</option>
-              <option value="dairy">Dairy</option>
-              <option value="soy">Soy</option>
-              <option value="nuts">Nuts</option>
-              <option value="eggs">Eggs</option>
-            </select>
+              <span className="text-gray-700">
+                {formData.foodSensitivities.length === 0 
+                  ? 'Select sensitivities...' 
+                  : formData.foodSensitivities.map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(', ')
+                }
+              </span>
+              <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+            {showSensitivitiesDropdown && (
+              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg">
+                {['gluten', 'fish', 'dairy', 'soy', 'nuts', 'eggs'].map((sensitivity) => (
+                  <label 
+                    key={sensitivity} 
+                    className="flex items-center px-3 py-2 hover:bg-gray-50 cursor-pointer"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={formData.foodSensitivities.includes(sensitivity)}
+                      onChange={() => handleSensitivityToggle(sensitivity)}
+                      className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary mr-2"
+                    />
+                    <span className="text-sm capitalize">{sensitivity}</span>
+                  </label>
+                ))}
+              </div>
+            )}
             <p className="text-xs text-gray-500 mt-1">
-              Click to select multiple. Meals will be adjusted to exclude selected ingredients.
+              Meals will be adjusted to exclude selected ingredients.
             </p>
           </div>
 
