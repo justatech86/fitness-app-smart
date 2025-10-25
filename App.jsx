@@ -163,7 +163,7 @@ export default function App() {
 
   // Show profile page if user clicked on profile
   if (showProfile) {
-    return <Profile currentUser={currentUser} onBack={() => setShowProfile(false)} />;
+    return <Profile currentUser={currentUser} profile={profile} onBack={() => setShowProfile(false)} />;
   }
 
   return (

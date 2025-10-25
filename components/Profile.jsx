@@ -18,7 +18,7 @@ const encouragementMessages = [
   "Progress photo = proof of your dedication! 🌟"
 ];
 
-export default function Profile({ currentUser, onBack }) {
+export default function Profile({ currentUser, profile, onBack }) {
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [progressPhotos, setProgressPhotos] = useState([]);
   const [showUploadModal, setShowUploadModal] = useState(false);
@@ -27,6 +27,30 @@ export default function Profile({ currentUser, onBack }) {
   const [tempWeight, setTempWeight] = useState('');
   const [encouragementMessage, setEncouragementMessage] = useState('');
   const encouragementTimeoutRef = React.useRef(null);
+
+  // Calculate user stats
+  const getUserStats = () => {
+    if (!profile) return null;
+
+    const initialWeight = profile.weight;
+    const mostRecentPhoto = progressPhotos.length > 0 
+      ? progressPhotos.sort((a, b) => new Date(b.date) - new Date(a.date))[0]
+      : null;
+    
+    const currentWeight = mostRecentPhoto ? mostRecentPhoto.weight : initialWeight;
+    const weightChange = currentWeight - initialWeight;
+
+    return {
+      age: profile.age,
+      heightFeet: profile.heightFeet,
+      heightInches: profile.heightInches,
+      initialWeight,
+      currentWeight,
+      weightChange
+    };
+  };
+
+  const stats = getUserStats();
 
   useEffect(() => {
     loadPhotos();
@@ -190,10 +214,10 @@ export default function Profile({ currentUser, onBack }) {
       </div>
 
       <div className="max-w-6xl mx-auto p-4 space-y-6">
-        {/* Profile Photo Section */}
+        {/* Profile Photo & Stats Section */}
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold text-primary">Profile Photo</h2>
+            <h2 className="text-xl font-bold text-primary">Profile</h2>
             {uploadSuccess && (
               <div className="bg-green-100 text-green-700 px-3 py-1 rounded-md text-sm flex items-center gap-2">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -203,38 +227,96 @@ export default function Profile({ currentUser, onBack }) {
               </div>
             )}
           </div>
-          <div className="flex items-center gap-6">
-            <div className="relative">
-              <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
-                {profilePhoto ? (
-                  <img src={profilePhoto} alt="Profile" className="w-full h-full object-cover" />
-                ) : (
-                  <svg className="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          <div className="flex flex-col md:flex-row gap-6">
+            {/* Profile Photo */}
+            <div className="flex-shrink-0">
+              <div className="relative">
+                <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+                  {profilePhoto ? (
+                    <img src={profilePhoto} alt="Profile" className="w-full h-full object-cover" />
+                  ) : (
+                    <svg className="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  )}
+                </div>
+                <label className="absolute bottom-0 right-0 bg-primary text-white p-2 rounded-full cursor-pointer hover:bg-opacity-90 transition-colors">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleProfilePhotoUpload}
+                    className="hidden"
+                  />
+                </label>
               </div>
-              <label className="absolute bottom-0 right-0 bg-primary text-white p-2 rounded-full cursor-pointer hover:bg-opacity-90 transition-colors">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleProfilePhotoUpload}
-                  className="hidden"
-                />
-              </label>
-            </div>
-            <div>
-              <p className="text-gray-600 text-sm">
-                Upload a profile photo to personalize your account
-              </p>
-              <p className="text-gray-400 text-xs mt-1">
-                Max file size: 5MB
+              <p className="text-gray-400 text-xs mt-2 text-center">
+                Max 5MB
               </p>
             </div>
+
+            {/* User Stats */}
+            {stats && (
+              <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-4">
+                {/* Age */}
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Age</p>
+                  <p className="text-2xl font-bold text-gray-800">{stats.age}</p>
+                  <p className="text-xs text-gray-400 mt-1">years</p>
+                </div>
+
+                {/* Height */}
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Height</p>
+                  <p className="text-2xl font-bold text-gray-800">
+                    {stats.heightFeet}'{stats.heightInches}"
+                  </p>
+                  <p className="text-xs text-gray-400 mt-1">feet/inches</p>
+                </div>
+
+                {/* Current Weight */}
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Current Weight</p>
+                  <p className="text-2xl font-bold text-primary">{stats.currentWeight}</p>
+                  <p className="text-xs text-gray-400 mt-1">lbs</p>
+                </div>
+
+                {/* Weight Change */}
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Total Change</p>
+                  <div className="flex items-center gap-1">
+                    {stats.weightChange !== 0 && (
+                      <svg 
+                        className={`w-5 h-5 ${stats.weightChange > 0 ? 'text-blue-500' : 'text-green-500'}`}
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                      >
+                        {stats.weightChange > 0 ? (
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                        ) : (
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        )}
+                      </svg>
+                    )}
+                    <p className={`text-2xl font-bold ${
+                      stats.weightChange > 0 ? 'text-blue-500' : 
+                      stats.weightChange < 0 ? 'text-green-500' : 
+                      'text-gray-800'
+                    }`}>
+                      {stats.weightChange > 0 ? '+' : ''}{stats.weightChange.toFixed(1)}
+                    </p>
+                  </div>
+                  <p className="text-xs text-gray-400 mt-1">
+                    {stats.weightChange === 0 ? 'no change' : 
+                     stats.weightChange > 0 ? 'gained' : 'lost'}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
