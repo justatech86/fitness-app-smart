@@ -221,7 +221,8 @@ export default function ProfileSetup({ onSubmit }) {
               multiple
               value={formData.foodSensitivities}
               onChange={handleSensitivityChange}
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent h-10"
+              style={{ height: '42px', overflow: 'hidden' }}
             >
               <option value="gluten">Gluten</option>
               <option value="fish">Fish</option>
