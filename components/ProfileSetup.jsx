@@ -8,7 +8,8 @@ export default function ProfileSetup({ onSubmit }) {
     heightInches: '',
     weight: '',
     goal: 'weight_loss',
-    difficulty: 'beginner'
+    difficulty: 'beginner',
+    cheatDay: 6
   });
 
   const handleChange = (e) => {
@@ -135,6 +136,24 @@ export default function ProfileSetup({ onSubmit }) {
               <option value="beginner">Beginner</option>
               <option value="intermediate">Intermediate</option>
               <option value="advanced">Advanced</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Rest & Cheat Day</label>
+            <select
+              name="cheatDay"
+              value={formData.cheatDay}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
+            >
+              <option value="0">Sunday</option>
+              <option value="1">Monday</option>
+              <option value="2">Tuesday</option>
+              <option value="3">Wednesday</option>
+              <option value="4">Thursday</option>
+              <option value="5">Friday</option>
+              <option value="6">Saturday</option>
             </select>
           </div>
 

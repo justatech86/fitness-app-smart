@@ -34,46 +34,63 @@ export default function DailyRoutine({ weekData, initialDayIndex }) {
         ))}
       </div>
 
-      <div className="grid md:grid-cols-2 gap-6">
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-xl font-semibold text-primary mb-4">Workout</h3>
-          <div className="space-y-3">
-            <div className="flex justify-between items-center">
-              <span className="font-medium text-lg">{currentDay.workout.name}</span>
-              <span className="text-accent text-sm uppercase bg-accent bg-opacity-10 px-2 py-1 rounded">
-                {currentDay.workout.type}
-              </span>
+      {currentDay.isRestDay ? (
+        <div className="bg-gradient-to-br from-accent to-primary rounded-lg shadow-lg p-12 text-center text-white">
+          <h3 className="text-4xl font-bold mb-4">🎉 Rest & Cheat Day!</h3>
+          <p className="text-xl mb-6">{currentDay.dayName} is your day to recover and enjoy!</p>
+          <div className="grid md:grid-cols-2 gap-6 mt-8">
+            <div className="bg-white bg-opacity-20 rounded-lg p-6">
+              <h4 className="text-2xl font-semibold mb-3">💪 Recovery</h4>
+              <p className="text-lg">Give your body time to rest and rebuild. Light stretching or a gentle walk is perfect.</p>
             </div>
-            {currentDay.workout.duration && (
-              <p className="text-gray-600">Duration: {currentDay.workout.duration}</p>
-            )}
-            {currentDay.workout.sets && (
-              <p className="text-gray-600">Sets: {currentDay.workout.sets}</p>
-            )}
+            <div className="bg-white bg-opacity-20 rounded-lg p-6">
+              <h4 className="text-2xl font-semibold mb-3">🍕 Cheat Meal</h4>
+              <p className="text-lg">Enjoy your favorite foods! One cheat meal helps keep you motivated and on track.</p>
+            </div>
           </div>
         </div>
-
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-xl font-semibold text-primary mb-4">Today's Meals</h3>
-          <div className="space-y-3">
-            {Object.entries(currentDay.meals).map(([mealType, meal]) => (
-              <div
-                key={mealType}
-                onClick={() => openMealDetail(meal)}
-                className="p-3 bg-gray-50 rounded-md cursor-pointer hover:bg-gray-100 transition-colors"
-              >
-                <div className="flex justify-between items-center">
-                  <div>
-                    <div className="font-medium capitalize">{mealType}</div>
-                    <div className="text-sm text-gray-600">{meal.name}</div>
-                  </div>
-                  <div className="text-accent font-semibold">{meal.calories} cal</div>
-                </div>
+      ) : (
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-xl font-semibold text-primary mb-4">Workout</h3>
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-lg">{currentDay.workout.name}</span>
+                <span className="text-accent text-sm uppercase bg-accent bg-opacity-10 px-2 py-1 rounded">
+                  {currentDay.workout.type}
+                </span>
               </div>
-            ))}
+              {currentDay.workout.duration && (
+                <p className="text-gray-600">Duration: {currentDay.workout.duration}</p>
+              )}
+              {currentDay.workout.sets && (
+                <p className="text-gray-600">Sets: {currentDay.workout.sets}</p>
+              )}
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-xl font-semibold text-primary mb-4">Today's Meals</h3>
+            <div className="space-y-3">
+              {Object.entries(currentDay.meals).map(([mealType, meal]) => (
+                <div
+                  key={mealType}
+                  onClick={() => openMealDetail(meal)}
+                  className="p-3 bg-gray-50 rounded-md cursor-pointer hover:bg-gray-100 transition-colors"
+                >
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <div className="font-medium capitalize">{mealType}</div>
+                      <div className="text-sm text-gray-600">{meal.name}</div>
+                    </div>
+                    <div className="text-accent font-semibold">{meal.calories} cal</div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {showMealModal && selectedMeal && (
         <div

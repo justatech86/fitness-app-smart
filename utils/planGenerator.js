@@ -176,9 +176,10 @@ function shuffleArray(array) {
 }
 
 export function generate12WeekPlan(profile) {
-  const { goal, difficulty } = profile;
+  const { goal, difficulty, cheatDay } = profile;
   const workouts = workoutsByDifficulty[difficulty] || workoutsByDifficulty.beginner;
   const meals = mealsByGoal[goal] || mealsByGoal.maintenance;
+  const restDayIndex = parseInt(cheatDay) || 6;
 
   const plan = [];
 
@@ -191,18 +192,31 @@ export function generate12WeekPlan(profile) {
     const weekWorkouts = shuffleArray(workouts);
     const weekMeals = shuffleArray(meals);
 
-    for (let day = 0; day < 5; day++) {
-      weekData.days.push({
-        dayName: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'][day],
-        workout: weekWorkouts[day % weekWorkouts.length],
-        meals: {
-          breakfast: weekMeals.find(m => m.type === 'breakfast'),
-          lunch: weekMeals.find(m => m.type === 'lunch'),
-          dinner: weekMeals.find(m => m.type === 'dinner'),
-          snack: weekMeals.find(m => m.type === 'snack')
-        },
-        completed: false
-      });
+    for (let day = 0; day < 7; day++) {
+      const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      
+      if (day === restDayIndex) {
+        weekData.days.push({
+          dayName: dayNames[day],
+          isRestDay: true,
+          workout: null,
+          meals: null,
+          completed: false
+        });
+      } else {
+        weekData.days.push({
+          dayName: dayNames[day],
+          isRestDay: false,
+          workout: weekWorkouts[day % weekWorkouts.length],
+          meals: {
+            breakfast: weekMeals.find(m => m.type === 'breakfast'),
+            lunch: weekMeals.find(m => m.type === 'lunch'),
+            dinner: weekMeals.find(m => m.type === 'dinner'),
+            snack: weekMeals.find(m => m.type === 'snack')
+          },
+          completed: false
+        });
+      }
     }
 
     plan.push(weekData);
