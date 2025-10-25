@@ -130,9 +130,9 @@ A personalized 12-week fitness training application built with React, Vite, and 
 11. **LocalStorage Persistence** - Saves user profile, plan progress, and exercise completion state
 
 ### Color Scheme
-- **Primary:** #0B3D91 (Navy Blue)
-- **Accent:** #D4AF37 (Gold)
-- **Background:** #F8F6F0 (Beige/Cream)
+- **Primary:** #8B6F47 (Warm Caramel Brown)
+- **Accent:** #7A8450 (Olive Green)
+- **Background:** #F5F1E8 (Warm Sand/Beige)
 
 ## Development
 

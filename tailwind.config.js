@@ -3,9 +3,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#0B3D91",
-        accent: "#D4AF37",
-        neutralBg: "#F8F6F0",
+        primary: "#8B6F47",       // Warm caramel brown
+        accent: "#7A8450",        // Olive green
+        neutralBg: "#F5F1E8",     // Warm sand/beige
       },
     },
   },
