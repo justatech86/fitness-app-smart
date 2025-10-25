@@ -61,15 +61,15 @@ export default function DailyRoutine({ weekData, initialDayIndex, weekIndex, onT
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold text-primary mb-6">Daily Routine - Week {weekData.weekNumber}</h2>
+    <div className="max-w-6xl mx-auto px-4 py-4 md:py-8">
+      <h2 className="text-xl md:text-2xl font-bold text-primary mb-4 md:mb-6">Daily Routine - Week {weekData.weekNumber}</h2>
 
-      <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
+      <div className="flex gap-2 mb-4 md:mb-6 overflow-x-auto pb-2 scrollbar-hide">
         {weekData.days.map((day, index) => (
           <button
             key={index}
             onClick={() => setSelectedDay(index)}
-            className={`px-4 py-2 rounded-md whitespace-nowrap transition-colors ${
+            className={`px-3 md:px-4 py-2 rounded-md whitespace-nowrap transition-colors text-sm md:text-base ${
               selectedDay === index
                 ? 'bg-primary text-white'
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -81,17 +81,17 @@ export default function DailyRoutine({ weekData, initialDayIndex, weekIndex, onT
       </div>
 
       {currentDay.isRestDay ? (
-        <div className="bg-gradient-to-br from-accent to-primary rounded-lg shadow-lg p-12 text-center text-white relative">
-          <h3 className="text-4xl font-bold mb-4">🎉 Rest & Cheat Day!</h3>
-          <p className="text-xl mb-6">{currentDay.dayName} is your day to recover and enjoy!</p>
-          <div className="grid md:grid-cols-2 gap-6 mt-8">
-            <div className="bg-white bg-opacity-20 rounded-lg p-6">
-              <h4 className="text-2xl font-semibold mb-3">💪 Recovery</h4>
-              <p className="text-lg">Give your body time to rest and rebuild. Light stretching or a gentle walk is perfect.</p>
+        <div className="bg-gradient-to-br from-accent to-primary rounded-lg shadow-lg p-6 md:p-12 text-center text-white relative">
+          <h3 className="text-2xl md:text-4xl font-bold mb-3 md:mb-4">🎉 Rest & Cheat Day!</h3>
+          <p className="text-base md:text-xl mb-4 md:mb-6">{currentDay.dayName} is your day to recover and enjoy!</p>
+          <div className="grid md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-8">
+            <div className="bg-white bg-opacity-20 rounded-lg p-4 md:p-6">
+              <h4 className="text-lg md:text-2xl font-semibold mb-2 md:mb-3">💪 Recovery</h4>
+              <p className="text-sm md:text-lg">Give your body time to rest and rebuild. Light stretching or a gentle walk is perfect.</p>
             </div>
-            <div className="bg-white bg-opacity-20 rounded-lg p-6">
-              <h4 className="text-2xl font-semibold mb-3">🍕 Cheat Meal</h4>
-              <p className="text-lg">Enjoy your favorite foods! One cheat meal helps keep you motivated and on track.</p>
+            <div className="bg-white bg-opacity-20 rounded-lg p-4 md:p-6">
+              <h4 className="text-lg md:text-2xl font-semibold mb-2 md:mb-3">🍕 Cheat Meal</h4>
+              <p className="text-sm md:text-lg">Enjoy your favorite foods! One cheat meal helps keep you motivated and on track.</p>
             </div>
           </div>
         </div>

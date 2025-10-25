@@ -4,6 +4,17 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hide scrollbar for mobile horizontal scrolling */
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
 body {
   font-family: 'Lato', sans-serif;
   background-color: #F5F1E8;
