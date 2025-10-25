@@ -1,4 +1,5 @@
 import { getWorkoutForDay } from './fbiPlanData.js';
+import { generateAlgorithmicWorkout } from './workoutAlgorithm.js';
 
 const mealsByGoal = {
   weight_loss: [
@@ -151,7 +152,7 @@ function shuffleArray(array) {
 }
 
 export function generate12WeekPlan(profile) {
-  const { goal, cheatDay } = profile;
+  const { goal, cheatDay, planType } = profile;
   const meals = mealsByGoal[goal] || mealsByGoal.maintenance;
   const validDays = ['0', '1', '2', '3', '4', '5', '6'];
   const restDayIndex = validDays.includes(String(cheatDay)) ? Number(cheatDay) : 6;
@@ -181,17 +182,26 @@ export function generate12WeekPlan(profile) {
           completed: false
         });
       } else {
-        // Training Day - get FBI PFT workout for this training day
-        const fbiWorkout = getWorkoutForDay(week, trainingDayCounter);
+        // Training Day - get workout based on plan type
+        let workout;
+        
+        if (planType === 'fbi_pft') {
+          // FBI PFT Plan
+          const fbiWorkout = getWorkoutForDay(week, trainingDayCounter);
+          workout = {
+            name: fbiWorkout.name,
+            cardio: fbiWorkout.cardio || [],
+            strength: fbiWorkout.strength || []
+          };
+        } else {
+          // Algorithmic Plan (default)
+          workout = generateAlgorithmicWorkout(profile, week, trainingDayCounter);
+        }
         
         weekData.days.push({
           dayName: dayNames[day],
           isRestDay: false,
-          workout: {
-            name: fbiWorkout.name,
-            cardio: fbiWorkout.cardio || [],
-            strength: fbiWorkout.strength || []
-          },
+          workout: workout,
           meals: {
             breakfast: weekMeals.find(m => m.type === 'breakfast'),
             lunch: weekMeals.find(m => m.type === 'lunch'),

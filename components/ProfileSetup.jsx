@@ -9,7 +9,8 @@ export default function ProfileSetup({ onSubmit }) {
     weight: '',
     goal: 'weight_loss',
     difficulty: 'beginner',
-    cheatDay: 6
+    cheatDay: 6,
+    planType: 'algorithmic'
   });
 
   const handleChange = (e) => {
@@ -123,6 +124,25 @@ export default function ProfileSetup({ onSubmit }) {
               <option value="muscle_gain">Muscle Gain</option>
               <option value="maintenance">Maintenance</option>
             </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Training Plan Type</label>
+            <select
+              name="planType"
+              value={formData.planType}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
+            >
+              <option value="algorithmic">Algorithmic (Personalized)</option>
+              <option value="fbi_pft">FBI PFT Program</option>
+            </select>
+            <p className="text-xs text-gray-500 mt-1">
+              {formData.planType === 'algorithmic' 
+                ? 'Workouts adapt to your profile, goal, and difficulty level'
+                : 'Fixed FBI fitness test preparation program'
+              }
+            </p>
           </div>
 
           <div>

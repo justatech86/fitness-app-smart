@@ -1,21 +1,41 @@
 # 12-Week Fitness App
 
 ## Overview
-A personalized 12-week FBI PFT (Physical Fitness Test) training application built with React, Vite, and Tailwind CSS. This app provides a structured training program designed to help users achieve or exceed FBI PFT standards through a comprehensive 3-phase approach combining cardio, strength, and tactical conditioning.
+A personalized 12-week fitness training application built with React, Vite, and Tailwind CSS. This app offers two training plan options: an algorithmic system that dynamically generates workouts based on your unique profile, or the structured FBI PFT (Physical Fitness Test) program. Both plans include personalized nutrition tailored to your goals.
 
-**Current State:** Fully functional and ready to use. The app generates the FBI PFT training plan with personalized nutrition based on user profile (gender, age, height, weight, goal, and rest day preference).
+**Current State:** Fully functional and ready to use. The app generates personalized training and nutrition plans based on user profile (gender, age, height, weight, goal, difficulty level, and rest day preference).
 
 ## Recent Changes (October 25, 2025)
 
+### Algorithmic Workout System
+- **Created intelligent workout algorithm** that generates personalized workouts based on:
+  - User profile (gender, age, height, weight)
+  - Fitness goal (weight loss, muscle gain, maintenance)
+  - Difficulty level (beginner, intermediate, advanced)
+  - Progressive overload (workouts intensify each week)
+- Calculates BMI and BMR (Basal Metabolic Rate) for personalized recommendations
+- Age-adjusted heart rate zones for optimal cardio training
+- Goal-specific rep schemes (higher reps for weight loss, lower for muscle gain)
+- 6-day training split tailored to each goal:
+  - **Weight Loss:** Cardio-focused with full body circuits
+  - **Muscle Gain:** Strength-focused with targeted muscle groups
+  - **Maintenance:** Balanced approach with variety
+- Created `workoutAlgorithm.js` with comprehensive exercise database
+
 ### FBI PFT Training Plan Integration
-- **Integrated FBI PFT 12-week structured training program** with 3 distinct phases:
+- **Added FBI PFT option** as alternative to algorithmic workouts
+- Integrated 12-week structured FBI PFT program with 3 distinct phases:
   - Phase 1 (Weeks 1-4): Foundation & Endurance
   - Phase 2 (Weeks 5-8): Power & Performance
   - Phase 3 (Weeks 9-12): Simulation & Peak Readiness
 - Created `fbiPlanData.js` with complete workout data organized by phase, week, and day
-- Refactored `planGenerator.js` to use structured FBI plan instead of random workouts
-- Updated `DailyRoutine.jsx` to display cardio and strength exercises separately with visual indicators
-- Each training day includes specific cardio and strength components based on FBI PFT requirements
+- Users can choose between Algorithmic or FBI PFT plan in profile setup
+- Both plans display cardio and strength exercises separately with visual indicators
+
+### Exercise Completion Tracking
+- Added clickable checkboxes for each exercise
+- Visual feedback with strikethrough for completed exercises
+- Progress saved to localStorage for persistence
 
 ### Week Structure & Customization
 - Full 7-day week (Sunday-Saturday) with 6 training days + 1 rest/cheat day
@@ -52,8 +72,9 @@ A personalized 12-week FBI PFT (Physical Fitness Test) training application buil
 │   ├── DailyRoutine.jsx       - Daily workout and meal display (cardio/strength split view)
 │   └── GroceryList.jsx        - Weekly grocery list generator
 ├── utils/
+│   ├── workoutAlgorithm.js    - Algorithmic workout generator (BMR, heart rate zones, progressive overload)
 │   ├── fbiPlanData.js         - FBI PFT 12-week structured training data (3 phases)
-│   ├── planGenerator.js       - Generates FBI PFT plan + personalized nutrition
+│   ├── planGenerator.js       - Generates workouts (algorithmic or FBI) + personalized nutrition
 │   └── dayHelper.js           - Helper for current day calculation
 ├── App.jsx                    - Main app component
 ├── main.jsx                   - React entry point
@@ -65,14 +86,17 @@ A personalized 12-week FBI PFT (Physical Fitness Test) training application buil
 ```
 
 ### Key Features
-1. **Profile Setup** - Collects user information (gender, age, height in feet/inches, weight in lbs, goal, rest day)
-2. **FBI PFT Training Plan** - Structured 12-week program with 3 phases targeting FBI fitness standards
+1. **Profile Setup** - Collects user information (gender, age, height in feet/inches, weight in lbs, goal, difficulty, rest day, plan type)
+2. **Dual Training Systems:**
+   - **Algorithmic Plan:** Workouts dynamically adapt to your profile using BMR, heart rate zones, and progressive overload
+   - **FBI PFT Plan:** Structured 12-week program with 3 phases targeting FBI fitness standards
 3. **Daily Routine** - Shows 7-day week with detailed cardio and strength workouts + meal plans
 4. **Exercise Completion Tracking** - Checkbox for each exercise to track progress; completed exercises show with strikethrough
-5. **Meal Detail Modal** - Displays recipes, macros, prep time, and instructions
-6. **Grocery List** - Auto-generated from weekly meals with ability to add custom items
-7. **Rest/Cheat Day** - User-customizable rest day (any day of the week)
-8. **LocalStorage Persistence** - Saves user profile, plan progress, and exercise completion state
+5. **Personalized Nutrition** - Meals tailored to your goal (weight loss, muscle gain, or maintenance)
+6. **Meal Detail Modal** - Displays recipes, macros, prep time, and instructions
+7. **Grocery List** - Auto-generated from weekly meals with ability to add custom items
+8. **Rest/Cheat Day** - User-customizable rest day (any day of the week)
+9. **LocalStorage Persistence** - Saves user profile, plan progress, and exercise completion state
 
 ### Color Scheme
 - **Primary:** #0B3D91 (Navy Blue)
