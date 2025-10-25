@@ -32,6 +32,21 @@ A personalized 12-week fitness training application built with React, Vite, and 
 - Users can choose between Algorithmic or FBI PFT plan in profile setup
 - Both plans display cardio and strength exercises separately with visual indicators
 
+### Personalized Macro Calculator
+- **Algorithmic nutrition system** that calculates personalized macros based on:
+  - User profile (gender, age, height, weight)
+  - Fitness goal (weight loss creates 500 cal deficit, muscle gain creates 400 cal surplus)
+  - Training plan type (FBI PFT = very active, Algorithmic = moderately active)
+- Calculates BMR (Basal Metabolic Rate) using Mifflin-St Jeor equation
+- Calculates TDEE (Total Daily Energy Expenditure) with activity multiplier
+- Goal-specific macro splits:
+  - **Weight Loss:** 35% protein, 40% carbs, 25% fat
+  - **Muscle Gain:** 30% protein, 45% carbs, 25% fat
+  - **Maintenance:** 30% protein, 40% carbs, 30% fat
+- Displays personalized daily targets and per-meal breakdowns
+- All meals automatically adjusted to match calculated macros
+- Created `nutritionAlgorithm.js` with comprehensive nutrition calculations
+
 ### Exercise Completion Tracking
 - Added clickable checkboxes for each exercise
 - Visual feedback with strikethrough for completed exercises

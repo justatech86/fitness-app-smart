@@ -1,5 +1,6 @@
 import { getWorkoutForDay } from './fbiPlanData.js';
 import { generateAlgorithmicWorkout } from './workoutAlgorithm.js';
+import { calculateMacros, adjustMealToMacros } from './nutritionAlgorithm.js';
 
 const mealsByGoal = {
   weight_loss: [
@@ -157,6 +158,9 @@ export function generate12WeekPlan(profile) {
   const validDays = ['0', '1', '2', '3', '4', '5', '6'];
   const restDayIndex = validDays.includes(String(cheatDay)) ? Number(cheatDay) : 6;
 
+  // Calculate personalized macros based on user profile
+  const userMacros = calculateMacros(profile);
+
   const plan = [];
 
   for (let week = 1; week <= 12; week++) {
@@ -198,16 +202,27 @@ export function generate12WeekPlan(profile) {
           workout = generateAlgorithmicWorkout(profile, week, trainingDayCounter);
         }
         
+        // Get base meals and adjust to personalized macros
+        const baseMeals = {
+          breakfast: weekMeals.find(m => m.type === 'breakfast'),
+          lunch: weekMeals.find(m => m.type === 'lunch'),
+          dinner: weekMeals.find(m => m.type === 'dinner'),
+          snack: weekMeals.find(m => m.type === 'snack')
+        };
+        
+        // Adjust each meal to match user's calculated macros
+        const personalizedMeals = {
+          breakfast: adjustMealToMacros(baseMeals.breakfast, userMacros.mealMacros.breakfast),
+          lunch: adjustMealToMacros(baseMeals.lunch, userMacros.mealMacros.lunch),
+          dinner: adjustMealToMacros(baseMeals.dinner, userMacros.mealMacros.dinner),
+          snack: adjustMealToMacros(baseMeals.snack, userMacros.mealMacros.snack)
+        };
+        
         weekData.days.push({
           dayName: dayNames[day],
           isRestDay: false,
           workout: workout,
-          meals: {
-            breakfast: weekMeals.find(m => m.type === 'breakfast'),
-            lunch: weekMeals.find(m => m.type === 'lunch'),
-            dinner: weekMeals.find(m => m.type === 'dinner'),
-            snack: weekMeals.find(m => m.type === 'snack')
-          },
+          meals: personalizedMeals,
           completed: false
         });
         

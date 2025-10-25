@@ -2,6 +2,7 @@ import ProfileSetup from './components/ProfileSetup';
 import Dashboard from './components/Dashboard';
 import DailyRoutine from './components/DailyRoutine';
 import GroceryList from './components/GroceryList';
+import MacroSummary from './components/MacroSummary';
 import { generate12WeekPlan } from './utils/planGenerator';
 import { getCurrentDayIndex } from './utils/dayHelper';
 import React, { useEffect, useState } from 'react';
@@ -67,11 +68,12 @@ export default function App() {
         currentWeek={currentWeek}
         onResetProfile={() => {
           localStorage.removeItem('userProfile');
-          localStorage.removeItem('weeklyPlan');
+          localStorage.removeItem('fitnessPlan');
           setProfile(null);
           setPlan([]);
         }}
       />
+      <MacroSummary profile={profile} />
       {plan.length > 0 && (
         <>
           <DailyRoutine
