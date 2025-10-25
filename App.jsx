@@ -14,11 +14,19 @@ export default function App() {
 
   useEffect(() => {
     const storedProfile = localStorage.getItem('userProfile');
+    const storedPlan = localStorage.getItem('fitnessplan');
+    
     if (storedProfile) {
       const parsedProfile = JSON.parse(storedProfile);
       setProfile(parsedProfile);
-      const newPlan = generate12WeekPlan(parsedProfile);
-      setPlan(newPlan);
+      
+      if (storedPlan) {
+        setPlan(JSON.parse(storedPlan));
+      } else {
+        const newPlan = generate12WeekPlan(parsedProfile);
+        setPlan(newPlan);
+        localStorage.setItem('fitnessPlan', JSON.stringify(newPlan));
+      }
     }
     setCurrentDayIndex(getCurrentDayIndex());
   }, []);
@@ -27,6 +35,25 @@ export default function App() {
     setProfile(newProfile);
     const newPlan = generate12WeekPlan(newProfile);
     setPlan(newPlan);
+    localStorage.setItem('fitnessPlan', JSON.stringify(newPlan));
+  };
+
+  const toggleExerciseCompletion = (weekIndex, dayIndex, exerciseType, exerciseIndex) => {
+    const updatedPlan = [...plan];
+    const day = updatedPlan[weekIndex].days[dayIndex];
+    
+    if (!day.completedExercises) {
+      day.completedExercises = { cardio: [], strength: [] };
+    }
+    
+    if (!day.completedExercises[exerciseType]) {
+      day.completedExercises[exerciseType] = [];
+    }
+    
+    day.completedExercises[exerciseType][exerciseIndex] = !day.completedExercises[exerciseType][exerciseIndex];
+    
+    setPlan(updatedPlan);
+    localStorage.setItem('fitnessPlan', JSON.stringify(updatedPlan));
   };
 
   if (!profile) return <ProfileSetup onSubmit={handleProfileSubmit} />;
@@ -50,6 +77,8 @@ export default function App() {
           <DailyRoutine
             weekData={plan[currentWeek - 1]}
             initialDayIndex={currentDayIndex}
+            weekIndex={currentWeek - 1}
+            onToggleExercise={toggleExerciseCompletion}
           />
           <GroceryList week={plan[currentWeek - 1]} />
         </>

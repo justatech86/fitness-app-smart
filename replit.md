@@ -68,10 +68,11 @@ A personalized 12-week FBI PFT (Physical Fitness Test) training application buil
 1. **Profile Setup** - Collects user information (gender, age, height in feet/inches, weight in lbs, goal, rest day)
 2. **FBI PFT Training Plan** - Structured 12-week program with 3 phases targeting FBI fitness standards
 3. **Daily Routine** - Shows 7-day week with detailed cardio and strength workouts + meal plans
-4. **Meal Detail Modal** - Displays recipes, macros, prep time, and instructions
-5. **Grocery List** - Auto-generated from weekly meals with ability to add custom items
-6. **Rest/Cheat Day** - User-customizable rest day (any day of the week)
-7. **LocalStorage Persistence** - Saves user profile and progress
+4. **Exercise Completion Tracking** - Checkbox for each exercise to track progress; completed exercises show with strikethrough
+5. **Meal Detail Modal** - Displays recipes, macros, prep time, and instructions
+6. **Grocery List** - Auto-generated from weekly meals with ability to add custom items
+7. **Rest/Cheat Day** - User-customizable rest day (any day of the week)
+8. **LocalStorage Persistence** - Saves user profile, plan progress, and exercise completion state
 
 ### Color Scheme
 - **Primary:** #0B3D91 (Navy Blue)

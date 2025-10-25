@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function DailyRoutine({ weekData, initialDayIndex }) {
+export default function DailyRoutine({ weekData, initialDayIndex, weekIndex, onToggleExercise }) {
   const [selectedDay, setSelectedDay] = useState(initialDayIndex || 0);
   const [showMealModal, setShowMealModal] = useState(false);
   const [selectedMeal, setSelectedMeal] = useState(null);
@@ -8,6 +8,7 @@ export default function DailyRoutine({ weekData, initialDayIndex }) {
   if (!weekData || !weekData.days) return null;
 
   const currentDay = weekData.days[selectedDay];
+  const completedExercises = currentDay.completedExercises || { cardio: [], strength: [] };
 
   const openMealDetail = (meal) => {
     setSelectedMeal(meal);
@@ -62,11 +63,32 @@ export default function DailyRoutine({ weekData, initialDayIndex }) {
                     <span className="mr-2">🏃‍♂️</span> Cardio
                   </h4>
                   <ul className="space-y-2">
-                    {currentDay.workout.cardio.map((exercise, index) => (
-                      <li key={index} className="text-gray-700 pl-4 border-l-2 border-accent">
-                        {exercise}
-                      </li>
-                    ))}
+                    {currentDay.workout.cardio.map((exercise, index) => {
+                      const isCompleted = completedExercises.cardio?.[index] || false;
+                      return (
+                        <li key={index} className="flex items-start gap-3 group">
+                          <button
+                            onClick={() => onToggleExercise(weekIndex, selectedDay, 'cardio', index)}
+                            className={`mt-1 flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
+                              isCompleted
+                                ? 'bg-accent border-accent text-white'
+                                : 'border-gray-300 hover:border-accent'
+                            }`}
+                          >
+                            {isCompleted && (
+                              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                              </svg>
+                            )}
+                          </button>
+                          <span className={`flex-1 pl-2 border-l-2 border-accent ${
+                            isCompleted ? 'text-gray-400 line-through' : 'text-gray-700'
+                          }`}>
+                            {exercise}
+                          </span>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               )}
@@ -77,11 +99,32 @@ export default function DailyRoutine({ weekData, initialDayIndex }) {
                     <span className="mr-2">💪</span> Strength
                   </h4>
                   <ul className="space-y-2">
-                    {currentDay.workout.strength.map((exercise, index) => (
-                      <li key={index} className="text-gray-700 pl-4 border-l-2 border-primary">
-                        {exercise}
-                      </li>
-                    ))}
+                    {currentDay.workout.strength.map((exercise, index) => {
+                      const isCompleted = completedExercises.strength?.[index] || false;
+                      return (
+                        <li key={index} className="flex items-start gap-3 group">
+                          <button
+                            onClick={() => onToggleExercise(weekIndex, selectedDay, 'strength', index)}
+                            className={`mt-1 flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
+                              isCompleted
+                                ? 'bg-primary border-primary text-white'
+                                : 'border-gray-300 hover:border-primary'
+                            }`}
+                          >
+                            {isCompleted && (
+                              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                              </svg>
+                            )}
+                          </button>
+                          <span className={`flex-1 pl-2 border-l-2 border-primary ${
+                            isCompleted ? 'text-gray-400 line-through' : 'text-gray-700'
+                          }`}>
+                            {exercise}
+                          </span>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               )}
