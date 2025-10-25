@@ -64,8 +64,8 @@ export default function DailyRoutine({ weekData, initialDayIndex, weekIndex, onT
     <div className="max-w-6xl mx-auto px-4 py-8 relative">
       {/* Day Completion - Small Celebration */}
       {showDayCelebration && (
-        <div className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center">
-          <div className="celebration-container">
+        <div className="absolute inset-0 pointer-events-none z-50 flex items-center justify-center overflow-hidden rounded-lg">
+          <div className="celebration-container w-full h-full">
             <div className="celebration-message animate-bounce">
               <div className="bg-gradient-to-r from-accent to-primary text-white text-2xl font-bold py-4 px-8 rounded-xl shadow-xl">
                 ✨ Day Complete! ✨
@@ -89,12 +89,12 @@ export default function DailyRoutine({ weekData, initialDayIndex, weekIndex, onT
 
       {/* Week Completion - BIG Celebration */}
       {showWeekCelebration && (
-        <div className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center">
-          <div className="celebration-container">
+        <div className="absolute inset-0 pointer-events-none z-50 flex items-center justify-center overflow-hidden rounded-lg">
+          <div className="celebration-container w-full h-full">
             <div className="celebration-message-big">
-              <div className="bg-gradient-to-r from-accent via-primary to-accent text-white text-5xl font-bold py-12 px-16 rounded-3xl shadow-2xl border-4 border-yellow-400 animate-pulse">
-                <div className="mb-4">🏆 WEEK COMPLETE! 🏆</div>
-                <div className="text-2xl font-normal">Amazing work! Keep going!</div>
+              <div className="bg-gradient-to-r from-accent via-primary to-accent text-white text-4xl font-bold py-8 px-12 rounded-3xl shadow-2xl border-4 border-yellow-400 animate-pulse">
+                <div className="mb-2">🏆 WEEK COMPLETE! 🏆</div>
+                <div className="text-lg font-normal">Amazing work! Keep going!</div>
               </div>
             </div>
             {/* Big Confetti Explosion */}

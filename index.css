@@ -60,7 +60,7 @@ h1, h2, h3, h4, h5, h6 {
   }
   100% {
     opacity: 0;
-    transform: translateY(100vh) rotate(360deg);
+    transform: translateY(800px) rotate(360deg);
   }
 }
 
@@ -81,11 +81,11 @@ h1, h2, h3, h4, h5, h6 {
     transform: translateY(0) rotate(0deg) scale(1);
   }
   50% {
-    transform: translateY(50vh) rotate(720deg) scale(1.5);
+    transform: translateY(400px) rotate(720deg) scale(1.5);
   }
   100% {
     opacity: 0;
-    transform: translateY(100vh) rotate(1440deg) scale(0.5);
+    transform: translateY(800px) rotate(1440deg) scale(0.5);
   }
 }
 
