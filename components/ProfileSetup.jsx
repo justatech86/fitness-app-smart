@@ -9,7 +9,7 @@ export default function ProfileSetup({ onSubmit }) {
     weight: '',
     goal: 'weight_loss',
     difficulty: 'beginner',
-    cheatDay: 6,
+    restDays: [6],
     planType: 'algorithmic',
     foodSensitivities: [],
     equipment: []
@@ -19,13 +19,9 @@ export default function ProfileSetup({ onSubmit }) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSensitivityToggle = (sensitivity) => {
-    const current = formData.foodSensitivities;
-    if (current.includes(sensitivity)) {
-      setFormData({ ...formData, foodSensitivities: current.filter(s => s !== sensitivity) });
-    } else {
-      setFormData({ ...formData, foodSensitivities: [...current, sensitivity] });
-    }
+  const handleSensitivityChange = (e) => {
+    const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
+    setFormData({ ...formData, foodSensitivities: selectedOptions });
   };
 
   const handleEquipmentToggle = (equipmentType) => {
@@ -34,6 +30,19 @@ export default function ProfileSetup({ onSubmit }) {
       setFormData({ ...formData, equipment: current.filter(e => e !== equipmentType) });
     } else {
       setFormData({ ...formData, equipment: [...current, equipmentType] });
+    }
+  };
+
+  const handleRestDayToggle = (dayIndex) => {
+    const current = formData.restDays;
+    if (current.includes(dayIndex)) {
+      // Must have at least one rest day
+      if (current.length === 1) return;
+      setFormData({ ...formData, restDays: current.filter(d => d !== dayIndex) });
+    } else {
+      // Can't have more than 3 rest days (minimum 4 training days)
+      if (current.length >= 3) return;
+      setFormData({ ...formData, restDays: [...current, dayIndex].sort((a, b) => a - b) });
     }
   };
 
@@ -207,41 +216,51 @@ export default function ProfileSetup({ onSubmit }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Food Sensitivities (Optional)</label>
-            <div className="grid grid-cols-2 gap-2">
-              {['gluten', 'fish', 'dairy', 'soy', 'nuts', 'eggs'].map((sensitivity) => (
-                <label key={sensitivity} className="flex items-center space-x-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={formData.foodSensitivities.includes(sensitivity)}
-                    onChange={() => handleSensitivityToggle(sensitivity)}
-                    className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
-                  />
-                  <span className="text-sm capitalize">{sensitivity}</span>
-                </label>
-              ))}
-            </div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Food Sensitivities (Optional)</label>
+            <select
+              multiple
+              value={formData.foodSensitivities}
+              onChange={handleSensitivityChange}
+              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
+            >
+              <option value="gluten">Gluten</option>
+              <option value="fish">Fish</option>
+              <option value="dairy">Dairy</option>
+              <option value="soy">Soy</option>
+              <option value="nuts">Nuts</option>
+              <option value="eggs">Eggs</option>
+            </select>
             <p className="text-xs text-gray-500 mt-1">
-              Meals will be adjusted to exclude selected ingredients
+              Hold Ctrl (Windows) or Cmd (Mac) to select multiple. Meals will be adjusted to exclude selected ingredients.
             </p>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Rest & Cheat Day</label>
-            <select
-              name="cheatDay"
-              value={formData.cheatDay}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
-            >
-              <option value="0">Sunday</option>
-              <option value="1">Monday</option>
-              <option value="2">Tuesday</option>
-              <option value="3">Wednesday</option>
-              <option value="4">Thursday</option>
-              <option value="5">Friday</option>
-              <option value="6">Saturday</option>
-            </select>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Rest & Cheat Days (Select 1-3)</label>
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                { value: 0, label: 'Sunday' },
+                { value: 1, label: 'Monday' },
+                { value: 2, label: 'Tuesday' },
+                { value: 3, label: 'Wednesday' },
+                { value: 4, label: 'Thursday' },
+                { value: 5, label: 'Friday' },
+                { value: 6, label: 'Saturday' }
+              ].map((day) => (
+                <label key={day.value} className="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.restDays.includes(day.value)}
+                    onChange={() => handleRestDayToggle(day.value)}
+                    className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                  />
+                  <span className="text-sm">{day.label}</span>
+                </label>
+              ))}
+            </div>
+            <p className="text-xs text-gray-500 mt-1">
+              Selected: {formData.restDays.length} rest day{formData.restDays.length !== 1 ? 's' : ''}, {7 - formData.restDays.length} training days
+            </p>
           </div>
 
           <button

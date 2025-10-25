@@ -13,9 +13,10 @@ function shuffleArray(array) {
 }
 
 export function generate12WeekPlan(profile) {
-  const { goal, cheatDay, planType, foodSensitivities = [] } = profile;
-  const validDays = ['0', '1', '2', '3', '4', '5', '6'];
-  const restDayIndex = validDays.includes(String(cheatDay)) ? Number(cheatDay) : 6;
+  const { goal, restDays = [6], planType, foodSensitivities = [] } = profile;
+  // Ensure restDays is an array and contains valid day indices
+  const validRestDays = Array.isArray(restDays) ? restDays : [6];
+  const restDayIndices = validRestDays.filter(d => d >= 0 && d <= 6);
 
   // Calculate personalized macros based on user profile
   const userMacros = calculateMacros(profile);
@@ -42,11 +43,12 @@ export function generate12WeekPlan(profile) {
     
     const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     
-    // Map 6 training days to the week, skipping the rest day
+    // Calculate total training days (7 - number of rest days)
+    const totalTrainingDays = 7 - restDayIndices.length;
     let trainingDayCounter = 1;
 
     for (let day = 0; day < 7; day++) {
-      if (day === restDayIndex) {
+      if (restDayIndices.includes(day)) {
         // Rest/Cheat Day
         weekData.days.push({
           dayName: dayNames[day],
@@ -70,7 +72,7 @@ export function generate12WeekPlan(profile) {
           };
         } else {
           // Algorithmic Plan (default)
-          workout = generateAlgorithmicWorkout(profile, week, trainingDayCounter);
+          workout = generateAlgorithmicWorkout(profile, week, trainingDayCounter, totalTrainingDays);
         }
         
         // Get base meals (cycle through available filtered meals)

@@ -7,6 +7,17 @@ A personalized 12-week fitness training application built with React, Vite, and 
 
 ## Recent Changes (October 25, 2025)
 
+### Multiple Rest Days & Adaptive Training
+- **Multi-select rest day system** allows users to choose 1-3 rest days per week
+- Training plans automatically adapt based on number of training days:
+  - 6 training days (1 rest): Full split with dedicated focus days
+  - 5 training days (2 rest): Optimized split maintaining muscle group balance
+  - 4 training days (3 rest): Efficient full-body and compound movement focus
+- Updated `workoutAlgorithm.js` with 4-day, 5-day, and 6-day training schedules for each goal
+- Updated `planGenerator.js` to calculate total training days and pass to workout generator
+- Celebration system automatically adjusts to count all training days in the week
+- Changed food sensitivities from checkboxes to multi-select dropdown for cleaner UI
+
 ### Equipment-Based Algorithmic Workout System
 - **Multi-select equipment system** allows users to choose any combination of:
   - Dumbbells
@@ -44,7 +55,7 @@ A personalized 12-week fitness training application built with React, Vite, and 
 - Both plans display cardio and strength exercises separately with visual indicators
 
 ### Food Sensitivity Filtering System
-- **Comprehensive allergen management** with checkbox selections for:
+- **Comprehensive allergen management** with multi-select dropdown for:
   - Gluten, Fish, Dairy, Soy, Nuts, Eggs
 - Created extensive meal database (`mealDatabase.js`) with 60+ meals tagged by allergen content
 - Intelligent meal filtering excludes all meals containing selected sensitivities
@@ -77,8 +88,9 @@ A personalized 12-week fitness training application built with React, Vite, and 
 - Progress saved to localStorage for persistence
 
 ### Week Structure & Customization
-- Full 7-day week (Sunday-Saturday) with 6 training days + 1 rest/cheat day
-- User-selectable rest/cheat day (defaults to Saturday)
+- Full 7-day week (Sunday-Saturday) with flexible training schedule
+- **Multi-select rest/cheat days:** Choose 1-3 rest days per week (minimum 4 training days)
+- Training plans automatically adapt to 4, 5, or 6 training days
 - Imperial measurements: feet/inches for height, pounds for weight
 - Automatic conversion to metric for internal calculations
 
@@ -128,7 +140,7 @@ A personalized 12-week fitness training application built with React, Vite, and 
 ```
 
 ### Key Features
-1. **Profile Setup** - Collects user information (gender, age, height in feet/inches, weight in lbs, goal, difficulty, rest day, food sensitivities, equipment, plan type)
+1. **Profile Setup** - Collects user information (gender, age, height in feet/inches, weight in lbs, goal, difficulty, rest days [1-3], food sensitivities, equipment, plan type)
 2. **Dual Training Systems:**
    - **Algorithmic Plan:** Workouts dynamically adapt to your profile, equipment, goal, and difficulty using BMR, heart rate zones, and progressive overload
    - **FBI PFT Plan:** Structured 12-week program with 3 phases targeting FBI fitness standards
@@ -140,7 +152,7 @@ A personalized 12-week fitness training application built with React, Vite, and 
 8. **Macro Summary Dashboard** - Displays daily calorie target, protein/carbs/fat breakdown, and per-meal distribution
 9. **Meal Detail Modal** - Displays recipes, macros, prep time, and instructions
 10. **Grocery List** - Auto-generated from filtered weekly meals (excludes allergen ingredients) with ability to add custom items
-11. **Rest/Cheat Day** - User-customizable rest day (any day of the week)
+11. **Rest/Cheat Days** - User-customizable rest days (1-3 days per week, minimum 4 training days)
 12. **LocalStorage Persistence** - Saves user profile, plan progress, and exercise completion state
 
 ### Design System

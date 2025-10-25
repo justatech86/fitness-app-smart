@@ -248,39 +248,86 @@ function generateStrengthWorkout(profile, weekNumber, dayType) {
   return selectExercises(exercisePool, difficulty, exerciseCount, scheme, intensity);
 }
 
-export function generateAlgorithmicWorkout(profile, weekNumber, trainingDay) {
+export function generateAlgorithmicWorkout(profile, weekNumber, trainingDay, totalTrainingDays = 6) {
   const { goal } = profile;
   
-  // 6-day training split
-  const trainingSchedule = {
-    weight_loss: [
-      { name: 'Full Body Cardio & Strength', strengthType: 'full_body' },
-      { name: 'Lower Body & HIIT', strengthType: 'lower_body' },
-      { name: 'Upper Body & Cardio', strengthType: 'upper_body' },
-      { name: 'Core & Endurance', strengthType: 'core' },
-      { name: 'Full Body Circuit', strengthType: 'full_body' },
-      { name: 'Active Recovery & Core', strengthType: 'core' }
-    ],
-    muscle_gain: [
-      { name: 'Chest & Triceps', strengthType: 'upper_body' },
-      { name: 'Legs & Core', strengthType: 'lower_body' },
-      { name: 'Back & Biceps', strengthType: 'upper_body' },
-      { name: 'Shoulders & Core', strengthType: 'upper_body' },
-      { name: 'Leg Power Day', strengthType: 'lower_body' },
-      { name: 'Full Body Strength', strengthType: 'full_body' }
-    ],
-    maintenance: [
-      { name: 'Upper Body Strength', strengthType: 'upper_body' },
-      { name: 'Lower Body & Cardio', strengthType: 'lower_body' },
-      { name: 'Full Body Circuit', strengthType: 'full_body' },
-      { name: 'Core & Conditioning', strengthType: 'core' },
-      { name: 'Upper Body & Cardio', strengthType: 'upper_body' },
-      { name: 'Lower Body & Flexibility', strengthType: 'lower_body' }
-    ]
+  // Adaptive training splits based on number of training days per week
+  const trainingSchedules = {
+    weight_loss: {
+      6: [
+        { name: 'Full Body Cardio & Strength', strengthType: 'full_body' },
+        { name: 'Lower Body & HIIT', strengthType: 'lower_body' },
+        { name: 'Upper Body & Cardio', strengthType: 'upper_body' },
+        { name: 'Core & Endurance', strengthType: 'core' },
+        { name: 'Full Body Circuit', strengthType: 'full_body' },
+        { name: 'Active Recovery & Core', strengthType: 'core' }
+      ],
+      5: [
+        { name: 'Full Body Cardio & Strength', strengthType: 'full_body' },
+        { name: 'Lower Body & HIIT', strengthType: 'lower_body' },
+        { name: 'Upper Body & Core', strengthType: 'upper_body' },
+        { name: 'Full Body Circuit', strengthType: 'full_body' },
+        { name: 'Total Body HIIT', strengthType: 'full_body' }
+      ],
+      4: [
+        { name: 'Full Body Strength & Cardio', strengthType: 'full_body' },
+        { name: 'Lower Body & Core', strengthType: 'lower_body' },
+        { name: 'Upper Body & HIIT', strengthType: 'upper_body' },
+        { name: 'Total Body Circuit', strengthType: 'full_body' }
+      ]
+    },
+    muscle_gain: {
+      6: [
+        { name: 'Chest & Triceps', strengthType: 'upper_body' },
+        { name: 'Legs & Core', strengthType: 'lower_body' },
+        { name: 'Back & Biceps', strengthType: 'upper_body' },
+        { name: 'Shoulders & Core', strengthType: 'upper_body' },
+        { name: 'Leg Power Day', strengthType: 'lower_body' },
+        { name: 'Full Body Strength', strengthType: 'full_body' }
+      ],
+      5: [
+        { name: 'Chest & Triceps', strengthType: 'upper_body' },
+        { name: 'Legs & Glutes', strengthType: 'lower_body' },
+        { name: 'Back & Biceps', strengthType: 'upper_body' },
+        { name: 'Shoulders & Core', strengthType: 'upper_body' },
+        { name: 'Full Body Power', strengthType: 'full_body' }
+      ],
+      4: [
+        { name: 'Upper Body Push', strengthType: 'upper_body' },
+        { name: 'Lower Body Strength', strengthType: 'lower_body' },
+        { name: 'Upper Body Pull', strengthType: 'upper_body' },
+        { name: 'Full Body Power', strengthType: 'full_body' }
+      ]
+    },
+    maintenance: {
+      6: [
+        { name: 'Upper Body Strength', strengthType: 'upper_body' },
+        { name: 'Lower Body & Cardio', strengthType: 'lower_body' },
+        { name: 'Full Body Circuit', strengthType: 'full_body' },
+        { name: 'Core & Conditioning', strengthType: 'core' },
+        { name: 'Upper Body & Cardio', strengthType: 'upper_body' },
+        { name: 'Lower Body & Flexibility', strengthType: 'lower_body' }
+      ],
+      5: [
+        { name: 'Upper Body Strength', strengthType: 'upper_body' },
+        { name: 'Lower Body & Core', strengthType: 'lower_body' },
+        { name: 'Full Body Circuit', strengthType: 'full_body' },
+        { name: 'Upper Body & Cardio', strengthType: 'upper_body' },
+        { name: 'Lower Body & Conditioning', strengthType: 'lower_body' }
+      ],
+      4: [
+        { name: 'Upper Body Strength', strengthType: 'upper_body' },
+        { name: 'Lower Body & Core', strengthType: 'lower_body' },
+        { name: 'Full Body Circuit', strengthType: 'full_body' },
+        { name: 'Total Body Conditioning', strengthType: 'full_body' }
+      ]
+    }
   };
 
-  const schedule = trainingSchedule[goal] || trainingSchedule.maintenance;
-  const dayPlan = schedule[trainingDay - 1];
+  const goalSchedules = trainingSchedules[goal] || trainingSchedules.maintenance;
+  // Use the appropriate split based on training days (default to 6 if not 4, 5, or 6)
+  const schedule = goalSchedules[totalTrainingDays] || goalSchedules[6];
+  const dayPlan = schedule[(trainingDay - 1) % schedule.length];
 
   return {
     name: `${dayPlan.name} - Week ${weekNumber}`,
