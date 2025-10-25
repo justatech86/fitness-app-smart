@@ -494,7 +494,7 @@ export default function Profile({ currentUser, profile, onBack }) {
           )}
         </div>
         </>
-        )}
+      )}
 
         {/* Account Tab Content */}
         {activeTab === 'account' && (
