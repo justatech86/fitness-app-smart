@@ -10,10 +10,12 @@ A personalized 12-week fitness and nutrition training application built with Rea
 - Created missing component files (ProfileSetup, Dashboard, DailyRoutine, GroceryList)
 - Created missing utility files (planGenerator.js, dayHelper.js)
 - Configured Vite to run on port 5000 with host 0.0.0.0 for Replit compatibility
-- Fixed Tailwind CSS configuration for proper file scanning
+- Fixed Tailwind CSS configuration for proper file scanning (excluding node_modules)
 - Added script tag to index.html to load the React app
+- Configured HMR (Hot Module Replacement) for Replit proxy compatibility
 - Configured deployment settings for autoscale deployment
 - Added .gitignore for Node.js project
+- Installed @vitejs/plugin-react for React support in Vite
 
 ## Project Architecture
 

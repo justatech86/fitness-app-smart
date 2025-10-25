@@ -4,7 +4,8 @@ export default function ProfileSetup({ onSubmit }) {
   const [formData, setFormData] = useState({
     gender: 'male',
     age: '',
-    height: '',
+    heightFeet: '',
+    heightInches: '',
     weight: '',
     goal: 'weight_loss',
     difficulty: 'beginner'
@@ -16,8 +17,15 @@ export default function ProfileSetup({ onSubmit }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    localStorage.setItem('userProfile', JSON.stringify(formData));
-    onSubmit(formData);
+    const heightInCm = Math.round((parseFloat(formData.heightFeet) * 30.48) + (parseFloat(formData.heightInches) * 2.54));
+    const weightInKg = Math.round(parseFloat(formData.weight) * 0.453592);
+    const profileData = {
+      ...formData,
+      height: heightInCm,
+      weight: weightInKg
+    };
+    localStorage.setItem('userProfile', JSON.stringify(profileData));
+    onSubmit(profileData);
   };
 
   return (
@@ -56,30 +64,47 @@ export default function ProfileSetup({ onSubmit }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Height (cm)</label>
-            <input
-              type="number"
-              name="height"
-              value={formData.height}
-              onChange={handleChange}
-              required
-              min="100"
-              max="250"
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
-              placeholder="Enter your height"
-            />
+            <label className="block text-sm font-medium text-gray-700 mb-1">Height</label>
+            <div className="flex gap-2">
+              <div className="flex-1">
+                <input
+                  type="number"
+                  name="heightFeet"
+                  value={formData.heightFeet}
+                  onChange={handleChange}
+                  required
+                  min="3"
+                  max="8"
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
+                  placeholder="Feet"
+                />
+              </div>
+              <div className="flex-1">
+                <input
+                  type="number"
+                  name="heightInches"
+                  value={formData.heightInches}
+                  onChange={handleChange}
+                  required
+                  min="0"
+                  max="11"
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
+                  placeholder="Inches"
+                />
+              </div>
+            </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Weight (kg)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Weight (lbs)</label>
             <input
               type="number"
               name="weight"
               value={formData.weight}
               onChange={handleChange}
               required
-              min="30"
-              max="300"
+              min="66"
+              max="660"
               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
               placeholder="Enter your weight"
             />
