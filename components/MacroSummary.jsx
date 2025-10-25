@@ -11,7 +11,7 @@ export default function MacroSummary({ profile }) {
       <div className="bg-gradient-to-r from-primary to-accent rounded-lg shadow-lg p-6 text-white">
         <h3 className="text-2xl font-bold mb-4">Your Personalized Nutrition Plan</h3>
         
-        <div className="grid md:grid-cols-2 gap-6 mb-4">
+        <div className="grid md:grid-cols-3 gap-6 mb-4">
           <div>
             <p className="text-sm opacity-90 mb-1">Goal</p>
             <p className="text-lg font-semibold">{macros.goalDescription}</p>
@@ -19,6 +19,10 @@ export default function MacroSummary({ profile }) {
           <div>
             <p className="text-sm opacity-90 mb-1">Activity Level</p>
             <p className="text-lg font-semibold">{macros.planDescription}</p>
+          </div>
+          <div>
+            <p className="text-sm opacity-90 mb-1">Diet Plan</p>
+            <p className="text-lg font-semibold">{macros.dietDescription}</p>
           </div>
         </div>
 

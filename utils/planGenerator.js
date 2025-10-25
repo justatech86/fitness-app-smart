@@ -13,7 +13,7 @@ function shuffleArray(array) {
 }
 
 export function generate12WeekPlan(profile) {
-  const { goal, restDays = [6], planType, foodSensitivities = [] } = profile;
+  const { goal, restDays = [6], planType, foodSensitivities = [], dietType = 'standard' } = profile;
   // Ensure restDays is an array and contains valid day indices
   const validRestDays = Array.isArray(restDays) ? restDays : [6];
   const restDayIndices = validRestDays.filter(d => d >= 0 && d <= 6);
@@ -21,11 +21,11 @@ export function generate12WeekPlan(profile) {
   // Calculate personalized macros based on user profile
   const userMacros = calculateMacros(profile);
 
-  // Get filtered meals based on food sensitivities
-  const breakfastOptions = getMealsByGoalAndType(goal, 'breakfast', foodSensitivities);
-  const lunchOptions = getMealsByGoalAndType(goal, 'lunch', foodSensitivities);
-  const dinnerOptions = getMealsByGoalAndType(goal, 'dinner', foodSensitivities);
-  const snackOptions = getMealsByGoalAndType(goal, 'snack', foodSensitivities);
+  // Get filtered meals based on food sensitivities and diet type
+  const breakfastOptions = getMealsByGoalAndType(goal, 'breakfast', foodSensitivities, dietType);
+  const lunchOptions = getMealsByGoalAndType(goal, 'lunch', foodSensitivities, dietType);
+  const dinnerOptions = getMealsByGoalAndType(goal, 'dinner', foodSensitivities, dietType);
+  const snackOptions = getMealsByGoalAndType(goal, 'snack', foodSensitivities, dietType);
 
   const plan = [];
 
