@@ -1,4 +1,5 @@
 // Comprehensive meal database with allergen tags
+import { isMealDietCompliant } from './dietRules.js';
 
 export const mealDatabase = {
   weight_loss: [
@@ -748,9 +749,6 @@ export function filterMealsByAllergies(meals, sensitivities) {
 // Helper function to filter meals by diet type
 export function filterMealsByDiet(meals, dietType) {
   if (!dietType || dietType === 'standard') return meals;
-  
-  // Import diet compliance function
-  const { isMealDietCompliant } = require('./dietRules.js');
   
   return meals.filter(meal => isMealDietCompliant(meal, dietType));
 }
