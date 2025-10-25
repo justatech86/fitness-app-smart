@@ -61,72 +61,7 @@ export default function DailyRoutine({ weekData, initialDayIndex, weekIndex, onT
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8 relative">
-      {/* Day Completion - Small Celebration */}
-      {showDayCelebration && (
-        <div className="absolute inset-0 pointer-events-none z-50 flex items-center justify-center overflow-hidden rounded-lg">
-          <div className="celebration-container w-full h-full">
-            <div className="celebration-message animate-bounce">
-              <div className="bg-gradient-to-r from-accent to-primary text-white text-2xl font-bold py-4 px-8 rounded-xl shadow-xl">
-                ✨ Day Complete! ✨
-              </div>
-            </div>
-            {/* Small Confetti */}
-            {[...Array(20)].map((_, i) => (
-              <div
-                key={i}
-                className="confetti-small"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 0.3}s`,
-                  backgroundColor: ['#8B6F47', '#7A8450', '#D4AF37'][Math.floor(Math.random() * 3)]
-                }}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Week Completion - BIG Celebration */}
-      {showWeekCelebration && (
-        <div className="absolute inset-0 pointer-events-none z-50 flex items-center justify-center overflow-hidden rounded-lg">
-          <div className="celebration-container w-full h-full">
-            <div className="celebration-message-big">
-              <div className="bg-gradient-to-r from-accent via-primary to-accent text-white text-4xl font-bold py-8 px-12 rounded-3xl shadow-2xl border-4 border-yellow-400 animate-pulse">
-                <div className="mb-2">🏆 WEEK COMPLETE! 🏆</div>
-                <div className="text-lg font-normal">Amazing work! Keep going!</div>
-              </div>
-            </div>
-            {/* Big Confetti Explosion */}
-            {[...Array(100)].map((_, i) => (
-              <div
-                key={i}
-                className="confetti-big"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 0.8}s`,
-                  backgroundColor: ['#8B6F47', '#7A8450', '#D4AF37', '#FF6B6B', '#4ECDC4', '#FFD700', '#FFA500'][Math.floor(Math.random() * 7)]
-                }}
-              />
-            ))}
-            {/* Sparkles */}
-            {[...Array(30)].map((_, i) => (
-              <div
-                key={`sparkle-${i}`}
-                className="sparkle"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 1}s`
-                }}
-              >
-                ✨
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
+    <div className="max-w-6xl mx-auto px-4 py-8">
       <h2 className="text-2xl font-bold text-primary mb-6">Daily Routine - Week {weekData.weekNumber}</h2>
 
       <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
@@ -146,7 +81,7 @@ export default function DailyRoutine({ weekData, initialDayIndex, weekIndex, onT
       </div>
 
       {currentDay.isRestDay ? (
-        <div className="bg-gradient-to-br from-accent to-primary rounded-lg shadow-lg p-12 text-center text-white">
+        <div className="bg-gradient-to-br from-accent to-primary rounded-lg shadow-lg p-12 text-center text-white relative">
           <h3 className="text-4xl font-bold mb-4">🎉 Rest & Cheat Day!</h3>
           <p className="text-xl mb-6">{currentDay.dayName} is your day to recover and enjoy!</p>
           <div className="grid md:grid-cols-2 gap-6 mt-8">
@@ -161,7 +96,72 @@ export default function DailyRoutine({ weekData, initialDayIndex, weekIndex, onT
           </div>
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-6 relative">
+          {/* Day Completion - Small Celebration */}
+          {showDayCelebration && (
+            <div className="absolute inset-0 pointer-events-none z-50 flex items-center justify-center overflow-hidden rounded-lg">
+              <div className="celebration-container w-full h-full">
+                <div className="celebration-message animate-bounce">
+                  <div className="bg-gradient-to-r from-accent to-primary text-white text-2xl font-bold py-4 px-8 rounded-xl shadow-xl">
+                    ✨ Day Complete! ✨
+                  </div>
+                </div>
+                {/* Small Confetti */}
+                {[...Array(20)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="confetti-small"
+                    style={{
+                      left: `${Math.random() * 100}%`,
+                      animationDelay: `${Math.random() * 0.3}s`,
+                      backgroundColor: ['#8B6F47', '#7A8450', '#D4AF37'][Math.floor(Math.random() * 3)]
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Week Completion - BIG Celebration */}
+          {showWeekCelebration && (
+            <div className="absolute inset-0 pointer-events-none z-50 flex items-center justify-center overflow-hidden rounded-lg">
+              <div className="celebration-container w-full h-full">
+                <div className="celebration-message-big">
+                  <div className="bg-gradient-to-r from-accent via-primary to-accent text-white text-4xl font-bold py-8 px-12 rounded-3xl shadow-2xl border-4 border-yellow-400 animate-pulse">
+                    <div className="mb-2">🏆 WEEK COMPLETE! 🏆</div>
+                    <div className="text-lg font-normal">Amazing work! Keep going!</div>
+                  </div>
+                </div>
+                {/* Big Confetti Explosion */}
+                {[...Array(100)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="confetti-big"
+                    style={{
+                      left: `${Math.random() * 100}%`,
+                      animationDelay: `${Math.random() * 0.8}s`,
+                      backgroundColor: ['#8B6F47', '#7A8450', '#D4AF37', '#FF6B6B', '#4ECDC4', '#FFD700', '#FFA500'][Math.floor(Math.random() * 7)]
+                    }}
+                  />
+                ))}
+                {/* Sparkles */}
+                {[...Array(30)].map((_, i) => (
+                  <div
+                    key={`sparkle-${i}`}
+                    className="sparkle"
+                    style={{
+                      left: `${Math.random() * 100}%`,
+                      top: `${Math.random() * 100}%`,
+                      animationDelay: `${Math.random() * 1}s`
+                    }}
+                  >
+                    ✨
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-2xl font-bold text-primary mb-2">{currentDay.workout.name}</h3>
             <p className="text-sm text-gray-500 mb-6">Week {weekData.weekNumber} - {currentDay.dayName}</p>
