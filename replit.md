@@ -9,6 +9,11 @@ A personalized 12-week fitness training application built with React, Vite, and 
 
 ### Profile Tab with Photo Uploads (October 25, 2025)
 - **Profile photo upload** for user personalization
+- **User stats dashboard** displaying next to profile photo:
+  - Age (from profile)
+  - Height in feet/inches (from profile)
+  - Current Weight (from most recent progress photo, or initial weight if no photos)
+  - Total Weight Change (calculated from initial weight to current, with visual indicators)
 - **Progress photos gallery** to track fitness journey over time
 - **Weight tracking** with each progress photo to monitor body composition changes
 - **Motivational encouragement** - Random motivational message displayed after each photo upload (15 unique messages with emojis)
@@ -21,7 +26,8 @@ A personalized 12-week fitness training application built with React, Vite, and 
 - Delete progress photos with confirmation
 - Profile page accessible from dashboard with "Profile" button
 - Encouragement message auto-dismisses after 5 seconds with fade-in animation
-- Created `components/Profile.jsx` with photo upload, weight input, and gallery UI
+- Weight change indicator shows green (down arrow) for weight loss, blue (up arrow) for weight gain
+- Created `components/Profile.jsx` with photo upload, weight input, stats dashboard, and gallery UI
 
 ### User Authentication with Biometric Login (October 25, 2025)
 - **Multi-user support** with username/password authentication

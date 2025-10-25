@@ -27,6 +27,7 @@ export default function Profile({ currentUser, profile, onBack }) {
   const [tempWeight, setTempWeight] = useState('');
   const [encouragementMessage, setEncouragementMessage] = useState('');
   const encouragementTimeoutRef = React.useRef(null);
+  const [activeTab, setActiveTab] = useState('profile');
 
   // Calculate user stats
   const getUserStats = () => {
@@ -194,6 +195,51 @@ export default function Profile({ currentUser, profile, onBack }) {
     });
   };
 
+  const handleResetProgress = () => {
+    if (confirm('Are you sure you want to reset all your workout progress? This will clear all completed exercises but keep your profile and progress photos.')) {
+      // Clear workout completion data
+      const planKey = `user_${currentUser}_plan`;
+      localStorage.removeItem(planKey);
+      alert('Workout progress has been reset. Please refresh the page to see changes.');
+    }
+  };
+
+  const handleDeleteAccount = () => {
+    const confirmMessage = `⚠️ WARNING: This will permanently delete your account and ALL data including:\n\n• Your fitness profile\n• All progress photos\n• Workout history\n• All personal data\n\nType "${currentUser}" to confirm deletion:`;
+    
+    const confirmation = prompt(confirmMessage);
+    
+    if (confirmation === currentUser) {
+      // Delete all user data
+      const userKeys = [
+        `user_${currentUser}_profile`,
+        `user_${currentUser}_plan`,
+        `user_${currentUser}_photos`
+      ];
+      
+      userKeys.forEach(key => localStorage.removeItem(key));
+      
+      // Remove from users list
+      const users = JSON.parse(localStorage.getItem('users') || '{}');
+      delete users[currentUser];
+      localStorage.setItem('users', JSON.stringify(users));
+      
+      // Remove biometric credentials
+      const biometricCreds = JSON.parse(localStorage.getItem('biometricCredentials') || '{}');
+      delete biometricCreds[currentUser];
+      localStorage.setItem('biometricCredentials', JSON.stringify(biometricCreds));
+      
+      // Clear current session
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('lastLoggedInUser');
+      
+      alert('Your account has been permanently deleted.');
+      window.location.reload();
+    } else if (confirmation !== null) {
+      alert('Account deletion cancelled. Username did not match.');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-neutralBg">
       {/* Header */}
@@ -214,6 +260,46 @@ export default function Profile({ currentUser, profile, onBack }) {
       </div>
 
       <div className="max-w-6xl mx-auto p-4 space-y-6">
+        {/* Tabs Navigation */}
+        <div className="bg-white rounded-lg shadow-md">
+          <div className="flex border-b border-gray-200">
+            <button
+              onClick={() => setActiveTab('profile')}
+              className={`flex-1 py-4 px-6 text-center font-medium transition-colors ${
+                activeTab === 'profile'
+                  ? 'text-primary border-b-2 border-primary bg-gray-50'
+                  : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              <div className="flex items-center justify-center gap-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                Profile
+              </div>
+            </button>
+            <button
+              onClick={() => setActiveTab('account')}
+              className={`flex-1 py-4 px-6 text-center font-medium transition-colors ${
+                activeTab === 'account'
+                  ? 'text-primary border-b-2 border-primary bg-gray-50'
+                  : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              <div className="flex items-center justify-center gap-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                Account
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* Profile Tab Content */}
+        {activeTab === 'profile' && (
+          <>
         {/* Profile Photo & Stats Section */}
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex justify-between items-center mb-4">
@@ -407,6 +493,87 @@ export default function Profile({ currentUser, profile, onBack }) {
             </div>
           )}
         </div>
+        </>
+        )}
+
+        {/* Account Tab Content */}
+        {activeTab === 'account' && (
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h2 className="text-xl font-bold text-primary mb-6">Account Settings</h2>
+            
+            <div className="space-y-6">
+              {/* Reset Progress Section */}
+              <div className="border border-gray-200 rounded-lg p-6">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                      <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Reset Workout Progress</h3>
+                    <p className="text-gray-600 text-sm mb-4">
+                      Clear all completed exercise checkmarks and start fresh with your current plan. 
+                      Your profile, progress photos, and meal plans will remain unchanged.
+                    </p>
+                    <button
+                      onClick={handleResetProgress}
+                      className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-md transition-colors font-medium flex items-center gap-2"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                      Reset Progress
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Delete Account Section */}
+              <div className="border border-red-200 rounded-lg p-6 bg-red-50">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                      <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-red-900 mb-2">Delete Account</h3>
+                    <p className="text-red-800 text-sm mb-2">
+                      <strong>Warning:</strong> This action cannot be undone. This will permanently delete:
+                    </p>
+                    <ul className="text-red-700 text-sm mb-4 list-disc list-inside space-y-1">
+                      <li>Your fitness profile and preferences</li>
+                      <li>All workout history and progress</li>
+                      <li>All progress photos and weight data</li>
+                      <li>Your account credentials</li>
+                    </ul>
+                    <button
+                      onClick={handleDeleteAccount}
+                      className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-md transition-colors font-medium flex items-center gap-2"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                      Delete Account Permanently
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Account Info */}
+              <div className="border-t border-gray-200 pt-6">
+                <p className="text-sm text-gray-500">
+                  <strong>Account:</strong> @{currentUser}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Upload Modal */}
