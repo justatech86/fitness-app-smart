@@ -33,19 +33,30 @@ export default function Profile({ currentUser, profile, onBack }) {
   const getUserStats = () => {
     if (!profile) return null;
 
-    const initialWeight = profile.weight;
+    // Convert weight from kg to lbs for display
+    const initialWeightLbs = Math.round(profile.weight / 0.453592);
+    
+    // Convert height from cm to feet/inches for display
+    let heightFeet = profile.heightFeet;
+    let heightInches = profile.heightInches;
+    if (!heightFeet && profile.height) {
+      const totalInches = profile.height / 2.54;
+      heightFeet = Math.floor(totalInches / 12);
+      heightInches = Math.round(totalInches % 12);
+    }
+    
     const mostRecentPhoto = progressPhotos.length > 0 
       ? progressPhotos.sort((a, b) => new Date(b.date) - new Date(a.date))[0]
       : null;
     
-    const currentWeight = mostRecentPhoto ? mostRecentPhoto.weight : initialWeight;
-    const weightChange = currentWeight - initialWeight;
+    const currentWeight = mostRecentPhoto ? mostRecentPhoto.weight : initialWeightLbs;
+    const weightChange = currentWeight - initialWeightLbs;
 
     return {
       age: profile.age,
-      heightFeet: profile.heightFeet,
-      heightInches: profile.heightInches,
-      initialWeight,
+      heightFeet,
+      heightInches,
+      initialWeight: initialWeightLbs,
       currentWeight,
       weightChange
     };
