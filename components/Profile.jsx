@@ -219,15 +219,13 @@ export default function Profile({ currentUser, profile, onBack }) {
       
       userKeys.forEach(key => localStorage.removeItem(key));
       
-      // Remove from users list
-      const users = JSON.parse(localStorage.getItem('users') || '{}');
+      // Remove from users list (fitnessUsers is the correct key)
+      const users = JSON.parse(localStorage.getItem('fitnessUsers') || '{}');
       delete users[currentUser];
-      localStorage.setItem('users', JSON.stringify(users));
+      localStorage.setItem('fitnessUsers', JSON.stringify(users));
       
-      // Remove biometric credentials
-      const biometricCreds = JSON.parse(localStorage.getItem('biometricCredentials') || '{}');
-      delete biometricCreds[currentUser];
-      localStorage.setItem('biometricCredentials', JSON.stringify(biometricCreds));
+      // Remove biometric credentials (per-user key format)
+      localStorage.removeItem(`biometric_${currentUser}`);
       
       // Clear current session
       localStorage.removeItem('currentUser');
