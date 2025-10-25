@@ -4,6 +4,7 @@ import Dashboard from './components/Dashboard';
 import DailyRoutine from './components/DailyRoutine';
 import GroceryList from './components/GroceryList';
 import MacroSummary from './components/MacroSummary';
+import Profile from './components/Profile';
 import { generate12WeekPlan } from './utils/planGenerator';
 import { getCurrentDayIndex } from './utils/dayHelper';
 import { registerBiometric, hasBiometricCredential } from './utils/biometricAuth';
@@ -17,6 +18,7 @@ export default function App() {
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
   const [showProfileSetup, setShowProfileSetup] = useState(false);
   const [showBiometricSetup, setShowBiometricSetup] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem('currentUser');
@@ -159,6 +161,11 @@ export default function App() {
     return <ProfileSetup onSubmit={handleProfileSubmit} existingProfile={profile} />;
   }
 
+  // Show profile page if user clicked on profile
+  if (showProfile) {
+    return <Profile currentUser={currentUser} onBack={() => setShowProfile(false)} />;
+  }
+
   return (
     <div className="min-h-screen bg-neutralBg">
       <Dashboard
@@ -168,6 +175,7 @@ export default function App() {
         currentWeek={currentWeek}
         currentUser={currentUser}
         onEditProfile={() => setShowProfileSetup(true)}
+        onShowProfile={() => setShowProfile(true)}
         onLogout={handleLogout}
       />
       <MacroSummary profile={profile} />
