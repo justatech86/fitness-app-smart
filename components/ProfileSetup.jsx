@@ -11,7 +11,8 @@ export default function ProfileSetup({ onSubmit }) {
     difficulty: 'beginner',
     cheatDay: 6,
     planType: 'algorithmic',
-    foodSensitivities: []
+    foodSensitivities: [],
+    equipment: []
   });
 
   const handleChange = (e) => {
@@ -24,6 +25,15 @@ export default function ProfileSetup({ onSubmit }) {
       setFormData({ ...formData, foodSensitivities: current.filter(s => s !== sensitivity) });
     } else {
       setFormData({ ...formData, foodSensitivities: [...current, sensitivity] });
+    }
+  };
+
+  const handleEquipmentToggle = (equipmentType) => {
+    const current = formData.equipment;
+    if (current.includes(equipmentType)) {
+      setFormData({ ...formData, equipment: current.filter(e => e !== equipmentType) });
+    } else {
+      setFormData({ ...formData, equipment: [...current, equipmentType] });
     }
   };
 
@@ -167,6 +177,33 @@ export default function ProfileSetup({ onSubmit }) {
               <option value="intermediate">Intermediate</option>
               <option value="advanced">Advanced</option>
             </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Available Equipment (Select All That Apply)</label>
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                { value: 'dumbbells', label: 'Dumbbells' },
+                { value: 'barbell', label: 'Barbell & Weights' },
+                { value: 'pull_up_bar', label: 'Pull-up Bar' },
+                { value: 'resistance_bands', label: 'Resistance Bands' },
+                { value: 'cable', label: 'Cable Machine' },
+                { value: 'machine', label: 'Gym Machines' }
+              ].map((eq) => (
+                <label key={eq.value} className="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.equipment.includes(eq.value)}
+                    onChange={() => handleEquipmentToggle(eq.value)}
+                    className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                  />
+                  <span className="text-sm">{eq.label}</span>
+                </label>
+              ))}
+            </div>
+            <p className="text-xs text-gray-500 mt-1">
+              Bodyweight exercises are always included. Select additional equipment you have access to.
+            </p>
           </div>
 
           <div>

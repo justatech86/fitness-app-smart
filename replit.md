@@ -7,11 +7,22 @@ A personalized 12-week fitness training application built with React, Vite, and 
 
 ## Recent Changes (October 25, 2025)
 
-### Algorithmic Workout System
-- **Created intelligent workout algorithm** that generates personalized workouts based on:
+### Equipment-Based Algorithmic Workout System
+- **Multi-select equipment system** allows users to choose any combination of:
+  - Dumbbells
+  - Barbell & Weights
+  - Pull-up Bar
+  - Resistance Bands
+  - Cable Machine
+  - Gym Machines
+  - (Bodyweight exercises always included)
+- **Intelligent exercise filtering** generates workouts using only available equipment
+- **Comprehensive exercise database** with 80+ exercises tagged by equipment requirements
+- **Adaptive workout generation** based on:
   - User profile (gender, age, height, weight)
   - Fitness goal (weight loss, muscle gain, maintenance)
   - Difficulty level (beginner, intermediate, advanced)
+  - Available equipment (filters exercises dynamically)
   - Progressive overload (workouts intensify each week)
 - Calculates BMI and BMR (Basal Metabolic Rate) for personalized recommendations
 - Age-adjusted heart rate zones for optimal cardio training
@@ -20,7 +31,7 @@ A personalized 12-week fitness training application built with React, Vite, and 
   - **Weight Loss:** Cardio-focused with full body circuits
   - **Muscle Gain:** Strength-focused with targeted muscle groups
   - **Maintenance:** Balanced approach with variety
-- Created `workoutAlgorithm.js` with comprehensive exercise database
+- Created `workoutAlgorithm.js` with equipment-filtered exercise system
 
 ### FBI PFT Training Plan Integration
 - **Added FBI PFT option** as alternative to algorithmic workouts
@@ -115,19 +126,20 @@ A personalized 12-week fitness training application built with React, Vite, and 
 ```
 
 ### Key Features
-1. **Profile Setup** - Collects user information (gender, age, height in feet/inches, weight in lbs, goal, difficulty, rest day, food sensitivities, plan type)
+1. **Profile Setup** - Collects user information (gender, age, height in feet/inches, weight in lbs, goal, difficulty, rest day, food sensitivities, equipment, plan type)
 2. **Dual Training Systems:**
-   - **Algorithmic Plan:** Workouts dynamically adapt to your profile using BMR, heart rate zones, and progressive overload
+   - **Algorithmic Plan:** Workouts dynamically adapt to your profile, equipment, goal, and difficulty using BMR, heart rate zones, and progressive overload
    - **FBI PFT Plan:** Structured 12-week program with 3 phases targeting FBI fitness standards
-3. **Food Sensitivity Management** - Select allergens (gluten, fish, dairy, soy, nuts, eggs) and get filtered meal plans with safe alternatives
-4. **Daily Routine** - Shows 7-day week with detailed cardio and strength workouts + filtered meal plans
-5. **Exercise Completion Tracking** - Checkbox for each exercise to track progress; completed exercises show with strikethrough
-6. **Personalized Nutrition** - Meals tailored to your goal with calculated macros matching your BMR/TDEE
-7. **Macro Summary Dashboard** - Displays daily calorie target, protein/carbs/fat breakdown, and per-meal distribution
-8. **Meal Detail Modal** - Displays recipes, macros, prep time, and instructions
-9. **Grocery List** - Auto-generated from filtered weekly meals (excludes allergen ingredients) with ability to add custom items
-10. **Rest/Cheat Day** - User-customizable rest day (any day of the week)
-11. **LocalStorage Persistence** - Saves user profile, plan progress, and exercise completion state
+3. **Equipment-Based Workouts** - Select any combination of equipment (dumbbells, barbell, pull-up bar, resistance bands, cable, machines) and get exercises tailored to what you have available (80+ exercises in database)
+4. **Food Sensitivity Management** - Select allergens (gluten, fish, dairy, soy, nuts, eggs) and get filtered meal plans with safe alternatives
+5. **Daily Routine** - Shows 7-day week with detailed equipment-filtered cardio and strength workouts + filtered meal plans
+6. **Exercise Completion Tracking** - Checkbox for each exercise to track progress; completed exercises show with strikethrough
+7. **Personalized Nutrition** - Meals tailored to your goal with calculated macros matching your BMR/TDEE
+8. **Macro Summary Dashboard** - Displays daily calorie target, protein/carbs/fat breakdown, and per-meal distribution
+9. **Meal Detail Modal** - Displays recipes, macros, prep time, and instructions
+10. **Grocery List** - Auto-generated from filtered weekly meals (excludes allergen ingredients) with ability to add custom items
+11. **Rest/Cheat Day** - User-customizable rest day (any day of the week)
+12. **LocalStorage Persistence** - Saves user profile, plan progress, and exercise completion state
 
 ### Design System
 **Color Palette (Earth Tones):**

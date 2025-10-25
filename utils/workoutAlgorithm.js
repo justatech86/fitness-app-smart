@@ -1,4 +1,4 @@
-// Algorithmic workout generator based on user profile
+// Algorithmic workout generator based on user profile with equipment filtering
 
 function calculateBMI(heightCm, weightKg) {
   return weightKg / ((heightCm / 100) ** 2);
@@ -29,10 +29,125 @@ function getIntensityForWeek(weekNumber, difficulty) {
   return Math.min(baseIntensity * weekMultiplier, baseIntensity * 1.5); // Cap at 50% increase
 }
 
-function generateCardioWorkout(profile, weekNumber, dayType) {
-  const { goal, difficulty, age } = profile;
+// Exercise database with equipment tags
+const exerciseDatabase = {
+  upper_body: [
+    { name: 'Push-ups', equipment: 'bodyweight', difficulty: 'beginner' },
+    { name: 'Diamond push-ups', equipment: 'bodyweight', difficulty: 'intermediate' },
+    { name: 'Decline push-ups', equipment: 'bodyweight', difficulty: 'intermediate' },
+    { name: 'Pike push-ups', equipment: 'bodyweight', difficulty: 'intermediate' },
+    { name: 'Dumbbell rows', equipment: 'dumbbells', difficulty: 'beginner' },
+    { name: 'Dumbbell bench press', equipment: 'dumbbells', difficulty: 'beginner' },
+    { name: 'Dumbbell shoulder press', equipment: 'dumbbells', difficulty: 'beginner' },
+    { name: 'Dumbbell flyes', equipment: 'dumbbells', difficulty: 'intermediate' },
+    { name: 'Dumbbell pullovers', equipment: 'dumbbells', difficulty: 'intermediate' },
+    { name: 'Bicep curls', equipment: 'dumbbells', difficulty: 'beginner' },
+    { name: 'Hammer curls', equipment: 'dumbbells', difficulty: 'beginner' },
+    { name: 'Tricep kickbacks', equipment: 'dumbbells', difficulty: 'beginner' },
+    { name: 'Overhead tricep extension', equipment: 'dumbbells', difficulty: 'intermediate' },
+    { name: 'Pull-ups', equipment: 'pull_up_bar', difficulty: 'intermediate' },
+    { name: 'Chin-ups', equipment: 'pull_up_bar', difficulty: 'intermediate' },
+    { name: 'Inverted rows', equipment: 'pull_up_bar', difficulty: 'beginner' },
+    { name: 'Barbell bench press', equipment: 'barbell', difficulty: 'intermediate' },
+    { name: 'Barbell rows', equipment: 'barbell', difficulty: 'intermediate' },
+    { name: 'Barbell overhead press', equipment: 'barbell', difficulty: 'intermediate' },
+    { name: 'Barbell curls', equipment: 'barbell', difficulty: 'beginner' },
+    { name: 'Resistance band chest press', equipment: 'resistance_bands', difficulty: 'beginner' },
+    { name: 'Resistance band rows', equipment: 'resistance_bands', difficulty: 'beginner' },
+    { name: 'Resistance band shoulder press', equipment: 'resistance_bands', difficulty: 'beginner' },
+    { name: 'Resistance band bicep curls', equipment: 'resistance_bands', difficulty: 'beginner' },
+    { name: 'Cable flyes', equipment: 'cable', difficulty: 'intermediate' },
+    { name: 'Face pulls', equipment: 'cable', difficulty: 'intermediate' },
+    { name: 'Tricep dips', equipment: 'bodyweight', difficulty: 'intermediate' },
+    { name: 'Bench dips', equipment: 'bodyweight', difficulty: 'beginner' },
+    { name: 'Plank hold', equipment: 'bodyweight', difficulty: 'beginner' },
+    { name: 'Side plank', equipment: 'bodyweight', difficulty: 'beginner' }
+  ],
+  lower_body: [
+    { name: 'Bodyweight squats', equipment: 'bodyweight', difficulty: 'beginner' },
+    { name: 'Jump squats', equipment: 'bodyweight', difficulty: 'intermediate' },
+    { name: 'Pistol squats', equipment: 'bodyweight', difficulty: 'advanced' },
+    { name: 'Lunges', equipment: 'bodyweight', difficulty: 'beginner' },
+    { name: 'Reverse lunges', equipment: 'bodyweight', difficulty: 'beginner' },
+    { name: 'Walking lunges', equipment: 'bodyweight', difficulty: 'intermediate' },
+    { name: 'Glute bridges', equipment: 'bodyweight', difficulty: 'beginner' },
+    { name: 'Single-leg glute bridges', equipment: 'bodyweight', difficulty: 'intermediate' },
+    { name: 'Calf raises', equipment: 'bodyweight', difficulty: 'beginner' },
+    { name: 'Wall sit', equipment: 'bodyweight', difficulty: 'beginner' },
+    { name: 'Step-ups', equipment: 'bodyweight', difficulty: 'beginner' },
+    { name: 'Goblet squats', equipment: 'dumbbells', difficulty: 'beginner' },
+    { name: 'Dumbbell lunges', equipment: 'dumbbells', difficulty: 'intermediate' },
+    { name: 'Bulgarian split squats', equipment: 'dumbbells', difficulty: 'intermediate' },
+    { name: 'Romanian deadlifts (dumbbells)', equipment: 'dumbbells', difficulty: 'intermediate' },
+    { name: 'Dumbbell step-ups', equipment: 'dumbbells', difficulty: 'intermediate' },
+    { name: 'Dumbbell calf raises', equipment: 'dumbbells', difficulty: 'beginner' },
+    { name: 'Barbell squats', equipment: 'barbell', difficulty: 'intermediate' },
+    { name: 'Barbell deadlifts', equipment: 'barbell', difficulty: 'intermediate' },
+    { name: 'Front squats', equipment: 'barbell', difficulty: 'advanced' },
+    { name: 'Barbell lunges', equipment: 'barbell', difficulty: 'intermediate' },
+    { name: 'Sumo deadlifts', equipment: 'barbell', difficulty: 'intermediate' },
+    { name: 'Resistance band squats', equipment: 'resistance_bands', difficulty: 'beginner' },
+    { name: 'Resistance band glute kickbacks', equipment: 'resistance_bands', difficulty: 'beginner' },
+    { name: 'Resistance band lateral walks', equipment: 'resistance_bands', difficulty: 'beginner' },
+    { name: 'Leg press', equipment: 'machine', difficulty: 'beginner' },
+    { name: 'Leg curls', equipment: 'machine', difficulty: 'beginner' },
+    { name: 'Leg extensions', equipment: 'machine', difficulty: 'beginner' }
+  ],
+  core: [
+    { name: 'Crunches', equipment: 'bodyweight', difficulty: 'beginner' },
+    { name: 'Bicycle crunches', equipment: 'bodyweight', difficulty: 'beginner' },
+    { name: 'Plank', equipment: 'bodyweight', difficulty: 'beginner' },
+    { name: 'Side plank', equipment: 'bodyweight', difficulty: 'beginner' },
+    { name: 'Mountain climbers', equipment: 'bodyweight', difficulty: 'intermediate' },
+    { name: 'Russian twists', equipment: 'bodyweight', difficulty: 'beginner' },
+    { name: 'Leg raises', equipment: 'bodyweight', difficulty: 'intermediate' },
+    { name: 'Dead bug', equipment: 'bodyweight', difficulty: 'beginner' },
+    { name: 'Bird dogs', equipment: 'bodyweight', difficulty: 'beginner' },
+    { name: 'Flutter kicks', equipment: 'bodyweight', difficulty: 'intermediate' },
+    { name: 'Hollow body hold', equipment: 'bodyweight', difficulty: 'intermediate' },
+    { name: 'Hanging knee raises', equipment: 'pull_up_bar', difficulty: 'intermediate' },
+    { name: 'Hanging leg raises', equipment: 'pull_up_bar', difficulty: 'advanced' },
+    { name: 'Weighted Russian twists', equipment: 'dumbbells', difficulty: 'intermediate' },
+    { name: 'Dumbbell side bends', equipment: 'dumbbells', difficulty: 'beginner' },
+    { name: 'Ab wheel rollouts', equipment: 'cable', difficulty: 'advanced' },
+    { name: 'Cable woodchops', equipment: 'cable', difficulty: 'intermediate' }
+  ]
+};
+
+function filterExercisesByEquipment(exercises, userEquipment) {
+  // Always include bodyweight exercises
+  const availableEquipment = ['bodyweight', ...(userEquipment || [])];
+  
+  return exercises.filter(ex => availableEquipment.includes(ex.equipment));
+}
+
+function selectExercises(exercisePool, difficulty, count, scheme, intensity) {
+  // Filter by difficulty level and lower
+  const difficultyOrder = ['beginner', 'intermediate', 'advanced'];
+  const maxDifficultyIndex = difficultyOrder.indexOf(difficulty);
+  
+  const availableExercises = exercisePool.filter(ex => {
+    const exDifficultyIndex = difficultyOrder.indexOf(ex.difficulty);
+    return exDifficultyIndex <= maxDifficultyIndex;
+  });
+
+  // Shuffle and select
+  const shuffled = [...availableExercises].sort(() => Math.random() - 0.5);
+  const selected = shuffled.slice(0, count);
+
+  // Format exercises with sets and reps
+  return selected.map(ex => {
+    if (ex.name.includes('Plank') || ex.name.includes('hold')) {
+      return `${ex.name}: ${scheme.sets} × ${Math.round(30 * intensity)}s`;
+    } else {
+      return `${ex.name}: ${scheme.sets} × ${scheme.reps}`;
+    }
+  });
+}
+
+function generateCardioWorkout(profile, weekNumber) {
+  const { goal, difficulty, age, equipment = [] } = profile;
   const intensity = getIntensityForWeek(weekNumber, difficulty);
-  const fitnessLevel = getFitnessLevel(difficulty);
   
   // Age-adjusted heart rate zones
   const maxHR = 220 - age;
@@ -40,50 +155,53 @@ function generateCardioWorkout(profile, weekNumber, dayType) {
   const zone3 = Math.round(maxHR * 0.8);
   const zone4 = Math.round(maxHR * 0.9);
 
+  // Equipment-based cardio options
+  const hasMinimalEquipment = equipment.length > 0;
+
   const cardioTypes = {
     weight_loss: {
       beginner: [
         `Brisk walk: ${Math.round(20 * intensity)} min @ ${zone2} bpm`,
         `Light jog intervals: 1 min jog / 2 min walk × ${Math.round(6 * intensity)}`,
-        `Incline walk: ${Math.round(15 * intensity)} min @ 5-8% incline`
+        hasMinimalEquipment ? `Jump rope: ${Math.round(5 * intensity)} min (rest as needed)` : `Jumping jacks: ${Math.round(5 * intensity)} min`
       ],
       intermediate: [
         `Steady run: ${Math.round(30 * intensity)} min @ ${zone2}-${zone3} bpm`,
-        `HIIT intervals: 30s sprint / 90s jog × ${Math.round(10 * intensity)}`,
-        `Cycling: ${Math.round(35 * intensity)} min moderate pace`
+        `HIIT: 30s high knees / 30s rest × ${Math.round(10 * intensity)}`,
+        `Burpees: ${Math.round(3 * intensity)} sets of 10`
       ],
       advanced: [
         `Long run: ${Math.round(45 * intensity)} min @ ${zone3} bpm`,
-        `Sprint intervals: 45s sprint / 60s rest × ${Math.round(12 * intensity)}`,
-        `Rowing: ${Math.round(25 * intensity)} min @ ${zone3}-${zone4} bpm`
+        `Sprint intervals: 45s sprint / 60s jog × ${Math.round(12 * intensity)}`,
+        `Box jumps: 3 × 12` 
       ]
     },
     muscle_gain: {
       beginner: [
-        `Light cardio: ${Math.round(15 * intensity)} min easy pace`,
-        `Active recovery walk: ${Math.round(20 * intensity)} min`
+        `Light walk: ${Math.round(15 * intensity)} min easy pace`,
+        `Active recovery: ${Math.round(20 * intensity)} min light movement`
       ],
       intermediate: [
         `Moderate cardio: ${Math.round(20 * intensity)} min @ ${zone2} bpm`,
-        `Jump rope: ${Math.round(10 * intensity)} min (rest as needed)`
+        hasMinimalEquipment ? `Jump rope: ${Math.round(10 * intensity)} min` : `High knees: ${Math.round(10 * intensity)} min`
       ],
       advanced: [
         `HIIT conditioning: 20s work / 40s rest × ${Math.round(15 * intensity)}`,
-        `Bike sprints: 30s all-out / 90s easy × ${Math.round(8 * intensity)}`
+        `Battle ropes: 30s on / 30s off × ${Math.round(8 * intensity)}`
       ]
     },
     maintenance: {
       beginner: [
-        `Walk/jog combo: ${Math.round(25 * intensity)} min @ comfortable pace`,
-        `Swimming: ${Math.round(20 * intensity)} min easy laps`
+        `Walk/jog: ${Math.round(25 * intensity)} min @ comfortable pace`,
+        `Dynamic stretching: ${Math.round(10 * intensity)} min`
       ],
       intermediate: [
         `Run: ${Math.round(30 * intensity)} min @ ${zone2}-${zone3} bpm`,
-        `Cycling: ${Math.round(35 * intensity)} min moderate intensity`
+        `Circuit cardio: ${Math.round(20 * intensity)} min mixed movements`
       ],
       advanced: [
         `Tempo run: ${Math.round(35 * intensity)} min @ ${zone3} bpm`,
-        `Mixed cardio: ${Math.round(30 * intensity)} min (bike/row/run combo)`
+        `Mixed HIIT: ${Math.round(30 * intensity)} min varied exercises`
       ]
     }
   };
@@ -92,9 +210,8 @@ function generateCardioWorkout(profile, weekNumber, dayType) {
 }
 
 function generateStrengthWorkout(profile, weekNumber, dayType) {
-  const { goal, difficulty, gender } = profile;
-  const intensity = getIntensityForWeek(weekNumber, dayType);
-  const fitnessLevel = getFitnessLevel(difficulty);
+  const { goal, difficulty, equipment = [] } = profile;
+  const intensity = getIntensityForWeek(weekNumber, difficulty);
 
   // Adjust reps and sets based on goal
   const repSchemes = {
@@ -105,149 +222,60 @@ function generateStrengthWorkout(profile, weekNumber, dayType) {
   
   const scheme = repSchemes[goal] || repSchemes.maintenance;
 
-  const exercises = {
-    upper_body: {
-      beginner: [
-        `Push-ups (modified if needed): ${scheme.sets} × ${scheme.reps}`,
-        `Dumbbell rows: ${scheme.sets} × ${scheme.reps} each arm`,
-        `Shoulder press: ${scheme.sets} × ${scheme.reps}`,
-        `Bicep curls: ${scheme.sets} × ${scheme.reps}`,
-        `Tricep dips (assisted): ${scheme.sets} × ${scheme.reps}`,
-        `Plank hold: ${scheme.sets} × ${Math.round(30 * intensity)}s`
-      ],
-      intermediate: [
-        `Push-ups: ${scheme.sets} × ${scheme.reps}`,
-        `Bent-over rows: ${scheme.sets} × ${scheme.reps}`,
-        `Overhead press: ${scheme.sets} × ${scheme.reps}`,
-        `Pull-ups (assisted if needed): ${scheme.sets} × max reps`,
-        `Chest press: ${scheme.sets} × ${scheme.reps}`,
-        `Face pulls: ${scheme.sets} × ${scheme.reps}`,
-        `Plank: ${scheme.sets} × ${Math.round(45 * intensity)}s`
-      ],
-      advanced: [
-        `Weighted push-ups: ${scheme.sets} × ${scheme.reps}`,
-        `Pull-ups: ${scheme.sets} × ${scheme.reps}`,
-        `Barbell rows: ${scheme.sets} × ${scheme.reps}`,
-        `Overhead press: ${scheme.sets} × ${scheme.reps}`,
-        `Dips: ${scheme.sets} × ${scheme.reps}`,
-        `Arnold press: ${scheme.sets} × ${scheme.reps}`,
-        `Weighted plank: ${scheme.sets} × ${Math.round(60 * intensity)}s`
-      ]
-    },
-    lower_body: {
-      beginner: [
-        `Bodyweight squats: ${scheme.sets} × ${scheme.reps}`,
-        `Lunges: ${scheme.sets} × ${scheme.reps} each leg`,
-        `Glute bridges: ${scheme.sets} × ${scheme.reps}`,
-        `Calf raises: ${scheme.sets} × ${scheme.reps}`,
-        `Wall sit: ${scheme.sets} × ${Math.round(30 * intensity)}s`,
-        `Leg raises: ${scheme.sets} × ${scheme.reps}`
-      ],
-      intermediate: [
-        `Goblet squats: ${scheme.sets} × ${scheme.reps}`,
-        `Bulgarian split squats: ${scheme.sets} × ${scheme.reps} each`,
-        `Romanian deadlifts: ${scheme.sets} × ${scheme.reps}`,
-        `Step-ups: ${scheme.sets} × ${scheme.reps} each leg`,
-        `Leg press: ${scheme.sets} × ${scheme.reps}`,
-        `Calf raises: ${scheme.sets} × ${scheme.reps}`,
-        `Hanging knee raises: ${scheme.sets} × ${scheme.reps}`
-      ],
-      advanced: [
-        `Barbell squats: ${scheme.sets} × ${scheme.reps}`,
-        `Deadlifts: ${scheme.sets} × ${scheme.reps}`,
-        `Front squats: ${scheme.sets} × ${scheme.reps}`,
-        `Walking lunges (weighted): ${scheme.sets} × ${scheme.reps} each`,
-        `Leg press: ${scheme.sets} × ${scheme.reps}`,
-        `Hamstring curls: ${scheme.sets} × ${scheme.reps}`,
-        `Hanging leg raises: ${scheme.sets} × ${scheme.reps}`
-      ]
-    },
-    full_body: {
-      beginner: [
-        `Squats: ${scheme.sets} × ${scheme.reps}`,
-        `Push-ups: ${scheme.sets} × ${scheme.reps}`,
-        `Dumbbell rows: ${scheme.sets} × ${scheme.reps}`,
-        `Lunges: ${scheme.sets} × ${scheme.reps} each`,
-        `Plank: ${scheme.sets} × ${Math.round(30 * intensity)}s`,
-        `Bird dogs: ${scheme.sets} × ${scheme.reps} each side`
-      ],
-      intermediate: [
-        `Deadlifts: ${scheme.sets} × ${scheme.reps}`,
-        `Bench press: ${scheme.sets} × ${scheme.reps}`,
-        `Squats: ${scheme.sets} × ${scheme.reps}`,
-        `Pull-ups: ${scheme.sets} × max reps`,
-        `Shoulder press: ${scheme.sets} × ${scheme.reps}`,
-        `Plank to push-up: ${scheme.sets} × ${scheme.reps}`,
-        `Russian twists: ${scheme.sets} × ${Math.round(20 * intensity)}`
-      ],
-      advanced: [
-        `Barbell complexes: ${scheme.sets} rounds (deadlift, clean, press, squat)`,
-        `Pull-ups: ${scheme.sets} × ${scheme.reps}`,
-        `Front squats: ${scheme.sets} × ${scheme.reps}`,
-        `Bench press: ${scheme.sets} × ${scheme.reps}`,
-        `Barbell rows: ${scheme.sets} × ${scheme.reps}`,
-        `Overhead walking lunges: ${scheme.sets} × ${scheme.reps} each`,
-        `Ab wheel rollouts: ${scheme.sets} × ${scheme.reps}`
-      ]
-    },
-    core: {
-      beginner: [
-        `Crunches: ${scheme.sets} × ${scheme.reps}`,
-        `Plank: ${scheme.sets} × ${Math.round(30 * intensity)}s`,
-        `Side plank: ${scheme.sets} × ${Math.round(20 * intensity)}s each`,
-        `Dead bug: ${scheme.sets} × ${scheme.reps}`,
-        `Glute bridges: ${scheme.sets} × ${scheme.reps}`
-      ],
-      intermediate: [
-        `Sit-ups: ${scheme.sets} × ${scheme.reps}`,
-        `Plank: ${scheme.sets} × ${Math.round(60 * intensity)}s`,
-        `Russian twists: ${scheme.sets} × ${Math.round(20 * intensity)}`,
-        `Leg raises: ${scheme.sets} × ${scheme.reps}`,
-        `Mountain climbers: ${scheme.sets} × ${Math.round(20 * intensity)}`,
-        `Bicycle crunches: ${scheme.sets} × ${Math.round(20 * intensity)}`
-      ],
-      advanced: [
-        `Hanging leg raises: ${scheme.sets} × ${scheme.reps}`,
-        `Weighted plank: ${scheme.sets} × ${Math.round(60 * intensity)}s`,
-        `Dragon flags: ${scheme.sets} × ${scheme.reps}`,
-        `Ab wheel rollouts: ${scheme.sets} × ${scheme.reps}`,
-        `L-sit hold: ${scheme.sets} × ${Math.round(20 * intensity)}s`,
-        `Windshield wipers: ${scheme.sets} × ${scheme.reps}`
-      ]
-    }
-  };
+  // Get equipment-filtered exercises
+  let exercisePool = [];
+  let exerciseCount = difficulty === 'beginner' ? 5 : difficulty === 'intermediate' ? 6 : 7;
 
-  return exercises[dayType]?.[difficulty] || exercises.full_body.beginner;
+  if (dayType === 'upper_body') {
+    exercisePool = filterExercisesByEquipment(exerciseDatabase.upper_body, equipment);
+  } else if (dayType === 'lower_body') {
+    exercisePool = filterExercisesByEquipment(exerciseDatabase.lower_body, equipment);
+  } else if (dayType === 'core') {
+    exercisePool = filterExercisesByEquipment(exerciseDatabase.core, equipment);
+  } else if (dayType === 'full_body') {
+    const upperFiltered = filterExercisesByEquipment(exerciseDatabase.upper_body, equipment);
+    const lowerFiltered = filterExercisesByEquipment(exerciseDatabase.lower_body, equipment);
+    const coreFiltered = filterExercisesByEquipment(exerciseDatabase.core, equipment);
+    
+    // Mix of upper, lower, and core
+    const upper = selectExercises(upperFiltered, difficulty, 2, scheme, intensity);
+    const lower = selectExercises(lowerFiltered, difficulty, 2, scheme, intensity);
+    const core = selectExercises(coreFiltered, difficulty, 1, scheme, intensity);
+    
+    return [...upper, ...lower, ...core];
+  }
+
+  return selectExercises(exercisePool, difficulty, exerciseCount, scheme, intensity);
 }
 
 export function generateAlgorithmicWorkout(profile, weekNumber, trainingDay) {
-  const { goal, difficulty } = profile;
+  const { goal } = profile;
   
   // 6-day training split
   const trainingSchedule = {
     weight_loss: [
-      { name: 'Full Body Cardio & Strength', cardioType: 'cardio', strengthType: 'full_body' },
-      { name: 'Lower Body & HIIT', cardioType: 'cardio', strengthType: 'lower_body' },
-      { name: 'Upper Body & Cardio', cardioType: 'cardio', strengthType: 'upper_body' },
-      { name: 'Core & Endurance Cardio', cardioType: 'cardio', strengthType: 'core' },
-      { name: 'Full Body Circuit', cardioType: 'cardio', strengthType: 'full_body' },
-      { name: 'Active Recovery & Cardio', cardioType: 'cardio', strengthType: 'core' }
+      { name: 'Full Body Cardio & Strength', strengthType: 'full_body' },
+      { name: 'Lower Body & HIIT', strengthType: 'lower_body' },
+      { name: 'Upper Body & Cardio', strengthType: 'upper_body' },
+      { name: 'Core & Endurance', strengthType: 'core' },
+      { name: 'Full Body Circuit', strengthType: 'full_body' },
+      { name: 'Active Recovery & Core', strengthType: 'core' }
     ],
     muscle_gain: [
-      { name: 'Chest & Triceps', cardioType: 'cardio', strengthType: 'upper_body' },
-      { name: 'Legs & Core', cardioType: 'cardio', strengthType: 'lower_body' },
-      { name: 'Back & Biceps', cardioType: 'cardio', strengthType: 'upper_body' },
-      { name: 'Shoulders & Core', cardioType: 'cardio', strengthType: 'upper_body' },
-      { name: 'Leg Power Day', cardioType: 'cardio', strengthType: 'lower_body' },
-      { name: 'Full Body Strength', cardioType: 'cardio', strengthType: 'full_body' }
+      { name: 'Chest & Triceps', strengthType: 'upper_body' },
+      { name: 'Legs & Core', strengthType: 'lower_body' },
+      { name: 'Back & Biceps', strengthType: 'upper_body' },
+      { name: 'Shoulders & Core', strengthType: 'upper_body' },
+      { name: 'Leg Power Day', strengthType: 'lower_body' },
+      { name: 'Full Body Strength', strengthType: 'full_body' }
     ],
     maintenance: [
-      { name: 'Upper Body Strength', cardioType: 'cardio', strengthType: 'upper_body' },
-      { name: 'Lower Body & Cardio', cardioType: 'cardio', strengthType: 'lower_body' },
-      { name: 'Full Body Circuit', cardioType: 'cardio', strengthType: 'full_body' },
-      { name: 'Core & Conditioning', cardioType: 'cardio', strengthType: 'core' },
-      { name: 'Upper Body & Cardio', cardioType: 'cardio', strengthType: 'upper_body' },
-      { name: 'Lower Body & Flexibility', cardioType: 'cardio', strengthType: 'lower_body' }
+      { name: 'Upper Body Strength', strengthType: 'upper_body' },
+      { name: 'Lower Body & Cardio', strengthType: 'lower_body' },
+      { name: 'Full Body Circuit', strengthType: 'full_body' },
+      { name: 'Core & Conditioning', strengthType: 'core' },
+      { name: 'Upper Body & Cardio', strengthType: 'upper_body' },
+      { name: 'Lower Body & Flexibility', strengthType: 'lower_body' }
     ]
   };
 
@@ -256,7 +284,7 @@ export function generateAlgorithmicWorkout(profile, weekNumber, trainingDay) {
 
   return {
     name: `${dayPlan.name} - Week ${weekNumber}`,
-    cardio: generateCardioWorkout(profile, weekNumber, dayPlan.cardioType),
+    cardio: generateCardioWorkout(profile, weekNumber),
     strength: generateStrengthWorkout(profile, weekNumber, dayPlan.strengthType)
   };
 }
