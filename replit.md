@@ -15,7 +15,7 @@ A personalized fitness training application built with React, Vite, and Tailwind
 - **Build Tool:** Vite with HMR (Hot Module Replacement)
 
 ### Key Features
-1.  **User Authentication & Profile Management:** Multi-user support with username/password (email required), optional biometric login (WebAuthn), profile photo uploads, progress photo gallery, weight tracking, and account settings (reset progress, delete account).
+1.  **User Authentication & Profile Management:** Multi-user support with username/password (email required), optional biometric login (WebAuthn), profile photo uploads, progress photo gallery, weight tracking, and account settings (reset progress, delete account). Session-based authentication requires re-login when browser is closed/reopened for security.
 2.  **Flexible Program Duration:** Users can choose custom training plan durations from 4 weeks (minimum) to 52 weeks (1 year maximum). The default is 12 weeks.
 3.  **Dual Training Systems:**
     *   **Algorithmic Plan:** Dynamically generated workouts based on user profile (gender, age, height, weight, goal, difficulty, weeks, rest days, available equipment). Incorporates BMI, BMR, age-adjusted heart rate zones, progressive overload, and goal-specific rep schemes.
@@ -25,7 +25,7 @@ A personalized fitness training application built with React, Vite, and Tailwind
 6.  **Specialized Diet Plans:** Support for 8 dietary plans (Standard, Keto, Paleo, Atkins, Carnivore, Vegetarian, Vegan, Mediterranean) with diet-specific macro ratios and automatic meal filtering to exclude non-compliant foods. Each diet has unique protein/carb/fat percentages that override base goal macros.
 7.  **Food Sensitivity Filtering:** Comprehensive allergen management (Gluten, Fish, Dairy, Soy, Nuts, Eggs) using an expanded 70+ meal database to filter and provide safe, macro-balanced alternatives.
 8.  **Interactive Interface:** Custom multi-select dropdowns for equipment, food sensitivities, and rest days. Diet plan selection with real-time descriptions. Flexible weeks selector (4-52 weeks). Exercise completion tracking with visual feedback and celebration animations.
-9.  **Data Persistence:** All user profile data, diet preferences, plan progress, and exercise completion states are stored in browser LocalStorage, making the application fully client-side.
+9.  **Data Persistence:** All user profile data, diet preferences, plan progress, and exercise completion states are stored in browser LocalStorage (persists across sessions). Current login session uses SessionStorage (cleared when browser closes) for added security, requiring re-authentication after browser restart.
 
 ### Design System
 *   **Color Palette (Earth Tones):**

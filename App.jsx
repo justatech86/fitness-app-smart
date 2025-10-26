@@ -21,7 +21,8 @@ export default function App() {
   const [showProfile, setShowProfile] = useState(false);
 
   useEffect(() => {
-    const loggedInUser = localStorage.getItem('currentUser');
+    // Use sessionStorage instead of localStorage so login is cleared when browser closes
+    const loggedInUser = sessionStorage.getItem('currentUser');
     
     if (loggedInUser) {
       setCurrentUser(loggedInUser);
@@ -55,7 +56,9 @@ export default function App() {
 
   const handleLogin = async (username) => {
     setCurrentUser(username);
-    localStorage.setItem('currentUser', username);
+    // Use sessionStorage for current session (cleared when browser closes)
+    sessionStorage.setItem('currentUser', username);
+    // Keep lastLoggedInUser in localStorage for biometric login convenience
     localStorage.setItem('lastLoggedInUser', username);
     loadUserData(username);
     
@@ -111,7 +114,7 @@ export default function App() {
     setProfile(null);
     setPlan([]);
     setShowProfileSetup(false);
-    localStorage.removeItem('currentUser');
+    sessionStorage.removeItem('currentUser');
     // Note: We keep lastLoggedInUser for biometric login convenience on personal devices
     // Users can clear browser data if sharing devices
   };
