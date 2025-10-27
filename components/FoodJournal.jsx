@@ -53,10 +53,10 @@ export default function FoodJournal({ profile, currentUser }) {
   // Calculate total calories
   const totalCalories = entries.reduce((sum, entry) => sum + entry.calories, 0);
   
-  // Get daily calorie target from profile
+  // Get daily calorie target from nutrition plan
   const targetCalories = profile?.dailyCalories || 2000;
   const caloriesRemaining = targetCalories - totalCalories;
-  const percentageConsumed = Math.min((totalCalories / targetCalories) * 100, 100);
+  const percentageConsumed = (totalCalories / targetCalories) * 100;
 
   return (
     <div className="p-4 md:p-6 max-w-4xl mx-auto">
@@ -92,10 +92,10 @@ export default function FoodJournal({ profile, currentUser }) {
             </div>
             <div>
               <p className="text-sm opacity-90">Remaining</p>
-              <p className={`text-2xl md:text-3xl font-bold ${caloriesRemaining < 0 ? 'text-red-200' : ''}`}>
-                {caloriesRemaining}
+              <p className={`text-2xl md:text-3xl font-bold ${caloriesRemaining < 0 ? 'text-red-300' : ''}`}>
+                {caloriesRemaining < 0 ? '-' : ''}{Math.abs(caloriesRemaining)}
               </p>
-              <p className="text-xs opacity-80">calories</p>
+              <p className="text-xs opacity-80">calories {caloriesRemaining < 0 ? 'over' : 'left'}</p>
             </div>
           </div>
           
@@ -105,11 +105,16 @@ export default function FoodJournal({ profile, currentUser }) {
               className={`h-full transition-all duration-500 ${
                 percentageConsumed > 100 ? 'bg-red-400' : 'bg-white'
               }`}
-              style={{ width: `${percentageConsumed}%` }}
+              style={{ width: `${Math.min(percentageConsumed, 100)}%` }}
             ></div>
           </div>
           <p className="text-xs text-center mt-2 opacity-90">
             {percentageConsumed.toFixed(1)}% of daily target
+            {percentageConsumed > 100 && (
+              <span className="text-red-300 font-semibold ml-1">
+                ({(percentageConsumed - 100).toFixed(1)}% over)
+              </span>
+            )}
           </p>
         </div>
 
