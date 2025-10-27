@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { generateMacroSummary } from '../utils/nutritionAlgorithm';
 
 export default function FoodJournal({ profile, currentUser }) {
   const [entries, setEntries] = useState([]);
@@ -53,8 +54,9 @@ export default function FoodJournal({ profile, currentUser }) {
   // Calculate total calories
   const totalCalories = entries.reduce((sum, entry) => sum + entry.calories, 0);
   
-  // Get daily calorie target from nutrition plan
-  const targetCalories = profile?.dailyCalories || 2000;
+  // Get daily calorie target from nutrition plan (same calculation as MacroSummary)
+  const macros = profile ? generateMacroSummary(profile) : null;
+  const targetCalories = macros?.dailyCalories || 2000;
   const caloriesRemaining = targetCalories - totalCalories;
   const percentageConsumed = (totalCalories / targetCalories) * 100;
 
