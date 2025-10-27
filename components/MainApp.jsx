@@ -3,6 +3,7 @@ import Dashboard from './Dashboard';
 import DailyRoutine from './DailyRoutine';
 import GroceryList from './GroceryList';
 import MacroSummary from './MacroSummary';
+import FoodJournal from './FoodJournal';
 
 export default function MainApp({ 
   plan, 
@@ -36,10 +37,10 @@ export default function MainApp({
       {/* Tab Navigation */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="flex gap-1">
+          <div className="flex gap-1 overflow-x-auto">
             <button
               onClick={() => setActiveTab('journey')}
-              className={`px-4 md:px-6 py-3 md:py-4 text-sm md:text-base font-semibold transition-all border-b-2 ${
+              className={`px-4 md:px-6 py-3 md:py-4 text-sm md:text-base font-semibold transition-all border-b-2 whitespace-nowrap ${
                 activeTab === 'journey'
                   ? 'text-primary border-primary bg-accent bg-opacity-10'
                   : 'text-gray-600 border-transparent hover:text-primary hover:border-gray-300'
@@ -53,8 +54,23 @@ export default function MainApp({
               </div>
             </button>
             <button
+              onClick={() => setActiveTab('foodjournal')}
+              className={`px-4 md:px-6 py-3 md:py-4 text-sm md:text-base font-semibold transition-all border-b-2 whitespace-nowrap ${
+                activeTab === 'foodjournal'
+                  ? 'text-primary border-primary bg-accent bg-opacity-10'
+                  : 'text-gray-600 border-transparent hover:text-primary hover:border-gray-300'
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+                <span>Food Journal</span>
+              </div>
+            </button>
+            <button
               onClick={() => setActiveTab('grocery')}
-              className={`px-4 md:px-6 py-3 md:py-4 text-sm md:text-base font-semibold transition-all border-b-2 ${
+              className={`px-4 md:px-6 py-3 md:py-4 text-sm md:text-base font-semibold transition-all border-b-2 whitespace-nowrap ${
                 activeTab === 'grocery'
                   ? 'text-primary border-primary bg-accent bg-opacity-10'
                   : 'text-gray-600 border-transparent hover:text-primary hover:border-gray-300'
@@ -83,6 +99,10 @@ export default function MainApp({
               onToggleExercise={onToggleExercise}
             />
           </>
+        )}
+
+        {activeTab === 'foodjournal' && (
+          <FoodJournal profile={profile} currentUser={currentUser} />
         )}
 
         {activeTab === 'grocery' && plan.length > 0 && (
