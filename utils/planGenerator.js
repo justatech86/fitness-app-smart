@@ -1,6 +1,7 @@
 import { getWorkoutForDay } from './fbiPlanData.js';
 import { generateAlgorithmicWorkout } from './workoutAlgorithm.js';
 import { generateArmyPFTWorkout } from './armyPFTWorkouts.js';
+import { generateFBIPFTWorkout } from './fbiPFTWorkouts.js';
 import { calculateMacros, adjustMealToMacros } from './nutritionAlgorithm.js';
 import { getMealsByGoalAndType } from './mealDatabase.js';
 
@@ -67,8 +68,8 @@ export function generate12WeekPlan(profile) {
         let workout;
         
         if (planType === 'fbi_pft') {
-          // PFT Plan
-          const fbiWorkout = getWorkoutForDay(week, trainingDayCounter);
+          // FBI PFT Plan (NEW 2025 Standards)
+          const fbiWorkout = generateFBIPFTWorkout(week, trainingDayCounter, profile);
           workout = {
             name: fbiWorkout.name,
             cardio: fbiWorkout.cardio || [],
