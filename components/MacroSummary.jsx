@@ -29,7 +29,9 @@ export default function MacroSummary({ profile }) {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mb-3 md:mb-4">
           <div className="bg-white bg-opacity-20 rounded-lg p-3 md:p-4 text-center">
             <div className="text-xl md:text-3xl font-bold">{macros.dailyCalories}</div>
-            <div className="text-xs md:text-sm opacity-90">Daily Calories</div>
+            <div className="text-xs md:text-sm opacity-90">
+              {macros.isRestDay ? 'BMR Calories (Rest Day)' : 'TDEE Calories (Active Day)'}
+            </div>
           </div>
           <div className="bg-white bg-opacity-20 rounded-lg p-3 md:p-4 text-center">
             <div className="text-xl md:text-3xl font-bold">{macros.dailyProtein}g</div>

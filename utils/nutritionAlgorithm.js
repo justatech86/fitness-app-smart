@@ -117,9 +117,20 @@ export function adjustMealToMacros(meal, targetMacros) {
   };
 }
 
+function isRestDay(restDays = []) {
+  const today = new Date().getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+  return restDays.includes(today);
+}
+
 export function generateMacroSummary(profile) {
   const macros = calculateMacros(profile);
-  const { goal, planType, dietType = 'standard' } = profile;
+  const { goal, planType, dietType = 'standard', restDays = [] } = profile;
+  
+  // Determine if today is a rest day
+  const isTodayRestDay = isRestDay(restDays);
+  
+  // Use BMR on rest days, TDEE (daily calories) on workout days
+  const displayCalories = isTodayRestDay ? macros.bmr : macros.dailyCalories;
   
   let goalDescription = '';
   switch(goal) {
@@ -151,6 +162,8 @@ export function generateMacroSummary(profile) {
   
   return {
     ...macros,
+    dailyCalories: displayCalories, // Override with BMR on rest days
+    isRestDay: isTodayRestDay,
     goalDescription,
     planDescription,
     dietDescription: dietNames[dietType] || 'Standard',
