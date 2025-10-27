@@ -1,9 +1,6 @@
 import AuthPage from './components/AuthPage';
 import ProfileSetup from './components/ProfileSetup';
-import Dashboard from './components/Dashboard';
-import DailyRoutine from './components/DailyRoutine';
-import GroceryList from './components/GroceryList';
-import MacroSummary from './components/MacroSummary';
+import MainApp from './components/MainApp';
 import Profile from './components/Profile';
 import { generate12WeekPlan } from './utils/planGenerator';
 import { getCurrentDayIndex } from './utils/dayHelper';
@@ -170,30 +167,18 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-neutralBg">
-      <Dashboard
-        plan={plan}
-        setWeek={setCurrentWeek}
-        setCurrentDayIndex={setCurrentDayIndex}
-        currentWeek={currentWeek}
-        currentUser={currentUser}
-        profile={profile}
-        onEditProfile={() => setShowProfileSetup(true)}
-        onShowProfile={() => setShowProfile(true)}
-        onLogout={handleLogout}
-      />
-      <MacroSummary profile={profile} />
-      {plan.length > 0 && (
-        <>
-          <DailyRoutine
-            weekData={plan[currentWeek - 1]}
-            initialDayIndex={currentDayIndex}
-            weekIndex={currentWeek - 1}
-            onToggleExercise={toggleExerciseCompletion}
-          />
-          <GroceryList week={plan[currentWeek - 1]} />
-        </>
-      )}
-    </div>
+    <MainApp
+      plan={plan}
+      currentWeek={currentWeek}
+      setCurrentWeek={setCurrentWeek}
+      currentDayIndex={currentDayIndex}
+      setCurrentDayIndex={setCurrentDayIndex}
+      currentUser={currentUser}
+      profile={profile}
+      onEditProfile={() => setShowProfileSetup(true)}
+      onShowProfile={() => setShowProfile(true)}
+      onLogout={handleLogout}
+      onToggleExercise={toggleExerciseCompletion}
+    />
   );
 }
