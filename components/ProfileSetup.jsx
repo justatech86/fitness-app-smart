@@ -218,7 +218,7 @@ export default function ProfileSetup({ onSubmit, existingProfile }) {
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
             >
-              <option value="algorithmic">Algorithmic (Personalized)</option>
+              <option value="algorithmic">Personalized</option>
               <option value="fbi_pft">PFT Program</option>
             </select>
             <p className="text-xs text-gray-500 mt-1">

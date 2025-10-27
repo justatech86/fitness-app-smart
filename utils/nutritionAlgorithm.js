@@ -135,8 +135,8 @@ export function generateMacroSummary(profile) {
   }
   
   const planDescription = planType === 'fbi_pft' 
-    ? 'PFT Training (Very Active)'
-    : 'Algorithmic Training (Moderately Active)';
+    ? 'Very Active'
+    : 'Moderately Active';
   
   const dietNames = {
     standard: 'Standard (Balanced)',
