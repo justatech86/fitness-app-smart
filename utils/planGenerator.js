@@ -1,5 +1,6 @@
 import { getWorkoutForDay } from './fbiPlanData.js';
 import { generateAlgorithmicWorkout } from './workoutAlgorithm.js';
+import { generateArmyPFTWorkout } from './armyPFTWorkouts.js';
 import { calculateMacros, adjustMealToMacros } from './nutritionAlgorithm.js';
 import { getMealsByGoalAndType } from './mealDatabase.js';
 
@@ -72,6 +73,14 @@ export function generate12WeekPlan(profile) {
             name: fbiWorkout.name,
             cardio: fbiWorkout.cardio || [],
             strength: fbiWorkout.strength || []
+          };
+        } else if (planType === 'army_pft') {
+          // Army ACFT Plan
+          const armyWorkout = generateArmyPFTWorkout(week, trainingDayCounter, profile);
+          workout = {
+            name: armyWorkout.name,
+            cardio: armyWorkout.cardio || [],
+            strength: armyWorkout.strength || []
           };
         } else {
           // Algorithmic Plan (default)

@@ -16,7 +16,9 @@ export default function ProfileSetup({ onSubmit, existingProfile }) {
         planType: 'algorithmic',
         dietType: 'standard',
         foodSensitivities: [],
-        equipment: []
+        equipment: [],
+        // Army PFT specific fields
+        armyGoalFocus: 'balanced'
       };
     }
     
@@ -220,26 +222,51 @@ export default function ProfileSetup({ onSubmit, existingProfile }) {
             >
               <option value="algorithmic">Personalized</option>
               <option value="fbi_pft">PFT Program</option>
+              <option value="army_pft">Army PFT</option>
             </select>
             <p className="text-xs text-gray-500 mt-1">
               {formData.planType === 'algorithmic' 
                 ? 'Workouts adapt to your profile, goal, and difficulty level'
+                : formData.planType === 'army_pft'
+                ? 'Army Combat Fitness Test preparation with custom focus areas'
                 : 'Structured fitness test preparation program'
               }
             </p>
           </div>
 
+          {/* Army PFT Specific Options */}
+          {formData.planType === 'army_pft' && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">🎯 Goal Focus</label>
+              <select
+                name="armyGoalFocus"
+                value={formData.armyGoalFocus || 'balanced'}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
+              >
+                <option value="balanced">🪖 Balanced Overall</option>
+                <option value="strength">🏋️ Strength / Power Emphasis</option>
+                <option value="endurance">🏃 Endurance / Conditioning Emphasis</option>
+              </select>
+              <p className="text-xs text-gray-500 mt-1">
+                Choose your primary training focus for the Army ACFT
+              </p>
+            </div>
+          )}
+          
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Difficulty Level</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              {formData.planType === 'army_pft' ? 'Training Level' : 'Difficulty Level'}
+            </label>
             <select
               name="difficulty"
               value={formData.difficulty}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
             >
-              <option value="beginner">Beginner</option>
-              <option value="intermediate">Intermediate</option>
-              <option value="advanced">Advanced</option>
+              <option value="beginner">{formData.planType === 'army_pft' ? '🥉 Beginner' : 'Beginner'}</option>
+              <option value="intermediate">{formData.planType === 'army_pft' ? '🥈 Intermediate' : 'Intermediate'}</option>
+              <option value="advanced">{formData.planType === 'army_pft' ? '🥇 Advanced' : 'Advanced'}</option>
             </select>
           </div>
 
@@ -251,13 +278,16 @@ export default function ProfileSetup({ onSubmit, existingProfile }) {
               value={formData.weeks}
               onChange={handleChange}
               required
-              min="4"
-              max="52"
+              min={formData.planType === 'army_pft' ? '6' : '4'}
+              max={formData.planType === 'army_pft' ? '12' : '52'}
               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
-              placeholder="Enter duration (4-52 weeks)"
+              placeholder={formData.planType === 'army_pft' ? 'Enter duration (6-12 weeks)' : 'Enter duration (4-52 weeks)'}
             />
             <p className="text-xs text-gray-500 mt-1">
-              Choose between 4 and 52 weeks for your training plan
+              {formData.planType === 'army_pft' 
+                ? 'Army PFT plans are 6-12 weeks'
+                : 'Choose between 4 and 52 weeks for your training plan'
+              }
             </p>
           </div>
 

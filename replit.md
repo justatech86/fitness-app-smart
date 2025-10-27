@@ -16,10 +16,11 @@ A personalized fitness training application built with React, Vite, and Tailwind
 
 ### Key Features
 1.  **User Authentication & Profile Management:** Multi-user support with username/password (email required), optional biometric login (WebAuthn), profile photo uploads, progress photo gallery, weight tracking, and account settings (reset progress, delete account). Session-based authentication requires re-login when browser is closed/reopened for security.
-2.  **Flexible Program Duration:** Users can choose custom training plan durations from 4 weeks (minimum) to 52 weeks (1 year maximum). The default is 12 weeks.
-3.  **Dual Training Systems:**
+2.  **Flexible Program Duration:** Users can choose custom training plan durations from 4 weeks (minimum) to 52 weeks (1 year maximum). The default is 12 weeks. Army PFT plans are 6-12 weeks.
+3.  **Triple Training Systems:**
     *   **Algorithmic Plan:** Dynamically generated workouts based on user profile (gender, age, height, weight, goal, difficulty, weeks, rest days, available equipment). Incorporates BMI, BMR, age-adjusted heart rate zones, progressive overload, and goal-specific rep schemes.
     *   **PFT Program:** A structured plan that adapts to the chosen duration, cycling through three phases: Foundation & Endurance, Power & Performance, and Simulation & Peak Readiness.
+    *   **Army PFT (ACFT):** Comprehensive Army Combat Fitness Test preparation with customizable focus areas (balanced/strength/endurance), training levels (beginner/intermediate/advanced), and equipment options (full gym/limited/minimal). Workouts target all 6 ACFT events: Deadlift, Standing Power Throw, Push-Ups, Sprint-Drag-Carry, Plank, and 2-Mile Run with progressive 3-phase training (foundation → development → peak).
 4.  **Adaptive Workout Generation:** Workouts are tailored based on selected equipment (dumbbells, barbell, pull-up bar, resistance bands, cable machine, gym machines) from an 80+ exercise database, and adapt to chosen rest days (1-3 days per week) affecting training split (4, 5, or 6 training days).
 5.  **Personalized Nutrition:** Algorithmic nutrition system calculates personalized macros (protein, carbs, fat) and daily caloric targets based on user profile, fitness goal, and activity level (Mifflin-St Jeor BMR, TDEE).
 6.  **Specialized Diet Plans:** Support for 8 dietary plans (Standard, Keto, Paleo, Atkins, Carnivore, Vegetarian, Vegan, Mediterranean) with diet-specific macro ratios and automatic meal filtering to exclude non-compliant foods. Each diet has unique protein/carb/fat percentages that override base goal macros.
