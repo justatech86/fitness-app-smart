@@ -124,7 +124,7 @@ function isRestDay(restDays = []) {
 
 export function generateMacroSummary(profile) {
   const macros = calculateMacros(profile);
-  const { goal, planType, dietType = 'standard', restDays = [] } = profile;
+  const { goal, planType, dietType = 'standard', restDays = [], difficulty = 'beginner' } = profile;
   
   // Determine if today is a rest day
   const isTodayRestDay = isRestDay(restDays);
@@ -145,9 +145,21 @@ export function generateMacroSummary(profile) {
       break;
   }
   
-  const planDescription = planType === 'fbi_pft' 
-    ? 'Very Active'
-    : 'Moderately Active';
+  // Determine activity level based on goal and difficulty
+  let planDescription = '';
+  if (goal === 'maintenance') {
+    planDescription = 'Lightly Active';
+  } else if (goal === 'weight_loss') {
+    planDescription = 'Moderately Active';
+  } else if (goal === 'muscle_gain') {
+    if (difficulty === 'advanced') {
+      planDescription = 'Extremely Active';
+    } else {
+      planDescription = 'Moderately Active'; // beginner or intermediate
+    }
+  } else {
+    planDescription = 'Moderately Active'; // fallback
+  }
   
   const dietNames = {
     standard: 'Standard (Balanced)',
