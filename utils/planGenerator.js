@@ -33,19 +33,20 @@ export function generate12WeekPlan(profile) {
   const dinnerOptions = getMealsByGoalAndType(goal, 'dinner', foodSensitivities, dietType);
   const snackOptions = getMealsByGoalAndType(goal, 'snack', foodSensitivities, dietType);
 
+  // Shuffle meals once for the entire plan to ensure variety across all weeks
+  const shuffledBreakfasts = shuffleArray(breakfastOptions);
+  const shuffledLunches = shuffleArray(lunchOptions);
+  const shuffledDinners = shuffleArray(dinnerOptions);
+  const shuffledSnacks = shuffleArray(snackOptions);
+
   const plan = [];
+  let globalMealCounter = 0; // Track meals across all weeks for better variety
 
   for (let week = 1; week <= totalWeeks; week++) {
     const weekData = {
       weekNumber: week,
       days: []
     };
-
-    // Shuffle each meal type separately for variety
-    const shuffledBreakfasts = shuffleArray(breakfastOptions);
-    const shuffledLunches = shuffleArray(lunchOptions);
-    const shuffledDinners = shuffleArray(dinnerOptions);
-    const shuffledSnacks = shuffleArray(snackOptions);
     
     const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     
@@ -97,20 +98,15 @@ export function generate12WeekPlan(profile) {
           workout = generateAlgorithmicWorkout(profile, week, trainingDayCounter, totalTrainingDays);
         }
         
-        // Get base meals (cycle through available filtered meals)
-        const mealIndex = (trainingDayCounter - 1) % Math.min(
-          shuffledBreakfasts.length,
-          shuffledLunches.length,
-          shuffledDinners.length,
-          shuffledSnacks.length
-        );
-        
+        // Get base meals (cycle through available filtered meals using global counter)
         const baseMeals = {
-          breakfast: shuffledBreakfasts[mealIndex % shuffledBreakfasts.length],
-          lunch: shuffledLunches[mealIndex % shuffledLunches.length],
-          dinner: shuffledDinners[mealIndex % shuffledDinners.length],
-          snack: shuffledSnacks[mealIndex % shuffledSnacks.length]
+          breakfast: shuffledBreakfasts[globalMealCounter % shuffledBreakfasts.length],
+          lunch: shuffledLunches[globalMealCounter % shuffledLunches.length],
+          dinner: shuffledDinners[globalMealCounter % shuffledDinners.length],
+          snack: shuffledSnacks[globalMealCounter % shuffledSnacks.length]
         };
+        
+        globalMealCounter++; // Increment for next training day across all weeks
         
         // Adjust each meal to match user's calculated macros
         const personalizedMeals = {
