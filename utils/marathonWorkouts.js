@@ -236,9 +236,6 @@ function getLongRunWorkout(miles, level, week, goal) {
   const kmPace = level === 'beginner' ? '6:32-7:09/km' : level === 'advanced' ? '5:17-5:54/km' : '5:54-6:32/km';
   const duration = Math.round(miles * (level === 'beginner' ? 11 : level === 'advanced' ? 9 : 10));
   
-  // Nutrition guidance for long runs
-  const needsFuel = miles >= 10;
-  
   return [
     `🏃 LONG RUN - ${miles} miles (${Math.round(miles * 1.6)} km)`,
     `Target pace: ${pace} (${kmPace})`,
@@ -248,15 +245,6 @@ function getLongRunWorkout(miles, level, week, goal) {
     'Purpose: Build endurance, mental toughness, and fat adaptation',
     '',
     week >= 12 ? '⚡ LAST 3-4 MILES: Pick up pace to marathon goal pace (practice race finish)' : '',
-    '',
-    needsFuel ? '🍌 NUTRITION STRATEGY:' : '',
-    needsFuel ? '  • Pre-run: Light meal 2-3 hours before (toast, banana, coffee)' : '',
-    needsFuel ? '  • During run: 30-60g carbs per hour after mile 8' : '',
-    needsFuel ? '    - Energy gels every 45 min, OR' : '',
-    needsFuel ? '    - Sports drink every 15-20 min, OR' : '',
-    needsFuel ? '    - Chews/dates every 30 min' : '',
-    needsFuel ? '  • Hydration: 16-20 oz per hour (adjust for temperature)' : '',
-    needsFuel ? '  • Post-run: Recovery meal within 30 min (protein + carbs)' : '',
     '',
     '💡 TIPS:',
     '  • Start slower than target pace (negative split)',
