@@ -69,7 +69,14 @@ function getMarathonDayWorkout(dayNumber, params) {
     3: {
       name: 'Tempo Run',
       cardio: getTempoRunWorkout(tempoRun, level, week, goal),
-      strength: ['Post-run stretching - 10 minutes', 'Core activation - 2 sets x 30s plank']
+      strength: [
+        'Post-run stretching - 10 minutes',
+        '',
+        '💪 CORE ACTIVATION (important for running form):',
+        '  • Plank hold - 2 sets x 30-45s',
+        '  • Purpose: Strengthen core stability to maintain proper posture during fatigue',
+        '  • Benefits: Prevents lower back pain, improves running economy, reduces injury risk'
+      ]
     },
     4: {
       name: hasSpeedWork ? 'Speed Work & Intervals' : 'Cross Training',
@@ -129,11 +136,13 @@ function getStrengthCoreWorkout(level, week) {
     `  • Bird dogs - ${sets} sets x 10 each side`,
     `  • Russian twists - ${sets} sets x 20 total`,
     '',
-    '⚡ PLYOMETRICS (optional for advanced):',
+    '⚡ PLYOMETRICS (explosive power - optional for advanced runners):',
     level === 'advanced' ? '  • Box jumps - 3 sets x 8 reps' : '',
     level === 'advanced' ? '  • Single-leg hops - 3 sets x 10 each leg' : '',
+    level === 'advanced' ? '  • Purpose: Develop explosive power and running economy' : '',
+    level === 'advanced' ? '  • Note: Skip if feeling fatigued to avoid injury risk' : '',
     '',
-    'Focus: Running-specific strength to prevent injury and improve efficiency'
+    '✅ Overall Focus: Running-specific strength to prevent injury and improve efficiency'
   ].filter(Boolean);
 }
 
@@ -213,8 +222,12 @@ function getCrossTrainingWorkout(level) {
     `  • Elliptical - ${duration} minutes`,
     `  • Rowing - ${duration} minutes`,
     '',
-    '💡 Purpose: Active recovery, maintain cardio fitness without impact stress',
-    'Keep effort conversational - Zone 2 heart rate'
+    '💡 Purpose: Maintain cardiovascular fitness while giving your running muscles a break',
+    '  • Benefits: No impact on joints/bones = active recovery',
+    '  • Reduces injury risk from repetitive running stress',
+    '  • Keeps heart rate elevated without the pounding',
+    '',
+    'Keep effort conversational - Zone 2 heart rate (able to chat comfortably)'
   ];
 }
 
@@ -260,10 +273,13 @@ function getRecoveryRunWorkout(miles, level) {
     `Target pace: ${pace} - VERY EASY`,
     'Effort: Should feel effortless - could maintain for hours',
     '',
-    '💡 Purpose: Active recovery to flush out metabolic waste from long run',
-    'This run should leave you feeling better than when you started',
+    '💡 Purpose: Active recovery to help your body bounce back from the long run',
+    '  • Benefits: Light movement increases blood flow to muscles',
+    '  • Flushes out metabolic waste (lactic acid, inflammation)',
+    '  • Speeds up recovery better than complete rest',
+    '  • This run should leave you feeling BETTER than when you started',
     '',
-    'Optional: Replace with rest day if feeling fatigued'
+    '⚠️ Important: Replace with complete rest day if feeling very fatigued or sore'
   ];
 }
 
