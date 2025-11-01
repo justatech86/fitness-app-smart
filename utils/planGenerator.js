@@ -2,6 +2,7 @@ import { getWorkoutForDay } from './fbiPlanData.js';
 import { generateAlgorithmicWorkout } from './workoutAlgorithm.js';
 import { generateArmyPFTWorkout } from './armyPFTWorkouts.js';
 import { generateFBIPFTWorkout } from './fbiPFTWorkouts.js';
+import { generateMarathonWorkout } from './marathonWorkouts.js';
 import { calculateMacros, adjustMealToMacros } from './nutritionAlgorithm.js';
 import { getMealsByGoalAndType } from './mealDatabase.js';
 
@@ -82,6 +83,14 @@ export function generate12WeekPlan(profile) {
             name: armyWorkout.name,
             cardio: armyWorkout.cardio || [],
             strength: armyWorkout.strength || []
+          };
+        } else if (planType === 'marathon') {
+          // Marathon Training Plan
+          const marathonWorkout = generateMarathonWorkout(week, trainingDayCounter, profile);
+          workout = {
+            name: marathonWorkout.name,
+            cardio: marathonWorkout.cardio || [],
+            strength: marathonWorkout.strength || []
           };
         } else {
           // Algorithmic Plan (default)

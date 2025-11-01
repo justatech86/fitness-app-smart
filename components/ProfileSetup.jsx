@@ -18,7 +18,9 @@ export default function ProfileSetup({ onSubmit, existingProfile }) {
         foodSensitivities: [],
         equipment: [],
         // Army PFT specific fields
-        armyGoalFocus: 'balanced'
+        armyGoalFocus: 'balanced',
+        // Marathon specific fields
+        marathonGoal: 'finish'
       };
     }
     
@@ -221,15 +223,18 @@ export default function ProfileSetup({ onSubmit, existingProfile }) {
               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
             >
               <option value="algorithmic">Personalized</option>
-              <option value="fbi_pft">PFT Program</option>
+              <option value="fbi_pft">FBI PFT</option>
               <option value="army_pft">Army PFT</option>
+              <option value="marathon">Marathon Training</option>
             </select>
             <p className="text-xs text-gray-500 mt-1">
               {formData.planType === 'algorithmic' 
                 ? 'Workouts adapt to your profile, goal, and difficulty level'
                 : formData.planType === 'army_pft'
                 ? 'Army Combat Fitness Test preparation with custom focus areas'
-                : 'Structured fitness test preparation program'
+                : formData.planType === 'marathon'
+                ? '16-week progressive marathon training with personalized pacing'
+                : 'FBI Physical Fitness Test preparation (2025 standards)'
               }
             </p>
           </div>
@@ -253,10 +258,29 @@ export default function ProfileSetup({ onSubmit, existingProfile }) {
               </p>
             </div>
           )}
+
+          {/* Marathon Specific Options */}
+          {formData.planType === 'marathon' && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">🎯 Marathon Goal</label>
+              <select
+                name="marathonGoal"
+                value={formData.marathonGoal || 'finish'}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
+              >
+                <option value="finish">🏁 Finish Strong</option>
+                <option value="performance">⚡ Performance / PR</option>
+              </select>
+              <p className="text-xs text-gray-500 mt-1">
+                Finish: Complete the marathon safely. Performance: Target a specific time goal
+              </p>
+            </div>
+          )}
           
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              {formData.planType === 'army_pft' ? 'Training Level' : 'Difficulty Level'}
+              {formData.planType === 'army_pft' ? 'Training Level' : formData.planType === 'marathon' ? 'Experience Level' : 'Difficulty Level'}
             </label>
             <select
               name="difficulty"
@@ -264,10 +288,21 @@ export default function ProfileSetup({ onSubmit, existingProfile }) {
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
             >
-              <option value="beginner">{formData.planType === 'army_pft' ? '🥉 Beginner' : 'Beginner'}</option>
-              <option value="intermediate">{formData.planType === 'army_pft' ? '🥈 Intermediate' : 'Intermediate'}</option>
-              <option value="advanced">{formData.planType === 'army_pft' ? '🥇 Advanced' : 'Advanced'}</option>
+              <option value="beginner">
+                {formData.planType === 'army_pft' ? '🥉 Beginner' : formData.planType === 'marathon' ? '🏃 Beginner (15-35 mi/week)' : 'Beginner'}
+              </option>
+              <option value="intermediate">
+                {formData.planType === 'army_pft' ? '🥈 Intermediate' : formData.planType === 'marathon' ? '🏃‍♂️ Intermediate (25-45 mi/week)' : 'Intermediate'}
+              </option>
+              <option value="advanced">
+                {formData.planType === 'army_pft' ? '🥇 Advanced' : formData.planType === 'marathon' ? '🏃‍♀️ Advanced (35-60 mi/week)' : 'Advanced'}
+              </option>
             </select>
+            {formData.planType === 'marathon' && (
+              <p className="text-xs text-gray-500 mt-1">
+                Choose based on your current running base and experience
+              </p>
+            )}
           </div>
 
           <div>
@@ -275,17 +310,20 @@ export default function ProfileSetup({ onSubmit, existingProfile }) {
             <input
               type="number"
               name="weeks"
-              value={formData.weeks}
+              value={formData.planType === 'marathon' ? 16 : formData.weeks}
               onChange={handleChange}
               required
-              min={formData.planType === 'army_pft' ? '6' : '4'}
-              max={formData.planType === 'army_pft' ? '12' : '52'}
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
-              placeholder={formData.planType === 'army_pft' ? 'Enter duration (6-12 weeks)' : 'Enter duration (4-52 weeks)'}
+              min={formData.planType === 'army_pft' ? '6' : formData.planType === 'marathon' ? '16' : '4'}
+              max={formData.planType === 'army_pft' ? '12' : formData.planType === 'marathon' ? '16' : '52'}
+              disabled={formData.planType === 'marathon'}
+              className={`w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent ${formData.planType === 'marathon' ? 'bg-gray-100' : ''}`}
+              placeholder={formData.planType === 'army_pft' ? 'Enter duration (6-12 weeks)' : formData.planType === 'marathon' ? '16 weeks (fixed)' : 'Enter duration (4-52 weeks)'}
             />
             <p className="text-xs text-gray-500 mt-1">
               {formData.planType === 'army_pft' 
                 ? 'Army PFT plans are 6-12 weeks'
+                : formData.planType === 'marathon'
+                ? 'Marathon training uses a standard 16-week progressive plan'
                 : 'Choose between 4 and 52 weeks for your training plan'
               }
             </p>
