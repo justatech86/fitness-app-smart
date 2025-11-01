@@ -54,28 +54,24 @@ export function generateMarathonWorkout(week, dayNumber, profile) {
 function getMarathonDayWorkout(dayNumber, params) {
   const { week, level, goal, gender, weeklyMileage, longRun, tempoRun, easyRun, recoveryRun, hasSpeedWork, tdee } = params;
   
+  // 6-day training cycle (rest days are handled by user's selected rest days)
   const workouts = {
     1: {
-      name: 'Rest Day',
-      cardio: ['Complete rest - recovery is crucial for marathon training'],
-      strength: ['Light stretching or foam rolling - 10-15 minutes (optional)']
-    },
-    2: {
       name: 'Easy Run',
       cardio: getEasyRunWorkout(easyRun, level, week),
       strength: ['Light stretching - 10 minutes']
     },
-    3: {
+    2: {
       name: 'Strength & Core Training',
       cardio: ['Optional: 20-30 min easy bike or swim (cross-training)'],
       strength: getStrengthCoreWorkout(level, week)
     },
-    4: {
+    3: {
       name: 'Tempo Run',
       cardio: getTempoRunWorkout(tempoRun, level, week, goal),
       strength: ['Post-run stretching - 10 minutes', 'Core activation - 2 sets x 30s plank']
     },
-    5: {
+    4: {
       name: hasSpeedWork ? 'Speed Work & Intervals' : 'Cross Training',
       cardio: hasSpeedWork 
         ? getSpeedWorkWorkout(level, week, goal, gender)
@@ -84,12 +80,12 @@ function getMarathonDayWorkout(dayNumber, params) {
         ? ['Dynamic stretching - 10 minutes', 'Leg swings - 2 sets x 10 each']
         : []
     },
-    6: {
+    5: {
       name: 'Long Run',
       cardio: getLongRunWorkout(longRun, level, week, goal),
       strength: ['Post-run recovery protocol:', '  • Walk 5-10 minutes', '  • Static stretching - 15 minutes', '  • Foam rolling - 10 minutes']
     },
-    7: {
+    6: {
       name: 'Recovery Run',
       cardio: getRecoveryRunWorkout(recoveryRun, level),
       strength: ['Yoga or light stretching - 20-30 minutes']
@@ -285,7 +281,7 @@ export function getMarathonPlanOverview(profile) {
     baseMileage: `${baseMileage} miles/week`,
     peakMileage: `${Math.round(peakMileage)} miles/week`,
     longRunMax: `${Math.round(peakMileage * (level === 'beginner' ? 0.4 : level === 'advanced' ? 0.3 : 0.35))} miles`,
-    structure: '7-day cycle: Rest → Easy → Strength → Tempo → Speed/Cross → Long → Recovery',
+    structure: '6-day training cycle: Easy Run → Strength/Core → Tempo → Speed Work/Cross Train → Long Run → Recovery (your selected rest days)',
     focus: level === 'beginner' ? 'Finish strong' : level === 'advanced' ? 'Performance & PR' : 'Balanced endurance & speed'
   };
 }
