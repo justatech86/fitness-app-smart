@@ -309,6 +309,302 @@ export const mealDatabase = {
       ingredients: ["Rice cakes (2)", "Avocado (1/4)", "Sea salt", "Lemon juice"],
       instructions: "Mash avocado on rice cakes. Season with salt and lemon.",
       allergens: []
+    },
+
+    // Additional Breakfast Variety
+    {
+      name: "Breakfast Burrito",
+      type: "breakfast",
+      calories: 280,
+      protein: 18,
+      carbs: 32,
+      fat: 10,
+      prepTime: "12 min",
+      ingredients: ["Whole wheat tortilla", "Scrambled eggs (2)", "Black beans (1/4 cup)", "Salsa", "Cheese (1 oz)"],
+      instructions: "Fill tortilla with eggs, beans, and cheese. Top with salsa.",
+      allergens: ["eggs", "dairy", "gluten"]
+    },
+    {
+      name: "Avocado Toast",
+      type: "breakfast",
+      calories: 280,
+      protein: 12,
+      carbs: 30,
+      fat: 14,
+      prepTime: "5 min",
+      ingredients: ["Whole grain bread (2 slices)", "Avocado (1/2)", "Cherry tomatoes", "Lemon", "Sea salt"],
+      instructions: "Toast bread. Mash avocado on top. Add tomatoes, lemon, and salt.",
+      allergens: ["gluten"]
+    },
+    {
+      name: "Cottage Cheese & Pineapple",
+      type: "breakfast",
+      calories: 280,
+      protein: 24,
+      carbs: 35,
+      fat: 4,
+      prepTime: "3 min",
+      ingredients: ["Cottage cheese (1 cup)", "Pineapple chunks (1 cup)", "Chia seeds (1 tsp)"],
+      instructions: "Mix cottage cheese with pineapple and top with chia seeds.",
+      allergens: ["dairy"]
+    },
+    {
+      name: "Chia Seed Pudding",
+      type: "breakfast",
+      calories: 280,
+      protein: 10,
+      carbs: 35,
+      fat: 12,
+      prepTime: "5 min + overnight",
+      ingredients: ["Chia seeds (3 tbsp)", "Almond milk (1 cup)", "Honey (1 tbsp)", "Berries (1/2 cup)"],
+      instructions: "Mix chia seeds with almond milk. Refrigerate overnight. Top with berries.",
+      allergens: []
+    },
+    {
+      name: "Protein Waffles",
+      type: "breakfast",
+      calories: 280,
+      protein: 22,
+      carbs: 32,
+      fat: 8,
+      prepTime: "10 min",
+      ingredients: ["Protein powder (1 scoop)", "Oat flour (1/2 cup)", "Egg (1)", "Milk (1/2 cup)", "Berries"],
+      instructions: "Mix all ingredients. Cook in waffle iron. Top with berries.",
+      allergens: ["eggs", "dairy", "gluten"]
+    },
+    {
+      name: "Breakfast Quinoa Bowl",
+      type: "breakfast",
+      calories: 280,
+      protein: 14,
+      carbs: 42,
+      fat: 8,
+      prepTime: "15 min",
+      ingredients: ["Quinoa (1/2 cup cooked)", "Almond milk (1/2 cup)", "Banana", "Almonds (1 tbsp)", "Honey"],
+      instructions: "Cook quinoa in almond milk. Top with banana, almonds, and honey.",
+      allergens: ["nuts"]
+    },
+
+    // Additional Lunch Variety
+    {
+      name: "Mediterranean Chicken Wrap",
+      type: "lunch",
+      calories: 350,
+      protein: 32,
+      carbs: 35,
+      fat: 10,
+      prepTime: "10 min",
+      ingredients: ["Whole wheat wrap", "Grilled chicken (4 oz)", "Hummus (2 tbsp)", "Cucumber", "Tomatoes", "Feta"],
+      instructions: "Spread hummus on wrap. Add chicken, veggies, and feta. Roll up.",
+      allergens: ["gluten", "dairy"]
+    },
+    {
+      name: "Asian Sesame Noodle Bowl",
+      type: "lunch",
+      calories: 350,
+      protein: 22,
+      carbs: 48,
+      fat: 8,
+      prepTime: "15 min",
+      ingredients: ["Rice noodles (2 oz)", "Edamame (1/2 cup)", "Carrots", "Sesame oil", "Soy sauce", "Ginger"],
+      instructions: "Cook noodles. Toss with vegetables, edamame, and sesame-soy dressing.",
+      allergens: ["soy", "gluten"]
+    },
+    {
+      name: "Turkey & Veggie Pita",
+      type: "lunch",
+      calories: 350,
+      protein: 30,
+      carbs: 38,
+      fat: 10,
+      prepTime: "8 min",
+      ingredients: ["Whole wheat pita", "Turkey slices (4 oz)", "Lettuce", "Tomato", "Cucumber", "Tzatziki (2 tbsp)"],
+      instructions: "Stuff pita with turkey and vegetables. Top with tzatziki.",
+      allergens: ["gluten", "dairy"]
+    },
+    {
+      name: "Lentil & Spinach Soup",
+      type: "lunch",
+      calories: 350,
+      protein: 20,
+      carbs: 55,
+      fat: 5,
+      prepTime: "25 min",
+      ingredients: ["Red lentils (3/4 cup)", "Spinach (2 cups)", "Vegetable broth (2 cups)", "Onion", "Garlic", "Spices"],
+      instructions: "Simmer lentils in broth with onion and garlic. Add spinach before serving.",
+      allergens: []
+    },
+    {
+      name: "Caprese Salad with Chicken",
+      type: "lunch",
+      calories: 350,
+      protein: 32,
+      carbs: 18,
+      fat: 18,
+      prepTime: "10 min",
+      ingredients: ["Grilled chicken (5 oz)", "Fresh mozzarella (2 oz)", "Tomatoes", "Basil", "Balsamic", "Olive oil"],
+      instructions: "Slice chicken, mozzarella, and tomatoes. Arrange with basil. Drizzle with balsamic.",
+      allergens: ["dairy"]
+    },
+    {
+      name: "Chickpea Buddha Bowl",
+      type: "lunch",
+      calories: 350,
+      protein: 16,
+      carbs: 52,
+      fat: 10,
+      prepTime: "20 min",
+      ingredients: ["Roasted chickpeas (3/4 cup)", "Quinoa (1/2 cup)", "Sweet potato", "Kale", "Tahini dressing"],
+      instructions: "Roast chickpeas and sweet potato. Arrange over quinoa with kale. Drizzle tahini.",
+      allergens: []
+    },
+
+    // Additional Dinner Variety
+    {
+      name: "Teriyaki Salmon with Broccoli",
+      type: "dinner",
+      calories: 420,
+      protein: 38,
+      carbs: 32,
+      fat: 16,
+      prepTime: "20 min",
+      ingredients: ["Salmon fillet (6 oz)", "Broccoli (2 cups)", "Brown rice (3/4 cup)", "Teriyaki sauce", "Sesame seeds"],
+      instructions: "Bake salmon with teriyaki. Steam broccoli. Serve over brown rice.",
+      allergens: ["fish", "soy", "gluten"]
+    },
+    {
+      name: "Chicken Fajita Bowl",
+      type: "dinner",
+      calories: 420,
+      protein: 36,
+      carbs: 42,
+      fat: 12,
+      prepTime: "20 min",
+      ingredients: ["Chicken breast (6 oz)", "Bell peppers", "Onions", "Brown rice (3/4 cup)", "Salsa", "Avocado"],
+      instructions: "Sauté chicken with peppers and onions. Serve over rice with salsa and avocado.",
+      allergens: []
+    },
+    {
+      name: "Turkey Meatballs with Zoodles",
+      type: "dinner",
+      calories: 420,
+      protein: 40,
+      carbs: 25,
+      fat: 18,
+      prepTime: "25 min",
+      ingredients: ["Ground turkey (8 oz)", "Breadcrumbs", "Egg", "Zucchini noodles (2 cups)", "Marinara sauce"],
+      instructions: "Form turkey into meatballs. Bake at 375°F. Serve over zucchini noodles with sauce.",
+      allergens: ["eggs", "gluten"]
+    },
+    {
+      name: "Baked Cod with Asparagus",
+      type: "dinner",
+      calories: 420,
+      protein: 42,
+      carbs: 28,
+      fat: 14,
+      prepTime: "25 min",
+      ingredients: ["Cod fillet (8 oz)", "Asparagus (1.5 cups)", "Quinoa (3/4 cup)", "Lemon", "Olive oil", "Herbs"],
+      instructions: "Bake cod with lemon and herbs. Roast asparagus. Serve with quinoa.",
+      allergens: ["fish"]
+    },
+    {
+      name: "Beef & Vegetable Stir-Fry",
+      type: "dinner",
+      calories: 420,
+      protein: 36,
+      carbs: 38,
+      fat: 14,
+      prepTime: "20 min",
+      ingredients: ["Lean beef (6 oz)", "Mixed vegetables (2 cups)", "Brown rice (3/4 cup)", "Soy sauce", "Garlic", "Ginger"],
+      instructions: "Stir-fry beef with garlic and ginger. Add vegetables. Serve over rice.",
+      allergens: ["soy", "gluten"]
+    },
+    {
+      name: "Chicken Curry with Cauliflower Rice",
+      type: "dinner",
+      calories: 420,
+      protein: 38,
+      carbs: 30,
+      fat: 18,
+      prepTime: "30 min",
+      ingredients: ["Chicken thighs (6 oz)", "Coconut milk (1/2 cup)", "Curry powder", "Cauliflower rice (2 cups)", "Spinach"],
+      instructions: "Simmer chicken in coconut curry sauce. Serve over cauliflower rice with spinach.",
+      allergens: []
+    },
+
+    // Additional Snack Variety
+    {
+      name: "Greek Yogurt Parfait",
+      type: "snack",
+      calories: 180,
+      protein: 14,
+      carbs: 22,
+      fat: 4,
+      prepTime: "3 min",
+      ingredients: ["Greek yogurt (3/4 cup)", "Granola (2 tbsp)", "Berries (1/4 cup)", "Honey drizzle"],
+      instructions: "Layer yogurt with granola and berries. Drizzle honey.",
+      allergens: ["dairy", "gluten"]
+    },
+    {
+      name: "Protein Energy Balls",
+      type: "snack",
+      calories: 180,
+      protein: 8,
+      carbs: 20,
+      fat: 8,
+      prepTime: "10 min + chill",
+      ingredients: ["Oats (1/2 cup)", "Peanut butter (2 tbsp)", "Honey (1 tbsp)", "Chocolate chips (1 tbsp)", "Chia seeds"],
+      instructions: "Mix all ingredients. Roll into balls. Refrigerate 30 minutes.",
+      allergens: ["nuts", "gluten"]
+    },
+    {
+      name: "Cucumber & Cream Cheese Bites",
+      type: "snack",
+      calories: 180,
+      protein: 6,
+      carbs: 8,
+      fat: 14,
+      prepTime: "5 min",
+      ingredients: ["Cucumber (1 large)", "Cream cheese (3 oz)", "Dill", "Lemon juice", "Salt"],
+      instructions: "Slice cucumber into rounds. Top with seasoned cream cheese.",
+      allergens: ["dairy"]
+    },
+    {
+      name: "Roasted Chickpeas",
+      type: "snack",
+      calories: 180,
+      protein: 10,
+      carbs: 26,
+      fat: 4,
+      prepTime: "30 min",
+      ingredients: ["Chickpeas (1 cup)", "Olive oil (1 tsp)", "Paprika", "Garlic powder", "Salt"],
+      instructions: "Toss chickpeas with oil and spices. Roast at 400°F for 25 minutes.",
+      allergens: []
+    },
+    {
+      name: "Edamame with Sea Salt",
+      type: "snack",
+      calories: 180,
+      protein: 16,
+      carbs: 14,
+      fat: 8,
+      prepTime: "8 min",
+      ingredients: ["Edamame pods (1.5 cups)", "Sea salt", "Garlic powder (optional)"],
+      instructions: "Boil or steam edamame for 5 minutes. Sprinkle with sea salt.",
+      allergens: ["soy"]
+    },
+    {
+      name: "Turkey Roll-Ups",
+      type: "snack",
+      calories: 180,
+      protein: 18,
+      carbs: 6,
+      fat: 10,
+      prepTime: "5 min",
+      ingredients: ["Turkey slices (4 oz)", "Cheese (1 oz)", "Lettuce", "Mustard", "Pickles"],
+      instructions: "Lay turkey flat. Add cheese and toppings. Roll up and secure with toothpick.",
+      allergens: ["dairy"]
     }
   ],
   
